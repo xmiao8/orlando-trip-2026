@@ -27,7 +27,6 @@
   --gold: #b8860b;
   --gold-bg: #fbf3dc;
   --on-cat: #ffffff;
-  --land: #fbfcfd; --water: #dbe7f3; --coast: #7f9bb8; --disney-zone: rgba(44,91,204,.06); --universal-zone: rgba(123,61,194,.07);
   --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --body: "Instrument Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -36,13 +35,13 @@
   :root:not([data-theme="light"]) {
     --bg: #0e131e; --surface: #161d2c; --ink: #e8ecf3; --muted: #9ba5b7; --line: #263048;
     --accent: #ff8a52; --disney: #7fa3ff; --universal: #bb8ef2; --space: #ff8a52; --rest: #6cc795;
-    --travel: #8e98aa; --gold: #f0c45a; --gold-bg: #2d2714; --on-cat: #0e131e; --land: #131a28; --water: #0b1a2c; --coast: #4d6b8c; --disney-zone: rgba(127,163,255,.08); --universal-zone: rgba(187,142,242,.09); color-scheme: dark;
+    --travel: #8e98aa; --gold: #f0c45a; --gold-bg: #2d2714; --on-cat: #0e131e; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0e131e; --surface: #161d2c; --ink: #e8ecf3; --muted: #9ba5b7; --line: #263048;
   --accent: #ff8a52; --disney: #7fa3ff; --universal: #bb8ef2; --space: #ff8a52; --rest: #6cc795;
-  --travel: #8e98aa; --gold: #f0c45a; --gold-bg: #2d2714; --on-cat: #0e131e; --land: #131a28; --water: #0b1a2c; --coast: #4d6b8c; --disney-zone: rgba(127,163,255,.08); --universal-zone: rgba(187,142,242,.09); color-scheme: dark;
+  --travel: #8e98aa; --gold: #f0c45a; --gold-bg: #2d2714; --on-cat: #0e131e; color-scheme: dark;
 }
 
 body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.55; }
@@ -118,38 +117,6 @@ h3 { font-size: 21px; font-weight: 600; line-height: 1.2; }
 .empty { color: var(--muted); padding: 18px 0; }
 
 
-/* Maps */
-.maps { display: flex; flex-direction: column; gap: 14px; }
-.maps p { margin: 0; color: var(--muted); max-width: 64ch; }
-.mapfig { margin: 0; display: flex; flex-direction: column; gap: 6px; scroll-margin-top: 16px; }
-.mapfig figcaption { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
-.mapbox { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--land); }
-.map-svg { display: block; width: 100%; min-width: 560px; height: auto; font-family: var(--body); }
-.m-land { fill: var(--land); }
-.m-water { fill: var(--water); }
-.m-coast { fill: none; stroke: var(--coast); stroke-width: 1.5; }
-.m-sea { fill: var(--coast); font-family: var(--mono); font-size: 12px; letter-spacing: .3em; }
-.m-town { fill: var(--muted); }
-.m-townlbl { fill: var(--muted); font-size: 13px; font-style: italic; }
-.m-route { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 5; }
-.m-time { fill: var(--muted); font-family: var(--mono); font-size: 12px; }
-.m-lbl { fill: var(--ink); font-size: 14px; font-weight: 600; }
-.m-sub { fill: var(--muted); font-family: var(--mono); font-size: 11.5px; }
-.m-dot { stroke: var(--land); stroke-width: 3; }
-.m-dot.disney { fill: var(--disney); } .m-dot.universal { fill: var(--universal); } .m-dot.space { fill: var(--space); }
-.m-dot.rest { fill: var(--rest); } .m-dot.travel { fill: var(--travel); }
-.m-place:hover .m-lbl, .m-place:focus-visible .m-lbl { text-decoration: underline; }
-.m-place:focus-visible { outline: none; }
-.m-place:focus-visible .m-dot { stroke: var(--ink); }
-.m-zone { stroke-width: 1.2; stroke-dasharray: 2 4; }
-.m-zone.disney { fill: var(--disney-zone); stroke: var(--disney); }
-.m-zone.universal { fill: var(--universal-zone); stroke: var(--universal); }
-.m-zlbl { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; }
-.m-zlbl.disney { fill: var(--disney); } .m-zlbl.universal { fill: var(--universal); }
-.m-scale { fill: none; stroke: var(--ink); stroke-width: 1.5; }
-.m-north { fill: var(--ink); font-family: var(--display); font-weight: 800; font-size: 14px; }
-.m-arrow { fill: var(--ink); }
-
 /* Lower panels */
 .panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 28px; }
 .panel { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
@@ -204,93 +171,6 @@ footer { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--lin
   </section>
 
 
-  <section class="maps" aria-labelledby="map-title">
-    <h2 id="map-title">Where everything is</h2>
-    <p>Everything except Kennedy Space Center is within about 25 minutes of the hotel area. Tap a place to jump to its day.</p>
-    <figure class="mapfig">
-      <figcaption>Central Florida</figcaption>
-      <div class="mapbox"><svg viewBox="0 0 760 447" role="img" aria-labelledby="mr-t mr-d" class="map-svg">
-<title id="mr-t">Central Florida</title><desc id="mr-d">Walt Disney World southwest of Orlando, Universal Orlando closer to downtown, the airport to the east, Kennedy Space Center about an hour east on the coast, and Blue Spring State Park about 45 minutes north.</desc>
-<rect width="760" height="447" class="m-land"/>
-<path d="M476.9,-33.9 L546.4,62.2 L601.0,147.0 L645.8,214.8 L680.5,271.3 L697.9,316.5 L705.4,339.1 L678.0,361.7 L668.1,407.0 L675.6,463.5 L680.5,486.1 L780,467 L780,-20 Z" class="m-water"/><path d="M476.9,-33.9 L546.4,62.2 L601.0,147.0 L645.8,214.8 L680.5,271.3 L697.9,316.5 L705.4,339.1 L678.0,361.7 L668.1,407.0 L675.6,463.5 L680.5,486.1" class="m-coast"/>
-<text x="720.3" y="158.3" class="m-sea" text-anchor="middle" transform="rotate(-58 720.3 158.3)">ATLANTIC OCEAN</text>
-<circle cx="283.7" cy="294.8" r="3.5" class="m-town"/><text x="292.7" y="287.8" class="m-townlbl">Downtown Orlando</text>
-<line x1="193.7" y1="378.7" x2="629.9" y2="303.4" class="m-route"/>
-<text x="411.8" y="329.0" class="m-time" text-anchor="middle">~1 hr drive</text>
-<line x1="243.4" y1="336.3" x2="303.1" y2="63.6" class="m-route"/>
-<text x="239.3" y="199.9" class="m-time" text-anchor="middle">~45 min</text>
-<a href="#map-parks" class="m-place"><circle cx="193.7" cy="378.7" r="7" class="m-dot disney"/>
-<text x="179.7" y="400.7" text-anchor="end" class="m-lbl">Walt Disney World</text>
-<text x="179.7" y="416.7" text-anchor="end" class="m-sub">Dec 24, 26, 27, 30</text>
-</a>
-<a href="#map-parks" class="m-place"><circle cx="243.4" cy="336.3" r="7" class="m-dot universal"/>
-<text x="229.4" y="326.3" text-anchor="end" class="m-lbl">Universal Orlando</text>
-</a>
-<text x="229.4" y="342.3" text-anchor="end" class="m-sub">Dec 25, 31</text>
-<a href="#dec23" class="m-place"><circle cx="318.9" cy="355.4" r="7" class="m-dot travel"/>
-<text x="332.9" y="375.4" text-anchor="start" class="m-lbl">Airport (MCO)</text>
-<text x="332.9" y="391.4" text-anchor="start" class="m-sub">Dec 23 · Jan 1</text>
-</a>
-<a href="#dec28" class="m-place"><circle cx="629.9" cy="303.4" r="7" class="m-dot space"/>
-<text x="615.9" y="289.4" text-anchor="end" class="m-lbl">Kennedy Space Center</text>
-</a>
-<text x="615.9" y="305.4" text-anchor="end" class="m-sub">Dec 28</text>
-<a href="#dec29" class="m-place"><circle cx="303.1" cy="63.6" r="7" class="m-dot rest"/>
-<text x="317.1" y="68.6" text-anchor="start" class="m-lbl">Blue Spring State Park</text>
-<text x="317.1" y="84.6" text-anchor="start" class="m-sub">Optional · Dec 29</text>
-</a>
-<path d="M654.0829006635626,421 V425 H736.0 V421" class="m-scale"/><text x="654.0829006635626" y="416" class="m-time">10 miles</text>
-<g class="m-n"><text x="642" y="30" text-anchor="middle" class="m-north">N</text><path d="M642,36 l-6,15 l6,-4 l6,4 z" class="m-arrow"/></g>
-</svg></div>
-    </figure>
-    <figure class="mapfig" id="map-parks">
-      <figcaption>Theme park area</figcaption>
-      <div class="mapbox"><svg viewBox="0 0 760 395" role="img" aria-labelledby="mp-t mp-d" class="map-svg">
-<title id="mp-t">Theme park area</title><desc id="mp-d">The four Disney parks sit together in the southwest corner, Universal and Epic Universe about 20 minutes northeast, and the airport about 25 minutes east of Disney.</desc>
-<rect width="760" height="395" class="m-land"/>
-<line x1="175.0" y1="297.2" x2="349.6" y2="50.9" class="m-route"/>
-<text x="296.3" y="178.1" class="m-time" text-anchor="middle">~20 min</text>
-<line x1="175.0" y1="297.2" x2="699.0" y2="157.6" class="m-route"/>
-<text x="437.0" y="217.4" class="m-time" text-anchor="middle">~25 min</text>
-<path d="M65.1,160.6 L141.1,160.6 L249.7,247.1 L271.4,308.9 L217.1,370.6 L43.4,370.6 L32.6,284.1 Z" class="m-zone disney"/>
-<text x="71.1" y="152.6" class="m-zlbl disney">WALT DISNEY WORLD</text>
-<path d="M325.7,24.7 L380.0,24.7 L423.4,135.9 L380.0,148.3 L325.7,86.5 Z" class="m-zone universal"/>
-<text x="390.2" y="34.2" class="m-zlbl universal">UNIVERSAL ORLANDO</text>
-<a href="#dec30" class="m-place"><circle cx="106.0" cy="191.0" r="7" class="m-dot disney"/>
-<text x="120.0" y="196.0" text-anchor="start" class="m-lbl">Magic Kingdom</text>
-<text x="120.0" y="212.0" text-anchor="start" class="m-sub">Dec 30</text>
-</a>
-<a href="#dec24" class="m-place"><circle cx="175.0" cy="297.2" r="7" class="m-dot disney"/>
-<text x="161.0" y="291.2" text-anchor="end" class="m-lbl">EPCOT</text>
-<text x="161.0" y="307.2" text-anchor="end" class="m-sub">Dec 24</text>
-</a>
-<a href="#dec27" class="m-place"><circle cx="155.9" cy="339.7" r="7" class="m-dot disney"/>
-<text x="169.9" y="349.7" text-anchor="start" class="m-lbl">Hollywood Studios</text>
-<text x="169.9" y="365.7" text-anchor="start" class="m-sub">Dec 27</text>
-</a>
-<a href="#dec26" class="m-place"><circle cx="86.6" cy="345.2" r="7" class="m-dot disney"/>
-<text x="86.6" y="369.2" text-anchor="middle" class="m-lbl">Animal Kingdom</text>
-<text x="86.6" y="385.2" text-anchor="middle" class="m-sub">Dec 26</text>
-</a>
-<a href="#dec29" class="m-place"><circle cx="240.4" cy="307.4" r="5" class="m-dot rest"/>
-<text x="254.4" y="312.4" text-anchor="start" class="m-lbl">Disney Springs</text>
-</a>
-<a href="#dec25" class="m-place"><circle cx="347.4" cy="54.4" r="7" class="m-dot universal"/>
-<text x="333.4" y="59.4" text-anchor="end" class="m-lbl">Universal Studios + Islands of Adventure</text>
-<text x="333.4" y="75.4" text-anchor="end" class="m-sub">Dec 25</text>
-</a>
-<a href="#dec31" class="m-place"><circle cx="401.7" cy="118.6" r="7" class="m-dot universal"/>
-<text x="415.7" y="123.6" text-anchor="start" class="m-lbl">Epic Universe</text>
-<text x="415.7" y="139.6" text-anchor="start" class="m-sub">Dec 31</text>
-</a>
-<a href="#dec23" class="m-place"><circle cx="699.0" cy="157.6" r="7" class="m-dot travel"/>
-<text x="699.0" y="187.6" text-anchor="middle" class="m-lbl">Airport (MCO)</text>
-</a>
-<path d="M664.3810502944277,369 V373 H736.0 V369" class="m-scale"/><text x="664.3810502944277" y="364" class="m-time">2 miles</text>
-<g class="m-n"><text x="732" y="30" text-anchor="middle" class="m-north">N</text><path d="M732,36 l-6,15 l6,-4 l6,4 z" class="m-arrow"/></g>
-</svg></div>
-    </figure>
-  </section>
 
   <section aria-labelledby="days-title">
     <div class="days-head">
@@ -329,7 +209,7 @@ footer { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--lin
     </section>
   </div>
 
-  <footer>Showtimes and hours marked “last year” come from the 2025 season; Disney and Universal post final 2026 New Year’s Eve details in December. Crowd bars are rough estimates for planning, not official forecasts. Maps are approximate and drive times assume normal traffic. Checklist ticks are saved only in your own browser.</footer>
+  <footer>Showtimes and hours marked “last year” come from the 2025 season; Disney and Universal post final 2026 New Year’s Eve details in December. Crowd bars are rough estimates for planning, not official forecasts. Checklist ticks are saved only in your own browser.</footer>
 </div>
 
 <script>
