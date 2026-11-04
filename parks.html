@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Orlando Park Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* Layout: same system as the itinerary — a visit-order jump list, then one long section per park: photo, intro, rides beside areas/holiday/tips */
+:root {
+  color-scheme: light;
+  --bg: #f2f4f8;
+  --surface: #ffffff;
+  --ink: #15213a;
+  --muted: #5b6678;
+  --line: #dce1ea;
+  --accent: #e2622a;
+  --disney: #2c5bcc;
+  --universal: #7b3dc2;
+  --space: #e2622a;
+  --rest: #2f8a58;
+  --thrill: #c2412b;
+  --moderate: #b8860b;
+  --gentle: #2f8a58;
+  --display: "Bricolage Grotesque", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "Instrument Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e131e; --surface: #161d2c; --ink: #e8ecf3; --muted: #9ba5b7; --line: #263048; --accent: #ff8a52;
+    --disney: #7fa3ff; --universal: #bb8ef2; --space: #ff8a52; --rest: #6cc795;
+    --thrill: #ff7d66; --moderate: #f0c45a; --gentle: #6cc795;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e131e; --surface: #161d2c; --ink: #e8ecf3; --muted: #9ba5b7; --line: #263048; --accent: #ff8a52;
+  --disney: #7fa3ff; --universal: #bb8ef2; --space: #ff8a52; --rest: #6cc795;
+  --thrill: #ff7d66; --moderate: #f0c45a; --gentle: #6cc795;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.6; }
+[hidden] { display: none !important; }
+a { color: inherit; }
+.wrap {
+  max-width: 940px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 64px;
+  display: flex; flex-direction: column; gap: 36px;
+}
+h1, h2, h3, h4 { font-family: var(--display); text-wrap: balance; margin: 0; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+.pnav { display: flex; gap: 4px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.pnav a { font: 600 14px var(--body); color: var(--muted); text-decoration: none; padding: 8px 12px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.pnav a:hover { color: var(--ink); }
+.pnav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+header { display: flex; flex-direction: column; gap: 12px; }
+.toprow { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lang { appearance: none; cursor: pointer; font: 600 13px var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 14px; }
+h1 { font-size: clamp(32px, 6.5vw, 52px); font-weight: 800; line-height: 1.04; letter-spacing: -.02em; }
+.lede { max-width: 64ch; color: var(--muted); margin: 0; }
+
+/* Jump list */
+.jump { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 8px; }
+.jump a { display: flex; flex-direction: column; gap: 1px; text-decoration: none; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); border-left: 4px solid var(--c); }
+.jump a:hover { border-color: var(--c); }
+.jump .d { font-family: var(--mono); font-size: 11.5px; color: var(--muted); letter-spacing: .04em; }
+.jump .n { font-weight: 600; font-size: 14.5px; line-height: 1.3; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); margin-top: 10px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+/* Park sections */
+.parks { display: flex; flex-direction: column; gap: 56px; }
+.park { display: flex; flex-direction: column; gap: 18px; scroll-margin-top: 16px; }
+.park + .park { border-top: 1px solid var(--line); padding-top: 48px; }
+.photo { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.photo .frame { position: relative; aspect-ratio: 16 / 7; max-width: 100%; border-radius: 10px; overflow: hidden; background: var(--c); }
+.photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.photo .ph { display: none; position: absolute; inset: 0; align-items: flex-end; padding: 18px; color: #fff; font-family: var(--display); font-weight: 800; font-size: clamp(26px, 5vw, 44px); line-height: 1; letter-spacing: -.02em; }
+.photo.noimg img { display: none; }
+.photo.noimg .ph { display: flex; }
+.photo figcaption { font-size: 12px; color: var(--muted); }
+.photo figcaption a { color: var(--muted); }
+.phead { display: flex; flex-direction: column; gap: 6px; }
+.badges { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.tag { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; border: 1px solid currentColor; color: var(--c); }
+.day { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.park h2 { font-size: clamp(26px, 4.4vw, 36px); font-weight: 800; letter-spacing: -.015em; line-height: 1.1; }
+.tagline { font-size: 17px; color: var(--muted); margin: 0; max-width: 60ch; }
+.about { margin: 0; max-width: 68ch; }
+.cols { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.col { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+h3 { font-size: 16px; font-weight: 800; letter-spacing: 0; }
+.rides { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.rides li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+.rides li:last-child { border-bottom: 1px solid var(--line); }
+.rides .rn { font-weight: 600; }
+.rides .rd { grid-column: 1 / -1; font-size: 13.5px; color: var(--muted); }
+.lvl { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; align-self: start; padding: 1px 7px; border-radius: 999px; white-space: nowrap; border: 1px solid currentColor; }
+.lvl.thrill { color: var(--thrill); } .lvl.moderate { color: var(--moderate); } .lvl.gentle { color: var(--gentle); }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+.box section { display: flex; flex-direction: column; gap: 6px; }
+.box ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+.box p { margin: 0; font-size: 14px; }
+.areas { display: flex; flex-wrap: wrap; gap: 6px; }
+.areas span { font-size: 12.5px; padding: 2px 9px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); }
+.official { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; font-weight: 600; font-size: 14px; text-decoration: none; color: var(--c); border: 1px solid var(--c); border-radius: 999px; padding: 6px 14px; }
+.official:hover { background: var(--c); color: var(--surface); }
+.extras { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; }
+.extras .box h3 a { text-decoration: none; }
+.extras .box h3 a:hover { text-decoration: underline; }
+footer { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; max-width: 76ch; }
+.top { font-size: 13px; color: var(--muted); align-self: flex-start; }
+@media (max-width: 760px) {
+  .cols { grid-template-columns: minmax(0, 1fr); }
+  .photo .frame { aspect-ratio: 4 / 3; }
+}
+:lang(zh) h1, :lang(zh) .park h2 { letter-spacing: 0; }
+</style>
+</head>
+<body>
+<div class="wrap" id="top">
+  <nav class="pnav" data-i18n-aria="navAria">
+    <a id="nav-itin" href="index.html" data-i18n="navItin"></a>
+    <a id="nav-parks" href="parks.html" aria-current="page" data-i18n="navParks"></a>
+    <a id="nav-budget" href="budget.html" data-i18n="navBudget"></a>
+  </nav>
+
+  <header>
+    <div class="toprow">
+      <div class="eyebrow" data-i18n="eyebrow"></div>
+      <button class="lang" id="lang-toggle" type="button"></button>
+    </div>
+    <h1 data-i18n="h1"></h1>
+    <p class="lede" data-i18n="lede"></p>
+  </header>
+
+  <section aria-labelledby="jump-title">
+    <h2 id="jump-title" class="eyebrow" style="font-family:var(--mono);font-weight:500;margin-bottom:10px" data-i18n="jumpTitle"></h2>
+    <ol class="jump" id="jump"></ol>
+    <div class="legend">
+      <span><i style="background:var(--disney)"></i><span data-i18n="lgDisney"></span></span>
+      <span><i style="background:var(--universal)"></i><span data-i18n="lgUniversal"></span></span>
+      <span><i style="background:var(--space)"></i><span data-i18n="lgSpace"></span></span>
+    </div>
+  </section>
+
+  <div class="parks" id="parks"></div>
+
+  <section aria-labelledby="extras-title" style="display:flex;flex-direction:column;gap:14px">
+    <h2 id="extras-title" style="font-size:24px;font-weight:800" data-i18n="extrasTitle"></h2>
+    <div class="extras" id="extras"></div>
+  </section>
+
+  <footer data-i18n-html="footer"></footer>
+</div>
+
+<script>
+const IMG = "https://upload.wikimedia.org/wikipedia/commons/thumb/";
+const PARKS = [
+  { id:"ep", resort:"disney", date:"dec24",
+    img:"d/db/Spaceship_Earth_at_night.jpg/960px-Spaceship_Earth_at_night.jpg", pos:"center 40%",
+    credit:{ by:"Benjamin D. Esham", lic:"CC BY-SA 4.0", licUrl:"https://creativecommons.org/licenses/by-sa/4.0", page:"https://commons.wikimedia.org/wiki/File:Spaceship_Earth_at_night.jpg" },
+    link:"https://disneyworld.disney.go.com/destinations/epcot/",
+    en:{ day:"Thu, Dec 24 · Christmas Eve", name:"EPCOT", tagline:"A world’s fair with roller coasters, and the best food at Disney World.",
+      about:"EPCOT is really two parks. The front half, around the giant silver ball (Spaceship Earth), is about science, space and nature, and it’s where most of the rides are. The back half, World Showcase, is a 1.2-mile loop around a lake through 11 country pavilions — Mexico, Norway, China, Germany, Italy, the USA, Japan, Morocco, France, the UK and Canada — each with real architecture, restaurants and shops. During the holidays every country adds food booths and storytellers, which makes it the most festive place to spend Christmas Eve.",
+      rides:[
+        ["Guardians of the Galaxy: Cosmic Rewind","thrill","An indoor roller coaster with a backward launch; the cars spin to face the action, set to ’80s songs. One of Disney’s best rides. Sold as a Single Pass."],
+        ["Test Track","thrill","Design a car, then test it at up to 65 mph on an outdoor track. Reimagined in 2025."],
+        ["Remy’s Ratatouille Adventure","gentle","A 3D trackless ride in the France pavilion where you’re shrunk to rat size and chased through a Paris kitchen."],
+        ["Soarin’ Across America","gentle","Hang-glide in front of a giant dome screen over American landmarks. A limited-time film for the US 250th anniversary."],
+        ["Frozen Ever After","gentle","A boat ride through Arendelle in the Norway pavilion. Short, but lines get long."],
+        ["Mission: SPACE","moderate","A centrifuge simulator of a launch to Mars. Pick the Orange (intense) or Green (milder) version."],
+      ],
+      areas:["World Celebration","World Discovery","World Nature","World Showcase (11 countries)"],
+      holiday:"EPCOT International Festival of the Holidays: holiday food booths around World Showcase, storytellers in each country, and the Candlelight Processional — a choir, a 50-piece orchestra and a celebrity narrator telling the Christmas story at the America Gardens Theatre (last year’s shows: 5:00, 6:45 and 8:15 p.m.).",
+      tips:["Ride Cosmic Rewind, Test Track and Remy early, then spend the afternoon eating around World Showcase.","Get in the Candlelight Processional standby line at least an hour early on Christmas Eve.","Stay for Luminous, the nighttime fireworks show over the lake."] },
+    zh:{ day:"12月24日 周四 · 平安夜", name:"EPCOT", tagline:"有过山车的世博会，也是迪士尼世界美食最好的园区。",
+      about:"EPCOT其实是两个园区。前半部分围绕着巨大的银色球体（太空船地球号），主题是科学、太空和自然，大部分游乐项目都在这里。后半部分是世界橱窗：环湖约2公里，经过11个国家馆——墨西哥、挪威、中国、德国、意大利、美国、日本、摩洛哥、法国、英国和加拿大，每个馆都有当地风格的建筑、餐厅和商店。节日期间每个国家都会加开美食摊位和讲故事的演员，是过平安夜最有节日气氛的地方。",
+      rides:[
+        ["银河护卫队：宇宙倒带","thrill","室内过山车，倒着弹射出发，车厢会旋转面向剧情，配80年代金曲。迪士尼最好的项目之一。需单独购买单次闪电通道。"],
+        ["测试赛道（Test Track）","thrill","先设计一辆车，再在户外赛道上以最高约105公里/小时测试。2025年重新改造。"],
+        ["料理鼠王冒险","gentle","法国馆里的3D无轨游乐项目，你被缩小成老鼠大小，在巴黎厨房里被追着跑。"],
+        ["飞越美国（Soarin’ Across America）","gentle","在巨型球幕前“滑翔”飞越美国各地名胜。为美国建国250周年推出的限时影片。"],
+        ["冰雪奇缘历险记","gentle","挪威馆里穿越阿伦黛尔的游船。时间不长，但排队很久。"],
+        ["太空任务（Mission: SPACE）","moderate","模拟飞往火星的离心机。可选橙色（刺激）或绿色（温和）版本。"],
+      ],
+      areas:["世界庆典区","世界探索区","世界自然区","世界橱窗（11国）"],
+      holiday:"EPCOT国际节日庆典：世界橱窗沿途的节日美食摊位、各国馆的讲故事表演，还有烛光游行——合唱团、50人管弦乐队和明星旁白在美国花园剧场讲述圣诞故事（去年场次：下午5:00、6:45和晚上8:15）。",
+      tips:["先玩宇宙倒带、测试赛道和料理鼠王，下午沿世界橱窗边走边吃。","平安夜的烛光游行至少提前一小时去排候补队。","留下来看湖上的夜间烟花秀《Luminous》。"] } },
+
+  { id:"ak", resort:"disney", date:"dec26",
+    img:"a/a4/Tree_of_Life%2C_Disney%27s_Animal_Kingdom.jpg/960px-Tree_of_Life%2C_Disney%27s_Animal_Kingdom.jpg", pos:"center 35%",
+    credit:{ by:"Jedi94", lic:"CC BY-SA 4.0", licUrl:"https://creativecommons.org/licenses/by-sa/4.0", page:"https://commons.wikimedia.org/wiki/File:Tree_of_Life,_Disney%27s_Animal_Kingdom.jpg" },
+    link:"https://disneyworld.disney.go.com/destinations/animal-kingdom/",
+    en:{ day:"Sat, Dec 26", name:"Disney’s Animal Kingdom", tagline:"Part zoo, part theme park, with the best-looking land at Disney World.",
+      about:"Animal Kingdom is built around live animals in large, natural-looking habitats, centered on the Tree of Life — a 145-foot artificial tree carved with hundreds of animals. It also has two of Disney’s best rides: Flight of Passage in Pandora (the world of Avatar, with floating mountains that glow at night) and Expedition Everest. It’s the biggest Disney park by area but has the fewest rides, and it usually closes earliest, so it’s the lightest of your four Disney days. Part of the park (the old DinoLand) is closed while a new South America–themed area is built.",
+      rides:[
+        ["Avatar Flight of Passage","thrill","You “bond” with a banshee and fly over Pandora on a motorbike-style seat in front of a huge screen. Often called Disney World’s best ride. Sold as a Single Pass."],
+        ["Expedition Everest","thrill","A coaster through the Himalayas that stops, then runs backward in the dark before meeting the Yeti."],
+        ["Kilimanjaro Safaris","gentle","A 20-minute open-truck ride through a savanna with giraffes, elephants, rhinos and lions. Animals are most active in the morning."],
+        ["Na’vi River Journey","gentle","A slow boat through a glowing Pandora rainforest. Beautiful, short, and the line is long."],
+        ["Kali River Rapids","moderate","Round raft through a jungle river. You will get soaked — maybe skip in December."],
+      ],
+      areas:["Oasis","Discovery Island","Pandora – The World of Avatar","Africa","Asia","DinoLand U.S.A. (mostly closed for construction)"],
+      holiday:"Holiday decorations across the park and festive character greetings; Pandora is especially worth seeing after dark when the plants glow.",
+      tips:["Be at the gate before opening and go straight to Flight of Passage.","Do the safari before late morning, when the animals are still moving.","The walking trails in Africa and Asia (gorillas, tigers) are easy to miss and have no lines.","Festival of the Lion King is the best show in the park."] },
+    zh:{ day:"12月26日 周六", name:"迪士尼动物王国", tagline:"一半是动物园，一半是主题乐园，景观是迪士尼世界里最漂亮的。",
+      about:"动物王国以大型、自然风格栖息地里的真实动物为主题，中心是生命之树——一棵约44米高、雕刻着数百种动物的人造大树。这里还有迪士尼最好的两个项目：潘多拉（阿凡达世界，有悬浮山，夜里会发光）里的阿凡达飞行之旅，以及珠穆朗玛峰探险。它是面积最大的迪士尼园区，但项目最少，通常也最早关门，所以是四个迪士尼日里最轻松的一天。园区的一部分（原恐龙乐园）正在关闭施工，建设以南美为主题的新区域。",
+      rides:[
+        ["阿凡达飞行之旅","thrill","你与一只魅影骑“连结”，坐在摩托车式座椅上，在巨大屏幕前飞越潘多拉。常被称为迪士尼世界最好的项目。需单独购买单次闪电通道。"],
+        ["珠穆朗玛峰探险","thrill","穿越喜马拉雅的过山车，中途停下后在黑暗中倒着跑，最后遇到雪人。"],
+        ["乞力马扎罗狩猎之旅","gentle","约20分钟的敞篷车之旅，穿过有长颈鹿、大象、犀牛和狮子的草原。早上动物最活跃。"],
+        ["纳美河之旅","gentle","穿越发光的潘多拉雨林的慢速游船。很美、很短，排队很长。"],
+        ["卡利河急流","moderate","圆形橡皮艇漂流。一定会全身湿透——12月可以跳过。"],
+      ],
+      areas:["绿洲","发现岛","潘多拉——阿凡达世界","非洲","亚洲","恐龙乐园（大部分施工中）"],
+      holiday:"全园节日装饰和节日装扮的角色见面；潘多拉天黑后植物会发光，特别值得一看。",
+      tips:["开园前到门口，直奔阿凡达飞行之旅。","狩猎之旅趁上午动物还在活动时去。","非洲区和亚洲区的步道（大猩猩、老虎）容易被忽略，而且不用排队。","《狮子王庆典》是园区里最好的表演。"] } },
+
+  { id:"hs", resort:"disney", date:"dec27",
+    img:"b/bd/Hollywood_Tower_Hotel.jpg/960px-Hollywood_Tower_Hotel.jpg", pos:"center 30%",
+    credit:{ by:"Benjamin D. Esham", lic:"CC BY-SA 4.0", licUrl:"https://creativecommons.org/licenses/by-sa/4.0", page:"https://commons.wikimedia.org/wiki/File:Hollywood_Tower_Hotel.jpg" },
+    link:"https://disneyworld.disney.go.com/destinations/hollywood-studios/",
+    en:{ day:"Sun, Dec 27", name:"Disney’s Hollywood Studios", tagline:"Star Wars, Toy Story and the most thrill rides of any Disney park.",
+      about:"Hollywood Studios is themed to movies and old Hollywood, and for your group it’s probably the best Disney day. Star Wars: Galaxy’s Edge is a full-size outpost on the planet Batuu where you can fly the Millennium Falcon and get captured by the First Order. Sunset Boulevard has two of Disney’s most intense rides, and Toy Story Land shrinks you to toy size. It’s a smaller park, so lines are long — plan the day around a few big rides.",
+      rides:[
+        ["Star Wars: Rise of the Resistance","thrill","A 15–20 minute, multi-part experience: a shuttle flight, an escape from a Star Destroyer with full-size AT-ATs, and a trackless ride. Widely called the best ride at Disney World. Sold as a Single Pass — worth it."],
+        ["The Twilight Zone Tower of Terror","thrill","A haunted-hotel elevator that drops (and launches up) 13 stories in random patterns."],
+        ["Rock ’n’ Roller Coaster Starring the Muppets","thrill","An indoor launch coaster (0 to about 57 mph in under 3 seconds) with inversions; rethemed to the Muppets in 2026."],
+        ["Millennium Falcon: Smugglers Run","moderate","You actually fly the Falcon in a 6-person cockpit — pilots, gunners and engineers. New missions added in 2026."],
+        ["Slinky Dog Dash","moderate","A family launch coaster through Toy Story Land. Fun, not scary, always a long line."],
+        ["Mickey & Minnie’s Runaway Railway","gentle","A trackless ride “inside” a Mickey cartoon. Clever effects."],
+      ],
+      areas:["Hollywood Boulevard","Sunset Boulevard","Echo Lake","Star Wars: Galaxy’s Edge","Toy Story Land","Grand Avenue","Animation Courtyard"],
+      holiday:"Sunset Boulevard and Hollywood Boulevard get big holiday decorations. Disney Jollywood Nights is a separate-ticket evening party on select nights.",
+      tips:["Pick one ride to rope-drop (Slinky Dog or Tower of Terror) and buy the Single Pass for Rise of the Resistance.","Try blue or green milk at Galaxy’s Edge and walk through Batuu after dark.","Fantasmic! (nighttime water and fire show) is worth staying for if it’s scheduled."] },
+    zh:{ day:"12月27日 周日", name:"迪士尼好莱坞影城", tagline:"星球大战、玩具总动员，以及迪士尼园区里最多的刺激项目。",
+      about:"好莱坞影城以电影和老好莱坞为主题，对你们这群人来说可能是最好玩的迪士尼日。星球大战：银河边缘是巴图星球上的实景前哨站，你可以驾驶千年隼，还会被第一秩序“抓捕”。日落大道有迪士尼最刺激的两个项目，玩具总动员乐园则把你缩小成玩具大小。园区比较小，排队很长——一天围绕几个大项目来安排。",
+      rides:[
+        ["星球大战：抵抗军崛起","thrill","15–20分钟、分好几段的体验：搭乘穿梭机、从歼星舰里逃脱（有真实尺寸的AT-AT步行机），再坐无轨车。普遍被认为是迪士尼世界最好的项目。需单独购买单次闪电通道，值得。"],
+        ["阴阳魔界恐怖塔","thrill","闹鬼酒店里的电梯，以随机方式坠落（和弹升）13层。"],
+        ["布偶摇滚过山车","thrill","室内弹射过山车（不到3秒加速到约92公里/小时），有翻转；2026年改为布偶主题。"],
+        ["千年隼：走私者大冒险","moderate","在6人驾驶舱里真正驾驶千年隼——飞行员、炮手和工程师。2026年新增任务。"],
+        ["抱抱龙冲天赛车","moderate","穿越玩具总动员乐园的家庭弹射过山车。好玩不吓人，永远排长队。"],
+        ["米奇和米妮的失控列车","gentle","“进入”米奇动画片的无轨游乐项目，特效很巧妙。"],
+      ],
+      areas:["好莱坞大道","日落大道","回声湖","星球大战：银河边缘","玩具总动员乐园","格兰德大道","动画庭院"],
+      holiday:"日落大道和好莱坞大道有盛大的节日装饰。Disney Jollywood Nights是部分夜晚单独售票的派对。",
+      tips:["开园挑一个项目冲（抱抱龙或恐怖塔），抵抗军崛起买单次闪电通道。","在银河边缘尝尝蓝奶或绿奶，天黑后再逛一圈巴图。","如果当天有《幻想曲》（Fantasmic!，夜间水火表演），值得留下来看。"] } },
+
+  { id:"ksc", resort:"space", date:"dec28",
+    img:"8/88/Atlantis_Kennedy_Space_Center_Visitor_Complex_4.jpg/960px-Atlantis_Kennedy_Space_Center_Visitor_Complex_4.jpg", pos:"center 45%",
+    credit:{ by:"Gzzz", lic:"CC BY-SA 4.0", licUrl:"https://creativecommons.org/licenses/by-sa/4.0", page:"https://commons.wikimedia.org/wiki/File:Atlantis_Kennedy_Space_Center_Visitor_Complex_4.jpg" },
+    link:"https://www.kennedyspacecenter.com/",
+    en:{ day:"Mon, Dec 28 · ~1 hour east", name:"Kennedy Space Center Visitor Complex", tagline:"Real rockets, a real space shuttle, and launch pads that are still in use.",
+      about:"This is NASA’s spaceport on Merritt Island, where Apollo, the Space Shuttle and today’s SpaceX and Artemis rockets launch. The visitor complex is part museum, part attraction. The two things you can’t see anywhere else: Space Shuttle Atlantis, displayed as if it’s still in orbit with its payload doors open, and a complete Saturn V moon rocket lying on its side in a hall longer than a football field. Plan a full day; the bus tour alone takes about two hours.",
+      rides:[
+        ["Space Shuttle Atlantis","gentle","The real orbiter, plus the Shuttle Launch Experience — a motion simulator of the 8-minute ride to orbit."],
+        ["KSC Bus Tour → Apollo/Saturn V Center","gentle","Drives past the Vehicle Assembly Building and launch pads to the Saturn V hall and a recreation of the Apollo 8 launch control room."],
+        ["Gateway: The Deep Space Launch Complex","moderate","Spaceport KSC simulators that “fly” you to other planets, plus current spacecraft on display."],
+        ["Rocket Garden","gentle","Real Mercury, Gemini and Apollo-era rockets you can walk between."],
+        ["Heroes & Legends","gentle","The U.S. Astronaut Hall of Fame."],
+      ],
+      areas:["Main visitor complex","Space Shuttle Atlantis","Apollo/Saturn V Center (by bus)","Gateway"],
+      holiday:"“Holidays in Space” runs in late December (last year Dec 21–30) with decorations and a projection show on the Gateway building. Closed on Christmas Day.",
+      tips:["Arrive near the 9 a.m. opening and take the bus tour first; the last bus leaves 2.5 hours before closing.","Check the launch calendar 1–2 weeks out — if a launch falls on a trip day, move this day to match.","Buy tickets at kennedyspacecenter.com; launch-viewing add-ons are only sold there."] },
+    zh:{ day:"12月28日 周一 · 向东约1小时车程", name:"肯尼迪航天中心游客中心", tagline:"真正的火箭、真正的航天飞机，还有至今仍在使用的发射台。",
+      about:"这里是NASA位于梅里特岛的航天港，阿波罗、航天飞机以及如今的SpaceX和阿尔忒弥斯火箭都从这里发射。游客中心一半是博物馆，一半是景点。有两样东西别处看不到：亚特兰蒂斯号航天飞机，展示成仍在轨道上、货舱门打开的样子；以及一枚完整的土星五号登月火箭，横放在一个比足球场还长的展厅里。留出一整天；光巴士之旅就要大约两小时。",
+      rides:[
+        ["亚特兰蒂斯号航天飞机","gentle","真正的轨道器，还有航天飞机发射体验——模拟8分钟升空入轨的动感模拟器。"],
+        ["航天中心巴士之旅 → 阿波罗/土星五号中心","gentle","途经飞行器装配大楼和发射台，到达土星五号展厅和复原的阿波罗8号发射控制室。"],
+        ["Gateway：深空发射中心","moderate","Spaceport KSC模拟器带你“飞往”其他星球，还有现役航天器展示。"],
+        ["火箭花园","gentle","真实的水星、双子星和阿波罗时代火箭，可以在其间漫步。"],
+        ["英雄与传奇","gentle","美国宇航员名人堂。"],
+      ],
+      areas:["主游客中心","亚特兰蒂斯号航天飞机","阿波罗/土星五号中心（乘巴士）","Gateway"],
+      holiday:"12月下旬有“太空中的节日”活动（去年12月21–30日），有装饰和在Gateway大楼上的投影秀。圣诞节当天闭馆。",
+      tips:["9点开门时到，先坐巴士之旅；末班车在闭馆前2.5小时发车。","提前1–2周查看发射时间表——如果有发射在行程中的某天，就把这天调过去。","在官网kennedyspacecenter.com买票；观看发射的加购只在官网卖。"] } },
+
+  { id:"ioa", resort:"universal", date:"dec29",
+    img:"c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/960px-Wizarding_World_of_Harry_Potter_Castle.jpg", pos:"center 40%",
+    credit:{ by:"Carlos Cruz", lic:"CC BY-SA 3.0", licUrl:"https://creativecommons.org/licenses/by-sa/3.0", page:"https://commons.wikimedia.org/wiki/File:Wizarding_World_of_Harry_Potter_Castle.jpg" },
+    link:"https://www.universalorlando.com/web/en/us/theme-parks/islands-of-adventure",
+    en:{ day:"Tue, Dec 29 · with Universal Studios", name:"Universal Islands of Adventure", tagline:"The best roller coasters in Orlando, and Hogwarts.",
+      about:"Islands of Adventure is a ring of themed “islands” around a lake: Marvel superheroes, Jurassic Park, Dr. Seuss, King Kong and, at the back, Hogsmeade village with Hogwarts castle on the hill. If your group likes coasters, this is the park — VelociCoaster and Hagrid’s are two of the best in the country. You’ll split this day with Universal Studios next door, so the Hogwarts Express is how you get between the two.",
+      rides:[
+        ["Jurassic World VelociCoaster","thrill","Two launches up to 70 mph, a 155-foot top hat and a zero-g stall over the lagoon. Many call it the best coaster in Florida."],
+        ["Hagrid’s Magical Creatures Motorbike Adventure","thrill","A story coaster on a motorbike or sidecar through the Forbidden Forest, with seven launches and a backward drop. Lines are the longest in the park — go first thing."],
+        ["Harry Potter and the Forbidden Journey","moderate","Inside Hogwarts castle: a robotic-arm ride that flies you through a Quidditch match and past dragons and Dementors. The queue through the castle is half the fun."],
+        ["Hogwarts Express (Hogsmeade station)","gentle","A real train to King’s Cross in Universal Studios, with a moving story in the compartment windows. Needs a park-to-park ticket."],
+        ["The Incredible Hulk Coaster","thrill","A green launch coaster out of a tunnel with seven inversions."],
+        ["The Amazing Adventures of Spider-Man","moderate","A 3D dark ride classic that still holds up."],
+        ["Jurassic Park River Adventure","moderate","A boat ride that ends with a T. rex and an 85-foot drop. You will get wet."],
+      ],
+      areas:["Port of Entry","Marvel Super Hero Island","Toon Lagoon","Skull Island","Jurassic Park","The Wizarding World of Harry Potter – Hogsmeade","The Lost Continent","Seuss Landing"],
+      holiday:"Christmas in the Wizarding World: Hogsmeade covered in snow-dusted decorations, and “The Magic of Christmas at Hogwarts Castle” light and projection show at night. Grinchmas and the Who-liday Spectacular in Seuss Landing.",
+      tips:["Start here at opening: Hagrid’s first, then VelociCoaster.","Take the Hogwarts Express to Universal Studios around midday, and come back for the castle projection show after dark.","Hulk and VelociCoaster require bags in free lockers — keep loose items to a minimum."] },
+    zh:{ day:"12月29日 周二 · 与环球影城同一天", name:"环球冒险岛", tagline:"奥兰多最好的过山车，还有霍格沃茨。",
+      about:"冒险岛是围绕一片湖的一圈主题“岛屿”：漫威超级英雄、侏罗纪公园、苏斯博士、金刚，最里面是霍格莫德村，山上就是霍格沃茨城堡。如果你们喜欢过山车，这就是你们的园区——迅猛龙过山车和海格的魔法生物摩托车是全美最好的两个。这天要和隔壁的环球影城分着玩，往返两园就靠霍格沃茨特快。",
+      rides:[
+        ["侏罗纪世界迅猛龙过山车","thrill","两次弹射，最高约113公里/小时，47米高的礼帽形轨道，还有湖面上方的零重力翻转。很多人认为是佛州最好的过山车。"],
+        ["海格的魔法生物摩托车大冒险","thrill","骑摩托车或坐边车穿越禁林的剧情过山车，有七次弹射和一次倒退坠落。园区里排队最久——开门第一时间去。"],
+        ["哈利·波特禁忌之旅","moderate","在霍格沃茨城堡里：机械臂座椅带你飞越魁地奇比赛，躲开火龙和摄魂怪。穿过城堡的排队通道本身就很好看。"],
+        ["霍格沃茨特快（霍格莫德站）","gentle","开往环球影城国王十字车站的真火车，车厢窗外有动态剧情。需要园区互通票。"],
+        ["绿巨人过山车","thrill","从隧道里弹射出发的绿色过山车，有七次翻转。"],
+        ["蜘蛛侠惊险历险记","moderate","经典3D黑暗骑乘，至今依然好玩。"],
+        ["侏罗纪公园河流探险","moderate","以霸王龙和26米落差俯冲结尾的游船。一定会湿。"],
+      ],
+      areas:["港口入口","漫威超级英雄岛","卡通环礁湖","骷髅岛","侏罗纪公园","哈利·波特魔法世界——霍格莫德村","失落大陆","苏斯登陆区"],
+      holiday:"魔法世界的圣诞：霍格莫德村挂满带雪的装饰，晚上有《霍格沃茨城堡的圣诞魔法》灯光投影秀。苏斯登陆区有格林奇圣诞活动和Who-liday歌舞秀。",
+      tips:["开园先来这里：先海格，再迅猛龙。","中午前后坐霍格沃茨特快去环球影城，天黑后再回来看城堡投影秀。","绿巨人和迅猛龙要求把包存进免费储物柜——随身物品越少越好。"] } },
+
+  { id:"usf", resort:"universal", date:"dec29",
+    img:"4/4f/Diagon_Alley_%2829464712928%29.jpg/960px-Diagon_Alley_%2829464712928%29.jpg", pos:"center 45%",
+    credit:{ by:"HarshLight", lic:"CC BY 2.0", licUrl:"https://creativecommons.org/licenses/by/2.0", page:"https://commons.wikimedia.org/wiki/File:Diagon_Alley_(29464712928).jpg" },
+    link:"https://www.universalorlando.com/web/en/us/theme-parks/universal-studios-florida",
+    en:{ day:"Tue, Dec 29 · with Islands of Adventure", name:"Universal Studios Florida", tagline:"Diagon Alley, a fire-breathing dragon, and movie-themed rides.",
+      about:"Universal Studios is laid out like a film backlot — New York streets, San Francisco’s waterfront, Springfield from The Simpsons. Its highlight is Diagon Alley, hidden behind a London street front: walk through the brick wall and there’s a full wizarding street with Gringotts bank and a dragon on top that breathes real fire every few minutes. A lot of the rest overlaps with Universal Studios Hollywood, which you’ve already done, so spend your time on Diagon Alley and the rides you haven’t tried.",
+      rides:[
+        ["Harry Potter and the Escape from Gringotts","moderate","A 3D coaster/dark ride hybrid through the bank vaults, with Voldemort and Bellatrix. The marble-hall queue is stunning."],
+        ["Hogwarts Express (King’s Cross station)","gentle","Walk through Platform 9¾ and ride to Hogsmeade. The story is different in each direction, so ride both ways."],
+        ["Hollywood Rip Ride Rockit","thrill","A 17-story vertical-lift coaster where you pick your own soundtrack."],
+        ["Revenge of the Mummy","thrill","An indoor launch coaster with fire effects and a backward section."],
+        ["MEN IN BLACK Alien Attack","moderate","A competitive shooting dark ride — your score is shown at the end."],
+        ["Transformers: The Ride-3D","moderate","Very similar to Hollywood’s version; skip if lines are long."],
+      ],
+      areas:["Production Central","New York","San Francisco","The Wizarding World of Harry Potter – Diagon Alley","World Expo","Springfield","Minion Land","Hollywood"],
+      holiday:"Universal’s Holiday Parade featuring Macy’s (giant balloons in the afternoon), Christmas in Diagon Alley, and The Grinch-themed fun around the park. Universal’s holiday season runs through Jan 3.",
+      tips:["Arrive by Hogwarts Express from Islands of Adventure, ride Gringotts, then explore Knockturn Alley.","Watch the dragon breathe fire from the middle of Diagon Alley — it happens every 10–20 minutes.","Butterbeer is sold in both Harry Potter areas; the frozen version is the favorite."] },
+    zh:{ day:"12月29日 周二 · 与冒险岛同一天", name:"环球影城（佛罗里达）", tagline:"对角巷、会喷火的巨龙，还有电影主题项目。",
+      about:"环球影城布置得像电影外景地——纽约街道、旧金山海滨、辛普森一家的春田镇。最大的亮点是藏在伦敦街景后面的对角巷：穿过砖墙，是一整条巫师街道，古灵阁银行屋顶上的巨龙每隔几分钟会喷出真火。园区其他部分和你去过的好莱坞环球影城有不少重复，所以把时间花在对角巷和你没玩过的项目上。",
+      rides:[
+        ["哈利·波特：逃离古灵阁","moderate","穿越银行金库的3D过山车/黑暗骑乘混合项目，有伏地魔和贝拉特里克斯。大理石大厅的排队区非常壮观。"],
+        ["霍格沃茨特快（国王十字站）","gentle","穿过9¾站台，坐车去霍格莫德。两个方向的剧情不一样，往返都坐。"],
+        ["好莱坞摇滚过山车","thrill","垂直爬升17层楼高的过山车，可以自己挑背景音乐。"],
+        ["木乃伊复仇记","thrill","室内弹射过山车，有火焰特效和倒退段。"],
+        ["黑衣人：外星人攻击","moderate","射击对战型黑暗骑乘——结束时会显示你的分数。"],
+        ["变形金刚3D","moderate","和好莱坞版本非常像；排队长就跳过。"],
+      ],
+      areas:["制片中心","纽约","旧金山","哈利·波特魔法世界——对角巷","世博区","春田镇","小黄人乐园","好莱坞"],
+      holiday:"梅西百货节日大游行（下午有巨型气球）、对角巷的圣诞，以及园区各处的格林奇主题活动。环球的节日季持续到1月3日。",
+      tips:["从冒险岛坐霍格沃茨特快过来，先玩古灵阁，再逛翻倒巷。","站在对角巷中间看巨龙喷火——每10–20分钟一次。","两个哈利·波特园区都有黄油啤酒，冰沙版最受欢迎。"] } },
+
+  { id:"mk", resort:"disney", date:"dec30",
+    img:"8/84/Cinderella_Castle.jpg/960px-Cinderella_Castle.jpg", pos:"center 30%",
+    credit:{ by:"Katie Rommel-Esham", lic:"CC BY-SA 4.0", licUrl:"https://creativecommons.org/licenses/by-sa/4.0", page:"https://commons.wikimedia.org/wiki/File:Cinderella_Castle.jpg" },
+    link:"https://disneyworld.disney.go.com/destinations/magic-kingdom/",
+    en:{ day:"Wed, Dec 30 · New Year’s fireworks, one night early", name:"Magic Kingdom", tagline:"The classic: Cinderella Castle, Space Mountain and the biggest fireworks of the year.",
+      about:"Magic Kingdom is the original Disney World park and the most crowded. Main Street, U.S.A. leads to Cinderella Castle, with six themed lands around it. It’s often thought of as a kids’ park, but it has a solid set of coasters — TRON, Space Mountain, Big Thunder and Seven Dwarfs — plus classics like Haunted Mansion and Pirates of the Caribbean. On Dec 30 and 31 the regular fireworks are replaced by Fantasy in the Sky, the New Year’s Eve show.",
+      rides:[
+        ["TRON Lightcycle / Run","thrill","You lean forward on a motorbike-style seat and launch out under a glowing canopy, then race through the Grid indoors. The fastest ride at Magic Kingdom. Sold as a Single Pass."],
+        ["Space Mountain","thrill","A dark indoor coaster through “outer space.” Not fast, but the darkness makes it feel wild."],
+        ["Big Thunder Mountain Railroad","moderate","A runaway mine train through the desert. Reopened in 2026 after a long refurbishment with new effects."],
+        ["Seven Dwarfs Mine Train","moderate","A swinging family coaster through the diamond mine. Short; sold as a Single Pass."],
+        ["Tiana’s Bayou Adventure","moderate","A log flume through the Louisiana bayou with a 50-foot drop (replaced Splash Mountain)."],
+        ["Haunted Mansion","gentle","The classic ghost ride. Great effects, short line in the evening."],
+        ["Pirates of the Caribbean","gentle","A boat ride through a pirate raid on a Caribbean town."],
+        ["Jingle Cruise","gentle","The Jungle Cruise with Christmas jokes; skippers make it funny."],
+      ],
+      areas:["Main Street, U.S.A.","Adventureland","Frontierland","Liberty Square","Fantasyland","Tomorrowland"],
+      holiday:"The castle is covered in holiday lights, Main Street has a giant tree, and the Jungle Cruise becomes the Jingle Cruise. On Dec 30 and 31 Fantasy in the Sky fireworks run twice (last year 7:30 and 11:50 p.m.).",
+      tips:["Book Lightning Lanes for this day the moment your window opens — it’s the busiest Disney day of your trip.","Do TRON and Seven Dwarfs with Single Passes and rope-drop Big Thunder or Tiana’s.","For the fireworks, pick a spot on Main Street or near the castle hub at least 45 minutes before showtime.","Getting out after the late show takes a long time; Disney’s monorail and ferry lines are huge."] },
+    zh:{ day:"12月30日 周三 · 提前一晚看跨年烟花", name:"魔法王国", tagline:"经典之选：灰姑娘城堡、太空山，还有一年中最盛大的烟花。",
+      about:"魔法王国是迪士尼世界最早的园区，也是人最多的。美国小镇大街通往灰姑娘城堡，周围有六个主题园区。很多人觉得它是儿童乐园，但它的过山车阵容很扎实——创极速光轮、太空山、巨雷山和七个小矮人矿山车——还有幽灵公馆和加勒比海盗等经典项目。12月30日和31日，平时的烟花换成跨年夜专场《天空幻想》。",
+      rides:[
+        ["创极速光轮（TRON）","thrill","趴在摩托车式座椅上，从发光的顶棚下弹射出发，再冲进室内的“网格”。魔法王国最快的项目。需单独购买单次闪电通道。"],
+        ["太空山","thrill","室内黑暗过山车，穿越“外太空”。速度不快，但黑暗让它感觉很狂野。"],
+        ["巨雷山铁路","moderate","穿越沙漠的失控矿车。经过长期翻新，2026年重新开放，有新特效。"],
+        ["七个小矮人矿山车","moderate","穿过钻石矿的摇摆式家庭过山车。时间短；需单独购买单次闪电通道。"],
+        ["蒂安娜的长沼探险","moderate","穿越路易斯安那长沼的激流勇进，有15米落差（取代了飞溅山）。"],
+        ["幽灵公馆","gentle","经典鬼屋游乐项目。特效很棒，晚上排队短。"],
+        ["加勒比海盗","gentle","乘船穿越海盗袭击加勒比小镇的场景。"],
+        ["丛林圣诞游船","gentle","加入圣诞笑话的丛林巡航；船长们会让它变得很搞笑。"],
+      ],
+      areas:["美国小镇大街","探险乐园","边域乐园","自由广场","梦幻乐园","明日乐园"],
+      holiday:"城堡挂满节日灯光，美国小镇大街有一棵巨型圣诞树，丛林巡航变成丛林圣诞游船。12月30日和31日《天空幻想》烟花每晚两场（去年为晚上7:30和11:50）。",
+      tips:["预约窗口一开放就订这天的闪电通道——这是整个行程里人最多的迪士尼日。","TRON和七个小矮人用单次通行，开园先冲巨雷山或蒂安娜。","看烟花至少提前45分钟在美国小镇大街或城堡前广场占位。","晚场烟花后离园要很久；单轨列车和渡轮排队非常长。"] } },
+
+  { id:"epic", resort:"universal", date:"dec31",
+    img:"2/25/Super_Nintendo_World%2C_Epic_Universe%2C_Orlando%2C_Fl%C3%B3rida.jpg/960px-Super_Nintendo_World%2C_Epic_Universe%2C_Orlando%2C_Fl%C3%B3rida.jpg", pos:"center 50%",
+    credit:{ by:"Brunnofernando", lic:"CC BY 4.0", licUrl:"https://creativecommons.org/licenses/by/4.0", page:"https://commons.wikimedia.org/wiki/File:Super_Nintendo_World,_Epic_Universe,_Orlando,_Fl%C3%B3rida.jpg" },
+    link:"https://www.universalorlando.com/web/en/us/theme-parks/epic-universe",
+    en:{ day:"Thu, Dec 31 · New Year’s Eve", name:"Universal Epic Universe", tagline:"Orlando’s newest park: Mario, the Ministry of Magic, dragons and monsters.",
+      about:"Epic Universe opened in May 2025 and is the most impressive theme park in Orlando right now. Celestial Park, a garden-like hub with fountains and a dueling coaster, connects to four portals, each leading to a fully separate world. Because each world is walled off, you really feel like you’ve left one place and entered another. It can reach capacity on busy days, so arrive early on New Year’s Eve and plan to stay late.",
+      rides:[
+        ["Stardust Racers (Celestial Park)","thrill","Two dueling launch coasters that race each other and nearly collide, up to 62 mph. The headline thrill ride."],
+        ["Mario Kart: Bowser’s Challenge (Super Nintendo World)","moderate","An AR ride where you throw shells at rivals and collect coins as a team. Super Nintendo World also has interactive blocks to punch with Power-Up Bands."],
+        ["Mine-Cart Madness (Donkey Kong Country)","moderate","A mine-cart coaster that seems to “jump” over broken track."],
+        ["Harry Potter and the Battle at the Ministry (Ministry of Magic)","moderate","Enter 1920s Paris, then take a Floo Network fireplace to the Ministry of Magic for a trial of Dolores Umbridge. Big-scale effects."],
+        ["Hiccup’s Wing Gliders (Isle of Berk)","thrill","A launch coaster that flies over the Viking village. Fun for everyone, still with real speed."],
+        ["Monsters Unchained: The Frankenstein Experiment (Dark Universe)","moderate","A robotic-arm dark ride through Frankenstein’s lab with Dracula, the Mummy and more."],
+        ["Curse of the Werewolf (Dark Universe)","moderate","A spinning family coaster through a cursed village."],
+      ],
+      areas:["Celestial Park","Super Nintendo World","The Wizarding World of Harry Potter – Ministry of Magic","How to Train Your Dragon – Isle of Berk","Dark Universe"],
+      holiday:"Holiday decorations in each world through early January. Last New Year’s Eve, Celestial Park had a DJ at the Hemisphere Stage and a midnight countdown with a special fountain show across the lagoons; expect a similar plan this year.",
+      tips:["Make sure your Universal ticket includes Epic Universe.","Go straight to Super Nintendo World or the Ministry of Magic at opening; save Stardust Racers for later, since it has two tracks and moves faster.","Claim a spot in Celestial Park by 11 p.m. for the countdown.","Pack before you go — you fly home the next afternoon."] },
+    zh:{ day:"12月31日 周四 · 跨年夜", name:"环球史诗宇宙", tagline:"奥兰多最新的园区：马里奥、魔法部、驯龙和怪物。",
+      about:"史诗宇宙2025年5月开业，是目前奥兰多最震撼的主题乐园。中心是像花园一样、有喷泉和对战过山车的天体公园，通过四道传送门通往四个完全独立的世界。每个世界都被围起来，所以你真的会觉得自己离开一个地方、进入了另一个世界。人多的日子可能会满员，跨年夜要早点到，并做好待到很晚的准备。",
+      rides:[
+        ["星尘竞速（天体公园）","thrill","两条相互竞速、几乎相撞的对战弹射过山车，最高约100公里/小时。头号刺激项目。"],
+        ["马里奥赛车：酷霸王的挑战（超级任天堂世界）","moderate","AR游乐项目：向对手扔龟壳、组队收集金币。超级任天堂世界还有可以用能量手环拍打的互动问号砖。"],
+        ["矿车狂飙（大金刚乡村）","moderate","矿车过山车，看起来会“飞跃”断开的轨道。"],
+        ["哈利·波特：魔法部之战（魔法部）","moderate","走进1920年代的巴黎，再通过飞路网壁炉前往魔法部，参加对乌姆里奇的审判。特效规模很大。"],
+        ["希卡普的飞翼滑翔（伯克岛）","thrill","飞越维京村庄的弹射过山车。适合所有人，但速度是真的快。"],
+        ["怪物解放：科学怪人实验（黑暗宇宙）","moderate","穿越科学怪人实验室的机械臂黑暗骑乘，有德古拉、木乃伊等。"],
+        ["狼人诅咒（黑暗宇宙）","moderate","穿越被诅咒村庄的旋转家庭过山车。"],
+      ],
+      areas:["天体公园","超级任天堂世界","哈利·波特魔法世界——魔法部","驯龙高手——伯克岛","黑暗宇宙"],
+      holiday:"各个世界的节日装饰持续到1月初。去年跨年夜，天体公园的半球舞台有DJ，午夜倒数时湖面上有特别喷泉秀；今年预计类似。",
+      tips:["确认环球门票包含史诗宇宙。","开园直奔超级任天堂世界或魔法部；星尘竞速有两条轨道、排队走得快，可以晚点再去。","晚上11点前在天体公园占好倒数的位置。","出门前把行李收好——第二天下午就要飞回去。"] } },
+];
+
+const EXTRAS = [
+  { link:"https://disneyworld.disney.go.com/destinations/disney-springs/",
+    en:{ name:"Disney Springs", when:"Fri, Dec 25 evening", text:"A free outdoor shopping and dining district on Disney property — no park ticket needed. Restaurants, a giant LEGO store, the World of Disney store, and live music. Good for a relaxed Christmas evening; book dinner ahead." },
+    zh:{ name:"迪士尼泉水市集", when:"12月25日 周五 晚上", text:"迪士尼园区内免费的户外购物餐饮区，不需要门票。有餐厅、巨型乐高店、迪士尼世界商店和现场音乐。适合悠闲的圣诞夜；晚餐提前订位。" } },
+  { link:"https://www.floridastateparks.org/parks-and-trails/blue-spring-state-park",
+    en:{ name:"Blue Spring State Park", when:"Optional, Dec 25", text:"About 45 minutes north. In winter, hundreds of manatees gather in the 72°F spring water; you watch from a boardwalk (swimming is closed to protect them). The park often fills up early on cold days." },
+    zh:{ name:"蓝泉州立公园", when:"可选，12月25日", text:"向北约45分钟车程。冬天会有数百头海牛聚集在22°C的泉水里；在木栈道上观看（为保护海牛，冬季禁止游泳）。天冷的日子常常早早就满员。" } },
+];
+
+const UI = {
+  en: {
+    docTitle: "Orlando Park Guide",
+    toggle: "中文", toggleAria: "切换到中文",
+    navAria: "Pages", navItin: "Itinerary", navParks: "Parks", navBudget: "Budget",
+    eyebrow: "7 theme parks + Kennedy Space Center · in visit order",
+    h1: "Park guide",
+    lede: "What each park is like, the rides worth your time, what’s special at Christmas, and tips for the day you’re there. Thrill levels are a rough guide for adults.",
+    jumpTitle: "Jump to a park",
+    lgDisney: "Walt Disney World", lgUniversal: "Universal Orlando", lgSpace: "Kennedy Space Center",
+    resort: { disney:"Disney", universal:"Universal", space:"Space Coast" },
+    lvl: { thrill:"Thrill", moderate:"Moderate", gentle:"Gentle" },
+    hRides: "Rides worth your time", hAreas: "Areas", hHoliday: "At Christmas", hTips: "Tips for your day",
+    official: "Official park page", photo: "Photo", by: "by", top: "Back to top",
+    extrasTitle: "Also on the plan",
+    footer: "Photos from <a href=\"https://commons.wikimedia.org/\">Wikimedia Commons</a> under the Creative Commons licenses shown with each one. Ride details reflect what was announced as of November 2026; rides can close for maintenance, so check each park’s app the week of your trip. Showtimes marked “last year” are from the 2025 season.",
+  },
+  zh: {
+    docTitle: "奥兰多园区指南",
+    toggle: "English", toggleAria: "Switch to English",
+    navAria: "页面", navItin: "行程", navParks: "园区", navBudget: "预算",
+    eyebrow: "7个主题乐园 + 肯尼迪航天中心 · 按游玩顺序",
+    h1: "园区指南",
+    lede: "每个园区是什么样、哪些项目值得玩、圣诞期间有什么特别活动，以及你们去那天的小贴士。刺激程度是针对成年人的粗略参考。",
+    jumpTitle: "跳到园区",
+    lgDisney: "华特迪士尼世界", lgUniversal: "奥兰多环球度假区", lgSpace: "肯尼迪航天中心",
+    resort: { disney:"迪士尼", universal:"环球影城", space:"太空海岸" },
+    lvl: { thrill:"刺激", moderate:"中等", gentle:"温和" },
+    hRides: "值得玩的项目", hAreas: "区域", hHoliday: "圣诞期间", hTips: "当天小贴士",
+    official: "官方园区页面", photo: "照片", by: "摄影", top: "回到顶部",
+    extrasTitle: "行程中的其他地方",
+    footer: "照片来自<a href=\"https://commons.wikimedia.org/\">维基共享资源</a>，按每张照片标注的知识共享许可使用。项目信息以2026年11月前公布的内容为准；项目可能因维护关闭，出发那周请在各园区的App里确认。标注“去年”的演出时间来自2025年。",
+  },
+};
+
+const LANG_KEY = "orlando-trip-lang";
+let lang = "en";
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+function detectLang() {
+  if (location.hash === "#zh" || location.hash === "#en") {
+    const l = location.hash.slice(1);
+    try { localStorage.setItem(LANG_KEY, l); } catch (e) {}
+    return l;
+  }
+  try { const s = localStorage.getItem(LANG_KEY); if (s === "zh" || s === "en") return s; } catch (e) {}
+  const langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
+  return langs.some(l => /^zh\b/i.test(l)) ? "zh" : "en";
+}
+
+function render() {
+  const t = UI[lang];
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+  document.title = t.docTitle;
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t[el.dataset.i18n]; });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t[el.dataset.i18nHtml]; });
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => el.setAttribute("aria-label", t[el.dataset.i18nAria]));
+  const tog = document.getElementById("lang-toggle");
+  tog.textContent = t.toggle; tog.setAttribute("aria-label", t.toggleAria);
+  document.getElementById("nav-itin").href = "index.html#" + lang;
+  document.getElementById("nav-parks").href = "parks.html#" + lang;
+  document.getElementById("nav-budget").href = "budget.html#" + lang;
+
+  document.getElementById("jump").innerHTML = PARKS.map(p => {
+    const c = p[lang];
+    return `<li><a href="#${p.id}" style="--c:var(--${p.resort})"><span class="d">${esc(c.day.split(" · ")[0])}</span><span class="n">${esc(c.name)}</span></a></li>`;
+  }).join("");
+
+  document.getElementById("parks").innerHTML = PARKS.map(p => {
+    const c = p[lang];
+    return `
+    <article class="park" id="${p.id}" style="--c:var(--${p.resort})" aria-labelledby="${p.id}-name">
+      <figure class="photo">
+        <div class="frame">
+          <img src="${IMG + p.img}" alt="${esc(c.name)}" loading="lazy" style="object-position:${p.pos}" onerror="this.closest('figure').classList.add('noimg')">
+          <div class="ph" aria-hidden="true">${esc(c.name)}</div>
+        </div>
+        <figcaption>${t.photo}: <a href="${p.credit.page}" target="_blank" rel="noopener">${esc(p.credit.by)}</a>, <a href="${p.credit.licUrl}" target="_blank" rel="noopener">${p.credit.lic}</a>, via Wikimedia Commons</figcaption>
+      </figure>
+      <div class="phead">
+        <div class="badges"><span class="tag">${t.resort[p.resort]}</span><span class="day">${esc(c.day)}</span></div>
+        <h2 id="${p.id}-name">${esc(c.name)}</h2>
+        <p class="tagline">${esc(c.tagline)}</p>
+      </div>
+      <p class="about">${esc(c.about)}</p>
+      <div class="cols">
+        <div class="col">
+          <h3>${t.hRides}</h3>
+          <ul class="rides">${c.rides.map(([n, l, d]) => `<li><span class="rn">${esc(n)}</span><span class="lvl ${l}">${t.lvl[l]}</span><span class="rd">${esc(d)}</span></li>`).join("")}</ul>
+        </div>
+        <div class="col">
+          <div class="box">
+            <section><h3>${t.hAreas}</h3><div class="areas">${c.areas.map(a => `<span>${esc(a)}</span>`).join("")}</div></section>
+            <section><h3>${t.hHoliday}</h3><p>${esc(c.holiday)}</p></section>
+            <section><h3>${t.hTips}</h3><ul>${c.tips.map(x => `<li>${esc(x)}</li>`).join("")}</ul></section>
+            <a class="official" href="${p.link}" target="_blank" rel="noopener">${t.official} ↗</a>
+          </div>
+          <a class="top" href="#top">↑ ${t.top}</a>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+
+  document.getElementById("extras").innerHTML = EXTRAS.map(x => {
+    const c = x[lang];
+    return `<div class="box" style="--c:var(--rest)"><section><span class="day">${esc(c.when)}</span><h3><a href="${x.link}" target="_blank" rel="noopener">${esc(c.name)} ↗</a></h3><p>${esc(c.text)}</p></section></div>`;
+  }).join("");
+}
+
+document.getElementById("lang-toggle").addEventListener("click", () => {
+  lang = lang === "en" ? "zh" : "en";
+  try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+  render();
+});
+window.addEventListener("hashchange", () => { if (location.hash === "#zh" || location.hash === "#en") { lang = location.hash.slice(1); render(); } });
+
+lang = detectLang();
+render();
+const target = location.hash.slice(1);
+if (target && PARKS.some(p => p.id === target)) {
+  requestAnimationFrame(() => document.getElementById(target).scrollIntoView({ block: "start" }));
+}
+</script>
+</body>
+</html>

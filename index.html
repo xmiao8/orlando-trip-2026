@@ -135,6 +135,8 @@ h3 { font-size: 21px; font-weight: 600; line-height: 1.2; }
 .pnav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
 .pnav a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
+.guide { font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; margin-left: auto; }
+.guide:hover { text-decoration: underline; }
 /* Lower panels */
 .panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 28px; }
 .panel { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
@@ -167,6 +169,7 @@ footer { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--lin
 <div class="wrap">
   <nav class="pnav" data-i18n-aria="navAria">
     <a id="nav-itin" href="index.html" aria-current="page" data-i18n="navItin"></a>
+    <a id="nav-parks" href="parks.html" data-i18n="navParks"></a>
     <a id="nav-budget" href="budget.html" data-i18n="navBudget"></a>
   </nav>
 
@@ -233,7 +236,8 @@ const UI = {
   en: {
     docTitle: "Orlando Winter Break 2026",
     toggle: "中文", toggleAria: "切换到中文",
-    navAria: "Pages", navItin: "Itinerary", navBudget: "Budget",
+    guide: "Park guide →",
+    navAria: "Pages", navItin: "Itinerary", navParks: "Parks", navBudget: "Budget",
     eyebrow: "Dec 23, 2026 – Jan 1, 2027 · Orlando, FL · 3 travelers",
     h1: "Orlando Winter Break <span>’26</span>",
     lede: "Ten days between NYU finals and spring semester: Christmas Eve at EPCOT, a slow Christmas Day, Hogwarts in its holiday decorations, a day at Kennedy Space Center, and New Year’s Eve at Epic Universe.",
@@ -261,7 +265,8 @@ const UI = {
   zh: {
     docTitle: "奥兰多寒假之旅 2026",
     toggle: "English", toggleAria: "Switch to English",
-    navAria: "页面", navItin: "行程", navBudget: "预算",
+    guide: "园区指南 →",
+    navAria: "页面", navItin: "行程", navParks: "园区", navBudget: "预算",
     eyebrow: "2026年12月23日 – 2027年1月1日 · 佛罗里达州奥兰多 · 3人同行",
     h1: "奥兰多寒假之旅 <span>’26</span>",
     lede: "NYU期末考试和春季学期之间的十天：平安夜在EPCOT，圣诞节好好休息，去看节日装扮的霍格沃茨，一天去肯尼迪航天中心，跨年夜在史诗宇宙。",
@@ -368,6 +373,7 @@ const CHECKS = [
   { id:"candle", en:["Candlelight dining package","Usually sold out; watch for cancellations"], zh:["烛光游行晚餐套餐","通常已售罄；留意有人退订"] },
 ];
 
+const GUIDE = { dec24:"ep", dec26:"ak", dec27:"hs", dec28:"ksc", dec29:"ioa", dec30:"mk", dec31:"epic" };
 const DOW = { en:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], zh:["周日","周一","周二","周三","周四","周五","周六"] };
 const MON = { en:{12:"Dec",1:"Jan"}, zh:{12:"12月",1:"1月"} };
 const offCats = ["rest","travel"];
@@ -399,6 +405,7 @@ function render() {
   const tog = document.getElementById("lang-toggle");
   tog.textContent = t.toggle; tog.setAttribute("aria-label", t.toggleAria);
   document.getElementById("nav-itin").href = "index.html#" + lang;
+  document.getElementById("nav-parks").href = "parks.html#" + lang;
   document.getElementById("nav-budget").href = "budget.html#" + lang;
 
   const strip = document.getElementById("strip");
@@ -419,7 +426,7 @@ function render() {
     li.innerHTML = `
       <div class="date"><span>${dow}</span><span class="num">${day.d}</span><span>${mon}</span></div>
       <div class="body">
-        <div class="where"><span class="tag ${day.cat}">${c.tag}</span><span class="park">${c.park}</span>${c.iconic ? `<span class="iconic">★ ${c.iconic}</span>` : ""}</div>
+        <div class="where"><span class="tag ${day.cat}">${c.tag}</span><span class="park">${c.park}</span>${c.iconic ? `<span class="iconic">★ ${c.iconic}</span>` : ""}${GUIDE[day.id] ? `<a class="guide" href="parks.html#${GUIDE[day.id]}">${t.guide}</a>` : ""}</div>
         <h3>${c.title}</h3>
         <ul>${c.items.map(i => `<li>${i}</li>`).join("")}</ul>
         ${c.note ? `<div class="note">${c.note}</div>` : ""}
