@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Orlando Launch Watch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* Layout: same system as the itinerary — live launch list for the trip window first, then a day-by-day "where you'd watch from" table, viewing spots, and how-to notes */
+:root {
+  color-scheme: light;
+  --bg: #f2f4f8;
+  --surface: #ffffff;
+  --ink: #15213a;
+  --muted: #5b6678;
+  --line: #dce1ea;
+  --accent: #e2622a;
+  --go: #2f8a58;
+  --tbd: #b8860b;
+  --hold: #c2412b;
+  --night: #2c5bcc;
+  --display: "Bricolage Grotesque", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "Instrument Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e131e; --surface: #161d2c; --ink: #e8ecf3; --muted: #9ba5b7; --line: #263048; --accent: #ff8a52;
+    --go: #6cc795; --tbd: #f0c45a; --hold: #ff7d66; --night: #7fa3ff;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e131e; --surface: #161d2c; --ink: #e8ecf3; --muted: #9ba5b7; --line: #263048; --accent: #ff8a52;
+  --go: #6cc795; --tbd: #f0c45a; --hold: #ff7d66; --night: #7fa3ff;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.6; }
+[hidden] { display: none !important; }
+a { color: inherit; }
+.wrap {
+  max-width: 900px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 64px;
+  display: flex; flex-direction: column; gap: 40px;
+}
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.pnav { display: flex; gap: 4px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.pnav a { font: 600 14px var(--body); color: var(--muted); text-decoration: none; padding: 8px 12px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.pnav a:hover { color: var(--ink); }
+.pnav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+header { display: flex; flex-direction: column; gap: 12px; }
+.toprow { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lang, .refresh { appearance: none; cursor: pointer; font: 600 13px var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 14px; }
+h1 { font-size: clamp(32px, 6.5vw, 52px); font-weight: 800; line-height: 1.04; letter-spacing: -.02em; }
+.lede { max-width: 64ch; color: var(--muted); margin: 0; }
+section { display: flex; flex-direction: column; gap: 14px; }
+h2 { font-size: 24px; font-weight: 800; letter-spacing: -.01em; }
+.sechead { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.meta { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.notice { font-size: 14px; color: var(--muted); background: var(--surface); border: 1px dashed var(--line); border-radius: 10px; padding: 14px 16px; margin: 0; }
+
+/* Launch cards */
+.launches { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.launch { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.when { display: flex; flex-direction: column; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.when .dd { font-family: var(--display); font-size: 30px; font-weight: 800; line-height: 1; color: var(--ink); margin: 2px 0; }
+.when .tm { color: var(--ink); font-size: 13px; font-variant-numeric: tabular-nums; }
+.lbody { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.lbody h3 { font-size: 18px; font-weight: 600; line-height: 1.3; }
+.lsub { font-size: 13.5px; color: var(--muted); }
+.pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+.pill.go { color: var(--go); } .pill.tbd { color: var(--tbd); } .pill.hold { color: var(--hold); } .pill.night { color: var(--night); } .pill.plan { color: var(--accent); }
+.plannote { font-size: 13.5px; border-left: 2px solid var(--accent); padding-left: 10px; }
+.vague { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.vague li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.vague li:last-child { border-bottom: 1px solid var(--line); }
+.vague .vt { font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap; align-self: start; }
+.vague .vs { grid-column: 1 / -1; font-size: 12.5px; color: var(--muted); }
+
+/* Tables and spots */
+.tablewrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 520px; }
+th { text-align: left; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 0 12px 8px 0; border-bottom: 1px solid var(--line); }
+td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+td:first-child { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; color: var(--muted); }
+td b { font-weight: 600; }
+.spots { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 12px; }
+.spot { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.spot h3 { font-size: 16px; font-weight: 800; }
+.spot .k { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+.spot p { margin: 0; font-size: 14px; }
+.how { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; max-width: 70ch; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; }
+.links a { font-size: 14px; font-weight: 600; text-decoration: none; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 14px; }
+.links a:hover { border-color: var(--accent); }
+footer { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; max-width: 76ch; }
+@media (max-width: 560px) { .launch { grid-template-columns: 70px minmax(0, 1fr); gap: 12px; } .when .dd { font-size: 26px; } }
+:lang(zh) h1 { letter-spacing: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="pnav" data-i18n-aria="navAria">
+    <a id="nav-itin" href="index.html" data-i18n="navItin"></a>
+    <a id="nav-parks" href="parks.html" data-i18n="navParks"></a>
+    <a id="nav-launch" href="launches.html" aria-current="page" data-i18n="navLaunch"></a>
+    <a id="nav-budget" href="budget.html" data-i18n="navBudget"></a>
+  </nav>
+
+  <header>
+    <div class="toprow">
+      <div class="eyebrow" data-i18n="eyebrow"></div>
+      <button class="lang" id="lang-toggle" type="button"></button>
+    </div>
+    <h1 data-i18n="h1"></h1>
+    <p class="lede" data-i18n="lede"></p>
+  </header>
+
+  <section aria-labelledby="trip-title">
+    <div class="sechead">
+      <h2 id="trip-title" data-i18n="tripTitle"></h2>
+      <span class="meta" id="updated"></span>
+    </div>
+    <p class="notice" id="status" role="status"></p>
+    <ol class="launches" id="trip-list"></ol>
+  </section>
+
+  <section aria-labelledby="vague-title">
+    <h2 id="vague-title" data-i18n="vagueTitle"></h2>
+    <p class="lede" style="font-size:14px" data-i18n="vagueLede"></p>
+    <ul class="vague" id="vague-list"></ul>
+  </section>
+
+  <section aria-labelledby="plan-title">
+    <h2 id="plan-title" data-i18n="planTitle"></h2>
+    <p class="lede" style="font-size:14px" data-i18n="planLede"></p>
+    <div class="tablewrap"><table>
+      <thead><tr><th data-i18n="thDay"></th><th data-i18n="thPlan"></th><th data-i18n="thDaytime"></th><th data-i18n="thNight"></th></tr></thead>
+      <tbody id="plan-rows"></tbody>
+    </table></div>
+  </section>
+
+  <section aria-labelledby="spots-title">
+    <h2 id="spots-title" data-i18n="spotsTitle"></h2>
+    <div class="spots" id="spots"></div>
+  </section>
+
+  <section aria-labelledby="how-title">
+    <h2 id="how-title" data-i18n="howTitle"></h2>
+    <ol class="how" id="how"></ol>
+  </section>
+
+  <section aria-labelledby="links-title">
+    <h2 id="links-title" data-i18n="linksTitle"></h2>
+    <div class="links" id="links"></div>
+  </section>
+
+  <footer data-i18n-html="footer"></footer>
+</div>
+
+<script>
+const API = "https://ll.thespacedevs.com/2.3.0/launches/upcoming/?location__ids=12,27&mode=normal&ordering=net&limit=100&net__gte=2026-12-01T00:00:00Z&net__lte=2027-01-15T00:00:00Z";
+const CACHE_KEY = "orlando-launch-cache", CACHE_MS = 30 * 60 * 1000;
+const TZ = "America/New_York";
+const TRIP_START = "2026-12-23", TRIP_END = "2027-01-01";
+
+// Snapshot used when the live list can't load (checked Nov 4, 2026)
+const SNAPSHOT = [
+  { net:"2026-12-31T00:00:00Z", precId:7, precName:"Month", status:"TBD", rocket:"New Glenn", mission:"Blue Ring-1", pad:"Launch Complex 36A", loc:"Cape Canaveral SFS, FL, USA", provider:"Blue Origin" },
+  { net:"2026-12-31T00:00:00Z", precId:7, precName:"Month", status:"TBD", rocket:"Falcon 9 Block 5", mission:"SDA Tranche 2 Transport Layer D", pad:"Unknown Pad", loc:"Cape Canaveral SFS, FL, USA", provider:"SpaceX" },
+  { net:"2026-12-31T00:00:00Z", precId:11, precName:"Quarter 4", status:"TBD", rocket:"Vulcan VC4L", mission:"Dream Chaser CRS 2 Flight 1", pad:"Space Launch Complex 41", loc:"Cape Canaveral SFS, FL, USA", provider:"United Launch Alliance" },
+  { net:"2026-12-31T00:00:00Z", precId:11, precName:"Quarter 4", status:"TBD", rocket:"Falcon 9 Block 5", mission:"BlueBird 14-16 (Block 2 #9-11)", pad:"Space Launch Complex 40", loc:"Cape Canaveral SFS, FL, USA", provider:"SpaceX" },
+  { net:"2026-12-31T00:00:00Z", precId:14, precName:"Year", status:"TBD", rocket:"Falcon Heavy", mission:"USSF-75", pad:"Launch Complex 39A", loc:"Kennedy Space Center, FL, USA", provider:"SpaceX" },
+];
+
+const PLAN = {
+  "2026-12-23": "arrive", "2026-12-24": "ep", "2026-12-25": "rest", "2026-12-26": "ak", "2026-12-27": "hs",
+  "2026-12-28": "ksc", "2026-12-29": "uni", "2026-12-30": "mk", "2026-12-31": "epic", "2027-01-01": "depart",
+};
+
+const UI = {
+  en: {
+    docTitle: "Orlando Launch Watch",
+    toggle: "中文", toggleAria: "切换到中文",
+    navAria: "Pages", navItin: "Itinerary", navParks: "Parks", navLaunch: "Launches", navBudget: "Budget",
+    eyebrow: "Cape Canaveral & Kennedy Space Center · ~1 hour from Orlando",
+    h1: "Launch watch",
+    lede: "Florida’s Space Coast launches a rocket every few days, mostly SpaceX. Exact dates are usually set only 1–3 weeks ahead, so this page checks the live launch schedule each time you open it and shows anything that lands on your trip.",
+    tripTitle: "Launches during your trip (Dec 23 – Jan 1)",
+    loading: "Checking the live launch schedule…",
+    noneYet: "No launches have a firm date during your trip yet. That’s normal this far out — most Starlink and satellite launches get dates 1–3 weeks before. Check back in early December.",
+    liveFail: "The live schedule couldn’t load here, so this shows a snapshot from Nov 4, 2026. Open the GitHub version of the site for the live list, or use the links at the bottom.",
+    updated: t => `Live · updated ${t}`,
+    snapshotLabel: "Snapshot · Nov 4, 2026",
+    et: "ET",
+    status: { Go:"Go for launch", TBC:"Date likely", TBD:"Date not confirmed", Hold:"On hold", "In Flight":"In flight", Success:"Launched", Failure:"Failed" },
+    night: "After dark — visible from Orlando", twilight: "Twilight — chance of a glowing “jellyfish” plume", day: "Daytime",
+    window: (a, b) => `Window ${a} – ${b} ET`,
+    planNote: {
+      arrive: "Arrival day — if it’s in the evening, look east from your hotel or the airport.",
+      ep: "EPCOT day — an evening launch is visible from World Showcase looking east (behind Canada/UK).",
+      rest: "Christmas rest day — the best day to drive to the coast (KSC is closed, public spots are open).",
+      ak: "Animal Kingdom day — it closes early; you could drive to the coast for an evening launch.",
+      hs: "Hollywood Studios day — consider swapping with the Dec 28 Kennedy Space Center day.",
+      ksc: "Your Kennedy Space Center day — check the KSC events calendar for viewing tickets.",
+      uni: "Universal day — a night launch is visible from Universal looking east.",
+      mk: "Magic Kingdom day — a night launch is visible from the park looking east.",
+      epic: "New Year’s Eve at Epic Universe — look east if it’s after dark.",
+      depart: "Flying home — you may see it from the plane or MCO if the timing lines up.",
+    },
+    vagueTitle: "On the schedule, no firm date yet",
+    vagueLede: "These missions are targeting December or later but haven’t been given a date. Some will slip; a few may land on your trip.",
+    vagueWhen: (p, d) => p === "Month" ? `${d} (month)` : p.startsWith("Quarter") ? `Q${p.slice(-1)} ${d.slice(-4)}` : p.startsWith("Half") ? `H${p.slice(-1)} ${d.slice(-4)}` : `${d.slice(-4)} (year)`,
+    planTitle: "If a launch lands on…",
+    planLede: "Where you’d watch from on each day of the plan. Daytime launches are best seen from the coast; night launches are visible from Orlando as a bright streak rising in the east.",
+    thDay: "Day", thPlan: "Plan", thDaytime: "Daytime launch", thNight: "Night launch",
+    rows: [
+      ["Dec 23","Arrive","Probably miss it","Look east from the hotel"],
+      ["Dec 24","EPCOT","Skip — Christmas Eve plans","From World Showcase"],
+      ["Dec 25","Rest day","<b>Drive to Titusville or Jetty Park</b> (KSC closed)","Drive to the coast, or watch from Orlando"],
+      ["Dec 26","Animal Kingdom","Swap with Dec 28","Drive over after the park closes"],
+      ["Dec 27","Hollywood Studios","Swap with Dec 28","From the park"],
+      ["Dec 28","Kennedy Space Center","<b>Watch from KSC</b>","Stay late on the coast"],
+      ["Dec 29","Universal","Skip","From Islands of Adventure"],
+      ["Dec 30","Magic Kingdom","Skip","From the park, before the fireworks"],
+      ["Dec 31","Epic Universe","Skip","From Celestial Park"],
+      ["Jan 1","Fly home","Maybe from MCO","—"],
+    ],
+    spotsTitle: "Where to watch",
+    spots: [
+      ["Kennedy Space Center Visitor Complex","Closest public viewing · paid","Many launches are viewable with regular admission from the main complex, with live commentary. For some launches KSC sells extra Launch Transportation Tickets to closer viewing areas behind NASA’s gates. Listed on the KSC events calendar."],
+      ["Space View Park, Titusville","Free · across the river from KSC","The classic public spot, looking across the Indian River at the launch pads, with a space memorial. Fills up for big launches; arrive early."],
+      ["Max Brewer Bridge / Titusville waterfront","Free · near Space View Park","Open views of Launch Complex 39A and the Cape. Park along the causeway or at the waterfront parks."],
+      ["Jetty Park, Port Canaveral","Small parking fee · south of the Cape","Beach and pier close to the Space Launch Complex 40 and 41 pads, where most Falcon 9 and Vulcan launches happen."],
+      ["Playalinda Beach","National Seashore fee · closest beach to 39A","Very close to Kennedy’s pads, but often closed for security on launch days. Check before driving."],
+      ["From Orlando","Free · about 50 miles inland","Night and twilight launches are easy to see: a bright point rising in the east about 30–60 seconds after liftoff. A parking garage roof or an open area with an eastern view works best."],
+    ],
+    howTitle: "How launch days work",
+    how: [
+      "Times are set by orbit, not convenience — many SpaceX launches are early morning or late night.",
+      "Launches often slip by minutes, hours or days because of weather, boats in the danger zone or technical issues (a “scrub”). Have a backup day.",
+      "Two to three days out, the time is usually firm. The morning of, check SpaceX or the provider’s live webcast for the countdown status.",
+      "When a Falcon 9 booster lands back at the Cape, you’ll hear sonic booms along the coast a few minutes after launch.",
+      "Traffic to Titusville and Cocoa Beach gets heavy for big launches (Falcon Heavy, crewed flights). Leave early and expect a slow drive back.",
+    ],
+    linksTitle: "Live schedules",
+    footer: "Live launch data from <a href=\"https://thespacedevs.com/llapi\">Launch Library 2 by The Space Devs</a>; times shown in Eastern Time. Dates and times change often — confirm on the provider’s site before you drive to the coast.",
+  },
+  zh: {
+    docTitle: "奥兰多火箭发射观看指南",
+    toggle: "English", toggleAria: "Switch to English",
+    navAria: "页面", navItin: "行程", navParks: "园区", navLaunch: "火箭发射", navBudget: "预算",
+    eyebrow: "卡纳维拉尔角与肯尼迪航天中心 · 距奥兰多约1小时",
+    h1: "火箭发射观看",
+    lede: "佛罗里达太空海岸每隔几天就有一次火箭发射，大部分是SpaceX。确切日期通常只提前1–3周确定，所以每次打开这个页面，它都会查询实时发射时间表，并显示落在你们行程里的发射。",
+    tripTitle: "行程期间的发射（12月23日 – 1月1日）",
+    loading: "正在查询实时发射时间表…",
+    noneYet: "目前行程期间还没有确定日期的发射。现在离出发还早，这很正常——大部分星链和卫星发射在1–3周前才定日期。12月初再来看看。",
+    liveFail: "这里无法加载实时时间表，以下是2026年11月4日的快照。实时列表请打开GitHub版本的网站，或使用页面底部的链接。",
+    updated: t => `实时 · 更新于 ${t}`,
+    snapshotLabel: "快照 · 2026年11月4日",
+    et: "美东时间",
+    status: { Go:"确定发射", TBC:"日期大概率确定", TBD:"日期未确定", Hold:"暂停", "In Flight":"飞行中", Success:"已发射", Failure:"失败" },
+    night: "天黑后——在奥兰多也能看到", twilight: "黄昏/黎明——可能看到发光的“水母”尾焰", day: "白天",
+    window: (a, b) => `发射窗口 ${a} – ${b}（美东时间）`,
+    planNote: {
+      arrive: "抵达日——如果在晚上，从酒店或机场往东看。",
+      ep: "EPCOT日——晚上的发射可以在世界橱窗往东看（加拿大馆/英国馆后方）。",
+      rest: "圣诞休息日——最适合开车去海边看（肯尼迪航天中心闭馆，公共观看点开放）。",
+      ak: "动物王国日——园区关门早；晚上的发射可以开车去海边看。",
+      hs: "好莱坞影城日——可以考虑和12月28日的肯尼迪航天中心日对调。",
+      ksc: "你们的肯尼迪航天中心日——在KSC活动日历里查看观看票。",
+      uni: "环球影城日——夜间发射在环球往东就能看到。",
+      mk: "魔法王国日——夜间发射在园区里往东就能看到。",
+      epic: "史诗宇宙跨年夜——如果天黑了，往东看。",
+      depart: "回程日——时间合适的话，可能在飞机上或奥兰多机场看到。",
+    },
+    vagueTitle: "已列入计划、但还没确定日期",
+    vagueLede: "这些任务目标是12月或之后，但还没有具体日期。有些会推迟；也可能有几个正好落在你们的行程里。",
+    vagueWhen: (p, d) => p === "Month" ? `${d}（月份）` : p.startsWith("Quarter") ? `${d.slice(-4)}年第${p.slice(-1)}季度` : p.startsWith("Half") ? `${d.slice(-4)}年下半年` : `${d.slice(-4)}年内`,
+    planTitle: "如果发射落在……",
+    planLede: "按行程每天可以在哪里看。白天的发射最好去海边看；夜间发射在奥兰多就能看到一道从东边升起的亮光。",
+    thDay: "日期", thPlan: "计划", thDaytime: "白天发射", thNight: "夜间发射",
+    rows: [
+      ["12月23日","抵达","大概会错过","在酒店往东看"],
+      ["12月24日","EPCOT","跳过——平安夜有安排","在世界橱窗看"],
+      ["12月25日","休息日","<b>开车去泰特斯维尔或杰蒂公园</b>（KSC闭馆）","开车去海边，或在奥兰多看"],
+      ["12月26日","动物王国","和28日对调","闭园后开车过去"],
+      ["12月27日","好莱坞影城","和28日对调","在园区里看"],
+      ["12月28日","肯尼迪航天中心","<b>在KSC看</b>","在海边待到晚上"],
+      ["12月29日","环球影城","跳过","在冒险岛看"],
+      ["12月30日","魔法王国","跳过","在园区里看，烟花之前"],
+      ["12月31日","史诗宇宙","跳过","在天体公园看"],
+      ["1月1日","回程","也许在机场能看到","—"],
+    ],
+    spotsTitle: "在哪里看",
+    spots: [
+      ["肯尼迪航天中心游客中心","最近的公共观看点 · 收费","很多发射凭普通门票就能在主园区观看，有现场解说。部分发射KSC会加卖发射交通票，坐车到NASA园区内更近的观看区。详见KSC活动日历。"],
+      ["泰特斯维尔太空观景公园","免费 · 与KSC隔河相望","经典的公共观看点，隔着印第安河正对发射台，还有太空纪念碑。大型发射时人很多，要早到。"],
+      ["麦克斯·布鲁尔大桥 / 泰特斯维尔滨水区","免费 · 靠近太空观景公园","可以清楚看到39A发射台和卡纳维拉尔角。在堤道旁或滨水公园停车。"],
+      ["卡纳维拉尔港杰蒂公园","少量停车费 · 卡纳维拉尔角南边","海滩和码头离40号和41号发射台很近，大部分猎鹰9号和火神火箭都从这里发射。"],
+      ["普拉亚林达海滩","国家海岸收费 · 离39A最近的海滩","离肯尼迪的发射台很近，但发射日常常出于安全原因关闭。开车前先确认。"],
+      ["在奥兰多","免费 · 内陆约80公里","夜间和黄昏的发射很容易看到：点火后约30–60秒，东边会升起一个亮点。停车楼楼顶或朝东开阔的地方最好。"],
+    ],
+    howTitle: "发射日是怎样的",
+    how: [
+      "发射时间由轨道决定，不是为了方便观看——很多SpaceX发射在清晨或深夜。",
+      "发射常常因为天气、危险区有船只或技术问题推迟几分钟、几小时甚至几天（称为“scrub”）。准备一个备选日。",
+      "提前两三天时间通常就确定了。当天早上，看SpaceX或发射方的直播确认倒计时状态。",
+      "猎鹰9号助推器返回卡纳维拉尔角着陆时，发射几分钟后沿海会听到音爆。",
+      "大型发射（重型猎鹰、载人飞行）时去泰特斯维尔和可可海滩的路会很堵。早点出发，回程也会很慢。",
+    ],
+    linksTitle: "实时发射时间表",
+    footer: "实时发射数据来自<a href=\"https://thespacedevs.com/llapi\">The Space Devs的Launch Library 2</a>；时间为美东时间。日期和时间经常变动——开车去海边之前，请在发射方官网确认。",
+  },
+};
+
+const LINKS = [
+  ["Kennedy Space Center — launch calendar","https://www.kennedyspacecenter.com/launches-and-events/events-calendar/"],
+  ["RocketLaunch.live — Florida","https://www.rocketlaunch.live/?filter=florida"],
+  ["Next Spaceflight","https://nextspaceflight.com/launches/"],
+  ["SpaceX launches","https://www.spacex.com/launches/"],
+  ["Florida Today — space","https://www.floridatoday.com/space/"],
+];
+
+const LANG_KEY = "orlando-trip-lang";
+let lang = "en";
+let launches = null, live = false, fetchedAt = null, loadState = "loading";
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+function detectLang() {
+  if (location.hash === "#zh" || location.hash === "#en") {
+    const l = location.hash.slice(1);
+    try { localStorage.setItem(LANG_KEY, l); } catch (e) {}
+    return l;
+  }
+  try { const s = localStorage.getItem(LANG_KEY); if (s === "zh" || s === "en") return s; } catch (e) {}
+  const langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
+  return langs.some(l => /^zh\b/i.test(l)) ? "zh" : "en";
+}
+
+function normalize(x) {
+  return {
+    net: x.net, precId: x.net_precision?.id ?? 14, precName: x.net_precision?.name || "Year",
+    status: x.status?.abbrev || "TBD", rocket: x.rocket?.configuration?.full_name || (x.name || "").split(" | ")[0],
+    mission: x.mission?.name || (x.name || "").split(" | ")[1] || x.name, pad: x.pad?.name || "",
+    loc: x.pad?.location?.name || "", provider: x.launch_service_provider?.name || "",
+    ws: x.window_start, we: x.window_end,
+  };
+}
+
+const etParts = iso => {
+  const d = new Date(iso);
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: TZ, year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit", hourCycle:"h23", weekday:"short" }).formatToParts(d).map(o => [o.type, o.value]));
+  return { ymd: `${p.year}-${p.month}-${p.day}`, h: Number(p.hour), m: Number(p.minute), wd: p.weekday };
+};
+const fmtTime = iso => new Intl.DateTimeFormat(lang === "zh" ? "zh-CN" : "en-US", { timeZone: TZ, hour:"numeric", minute:"2-digit" }).format(new Date(iso));
+const fmtDay = iso => new Intl.DateTimeFormat(lang === "zh" ? "zh-CN" : "en-US", { timeZone: TZ, weekday:"short" }).format(new Date(iso));
+const fmtMon = iso => new Intl.DateTimeFormat(lang === "zh" ? "zh-CN" : "en-US", { timeZone: TZ, month:"short" }).format(new Date(iso));
+const fmtMonthYear = iso => new Intl.DateTimeFormat(lang === "zh" ? "zh-CN" : "en-US", { timeZone: "UTC", month:"long", year:"numeric" }).format(new Date(iso));
+
+function light(iso) {
+  const { h, m } = etParts(iso); const t = h + m / 60;
+  // Late-December Orlando: sunrise ~7:15, sunset ~5:35 p.m. ET
+  if ((t >= 17.4 && t <= 19.0) || (t >= 5.6 && t <= 7.3)) return "twilight";
+  if (t > 19.0 || t < 5.6) return "night";
+  return "day";
+}
+
+function renderLaunches() {
+  const t = UI[lang];
+  const all = launches || [];
+  const firm = all.filter(l => l.precId <= 5);
+  const inTrip = firm.filter(l => { const d = etParts(l.net).ymd; return d >= TRIP_START && d <= TRIP_END; });
+  const vague = all.filter(l => l.precId > 5);
+
+  if (loadState === "loading") { $("status").hidden = false; $("status").textContent = t.loading; }
+  else if (!live) { $("status").hidden = false; $("status").textContent = t.liveFail; }
+  else if (!inTrip.length) { $("status").hidden = false; $("status").textContent = t.noneYet; }
+  else { $("status").hidden = true; }
+  $("updated").textContent = live && fetchedAt ? t.updated(new Intl.DateTimeFormat(lang === "zh" ? "zh-CN" : "en-US", { month:"short", day:"numeric", hour:"numeric", minute:"2-digit" }).format(fetchedAt)) : (loadState === "loading" ? "" : t.snapshotLabel);
+
+  $("trip-list").innerHTML = inTrip.map(l => {
+    const p = etParts(l.net), lt = light(l.net), plan = PLAN[p.ymd];
+    const st = l.status === "Go" ? "go" : (l.status === "Hold" ? "hold" : "tbd");
+    const win = l.ws && l.we && l.ws !== l.we ? t.window(fmtTime(l.ws), fmtTime(l.we)) : "";
+    return `<li class="launch">
+      <div class="when"><span>${esc(fmtDay(l.net))}</span><span class="dd">${Number(p.ymd.slice(8))}</span><span>${esc(fmtMon(l.net))}</span><span class="tm">${l.precId <= 2 ? esc(fmtTime(l.net)) + " " + t.et : ""}</span></div>
+      <div class="lbody">
+        <h3>${esc(l.mission)}</h3>
+        <span class="lsub">${esc(l.rocket)}${l.provider ? " · " + esc(l.provider) : ""} · ${esc(l.pad)}, ${esc(l.loc.replace(", FL, USA", ""))}</span>
+        <div class="pills"><span class="pill ${st}">${esc(t.status[l.status] || l.status)}</span>${l.precId <= 2 ? `<span class="pill ${lt === "day" ? "tbd" : "night"}">${t[lt]}</span>` : ""}</div>
+        ${win ? `<span class="lsub">${esc(win)}</span>` : ""}
+        ${plan ? `<span class="plannote">${esc(t.planNote[plan])}</span>` : ""}
+      </div>
+    </li>`;
+  }).join("");
+
+  const seen = new Set();
+  $("vague-list").innerHTML = vague.filter(l => { const k = l.mission + l.rocket; if (seen.has(k)) return false; seen.add(k); return true; })
+    .map(l => `<li><span><b>${esc(l.mission)}</b> · ${esc(l.rocket)}</span><span class="vt">${esc(t.vagueWhen(l.precName, fmtMonthYear(l.net)))}</span><span class="vs">${esc(l.provider)} · ${esc(l.pad)}, ${esc(l.loc.replace(", FL, USA", ""))}</span></li>`).join("");
+}
+
+function renderStatic() {
+  const t = UI[lang];
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+  document.title = t.docTitle;
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t[el.dataset.i18n]; });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t[el.dataset.i18nHtml]; });
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => el.setAttribute("aria-label", t[el.dataset.i18nAria]));
+  $("lang-toggle").textContent = t.toggle; $("lang-toggle").setAttribute("aria-label", t.toggleAria);
+  [["nav-itin","index.html"],["nav-parks","parks.html"],["nav-launch","launches.html"],["nav-budget","budget.html"]].forEach(([id, f]) => { $(id).href = `${f}#${lang}`; });
+  $("plan-rows").innerHTML = t.rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join("");
+  $("spots").innerHTML = t.spots.map(([n, k, d]) => `<div class="spot"><h3>${esc(n)}</h3><span class="k">${esc(k)}</span><p>${esc(d)}</p></div>`).join("");
+  $("how").innerHTML = t.how.map(x => `<li>${esc(x)}</li>`).join("");
+  $("links").innerHTML = LINKS.map(([n, u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(n)} ↗</a>`).join("");
+}
+
+function render() { renderStatic(); renderLaunches(); }
+
+async function load() {
+  try {
+    const c = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
+    if (c && Date.now() - c.t < CACHE_MS && Array.isArray(c.data)) {
+      launches = c.data; live = true; fetchedAt = new Date(c.t); loadState = "done"; renderLaunches(); return;
+    }
+  } catch (e) {}
+  try {
+    const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), 12000);
+    const r = await fetch(API, { signal: ctrl.signal }); clearTimeout(timer);
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const j = await r.json();
+    launches = (j.results || []).map(normalize); live = true; fetchedAt = new Date();
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), data: launches })); } catch (e) {}
+  } catch (e) {
+    launches = SNAPSHOT; live = false;
+  }
+  loadState = "done";
+  renderLaunches();
+}
+
+$("lang-toggle").addEventListener("click", () => {
+  lang = lang === "en" ? "zh" : "en";
+  try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+  render();
+});
+window.addEventListener("hashchange", () => { if (location.hash === "#zh" || location.hash === "#en") { lang = location.hash.slice(1); render(); } });
+
+lang = detectLang();
+launches = SNAPSHOT; // show the snapshot immediately while the live list loads
+render();
+load();
+</script>
+</body>
+</html>
