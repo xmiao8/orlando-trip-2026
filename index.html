@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Orlando Winter Break 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one reading column — trip header, 11-day color strip, day-by-day list with filters, then dates + checklist side by side */
+:root {
+  --bg: #f2f4f8;
+  --surface: #ffffff;
+  --ink: #15213a;
+  --muted: #5b6678;
+  --line: #dce1ea;
+  --accent: #e2622a;
+  --disney: #2c5bcc;
+  --universal: #7b3dc2;
+  --space: #e2622a;
+  --rest: #2f8a58;
+  --travel: #7d8798;
+  --gold: #b8860b;
+  --gold-bg: #fbf3dc;
+  --on-cat: #ffffff;
+  --land: #fbfcfd; --water: #dbe7f3; --coast: #7f9bb8; --disney-zone: rgba(44,91,204,.06); --universal-zone: rgba(123,61,194,.07);
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "Instrument Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e131e; --surface: #161d2c; --ink: #e8ecf3; --muted: #9ba5b7; --line: #263048;
+    --accent: #ff8a52; --disney: #7fa3ff; --universal: #bb8ef2; --space: #ff8a52; --rest: #6cc795;
+    --travel: #8e98aa; --gold: #f0c45a; --gold-bg: #2d2714; --on-cat: #0e131e; --land: #131a28; --water: #0b1a2c; --coast: #4d6b8c; --disney-zone: rgba(127,163,255,.08); --universal-zone: rgba(187,142,242,.09); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e131e; --surface: #161d2c; --ink: #e8ecf3; --muted: #9ba5b7; --line: #263048;
+  --accent: #ff8a52; --disney: #7fa3ff; --universal: #bb8ef2; --space: #ff8a52; --rest: #6cc795;
+  --travel: #8e98aa; --gold: #f0c45a; --gold-bg: #2d2714; --on-cat: #0e131e; --land: #131a28; --water: #0b1a2c; --coast: #4d6b8c; --disney-zone: rgba(127,163,255,.08); --universal-zone: rgba(187,142,242,.09); color-scheme: dark;
+}
+
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.55; }
+.wrap {
+  max-width: 900px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 64px;
+  display: flex; flex-direction: column; gap: 40px;
+}
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* Header */
+header { display: flex; flex-direction: column; gap: 14px; }
+h1 { font-size: clamp(34px, 7vw, 56px); font-weight: 800; line-height: 1.02; letter-spacing: -.02em; }
+h1 span { color: var(--accent); }
+.lede { max-width: 62ch; color: var(--muted); margin: 0; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 4px; font-size: 14px; }
+.facts b { font-family: var(--display); font-size: 22px; font-weight: 800; margin-right: 6px; font-variant-numeric: tabular-nums; }
+.facts .d b { color: var(--disney); } .facts .u b { color: var(--universal); }
+.facts .s b { color: var(--space); } .facts .r b { color: var(--rest); }
+
+/* Strip */
+.strip { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; }
+.cell {
+  appearance: none; border: 0; cursor: pointer; text-align: left;
+  border-radius: 6px; padding: 8px 6px 7px; color: var(--on-cat); min-width: 0;
+  display: flex; flex-direction: column; gap: 2px; font-family: var(--mono); font-size: 11px; line-height: 1.2;
+}
+.cell .n { font-family: var(--display); font-size: 18px; font-weight: 800; }
+.cell .c { opacity: .92; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cell:focus-visible, .chip:focus-visible, .check input:focus-visible + span { outline: 2px solid var(--ink); outline-offset: 2px; }
+.cell.disney { background: var(--disney); } .cell.universal { background: var(--universal); }
+.cell.space { background: var(--space); } .cell.rest { background: var(--rest); } .cell.travel { background: var(--travel); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); margin-top: 10px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+/* Filters + days */
+.days-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; }
+h2 { font-size: 26px; font-weight: 800; letter-spacing: -.01em; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  appearance: none; font: 500 13px var(--body); color: var(--ink); cursor: pointer;
+  border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 12px;
+}
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.days { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-direction: column; }
+.day {
+  display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 18px;
+  padding: 18px 0; border-top: 1px solid var(--line); scroll-margin-top: 16px;
+}
+.day:last-child { border-bottom: 1px solid var(--line); }
+.date { display: flex; flex-direction: column; font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+.date .num { font-family: var(--display); font-size: 34px; font-weight: 800; line-height: 1; color: var(--ink); letter-spacing: -.02em; margin: 2px 0; }
+.body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.where { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.tag { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; border: 1px solid currentColor; }
+.tag.disney { color: var(--disney); } .tag.universal { color: var(--universal); } .tag.space { color: var(--space); }
+.tag.rest { color: var(--rest); } .tag.travel { color: var(--travel); }
+.park { font-size: 14px; color: var(--muted); font-weight: 500; }
+.iconic { font-size: 12px; font-weight: 600; color: var(--gold); background: var(--gold-bg); padding: 2px 8px; border-radius: 4px; }
+h3 { font-size: 21px; font-weight: 600; line-height: 1.2; }
+.day ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px; max-width: 64ch; }
+.note { font-size: 13.5px; color: var(--muted); border-left: 2px solid var(--line); padding-left: 10px; max-width: 64ch; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--mono); font-size: 12px; color: var(--muted); align-items: center; }
+.crowd { display: inline-flex; align-items: center; gap: 6px; }
+.bars { display: inline-flex; gap: 2px; align-items: end; }
+.bars span { width: 5px; border-radius: 1px; background: var(--line); }
+.bars span:nth-child(1){height:5px}.bars span:nth-child(2){height:7px}.bars span:nth-child(3){height:9px}.bars span:nth-child(4){height:11px}.bars span:nth-child(5){height:13px}
+.bars span.on { background: var(--ink); }
+.empty { color: var(--muted); padding: 18px 0; }
+
+
+/* Maps */
+.maps { display: flex; flex-direction: column; gap: 14px; }
+.maps p { margin: 0; color: var(--muted); max-width: 64ch; }
+.mapfig { margin: 0; display: flex; flex-direction: column; gap: 6px; scroll-margin-top: 16px; }
+.mapfig figcaption { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.mapbox { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--land); }
+.map-svg { display: block; width: 100%; min-width: 560px; height: auto; font-family: var(--body); }
+.m-land { fill: var(--land); }
+.m-water { fill: var(--water); }
+.m-coast { fill: none; stroke: var(--coast); stroke-width: 1.5; }
+.m-sea { fill: var(--coast); font-family: var(--mono); font-size: 12px; letter-spacing: .3em; }
+.m-town { fill: var(--muted); }
+.m-townlbl { fill: var(--muted); font-size: 13px; font-style: italic; }
+.m-route { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 5; }
+.m-time { fill: var(--muted); font-family: var(--mono); font-size: 12px; }
+.m-lbl { fill: var(--ink); font-size: 14px; font-weight: 600; }
+.m-sub { fill: var(--muted); font-family: var(--mono); font-size: 11.5px; }
+.m-dot { stroke: var(--land); stroke-width: 3; }
+.m-dot.disney { fill: var(--disney); } .m-dot.universal { fill: var(--universal); } .m-dot.space { fill: var(--space); }
+.m-dot.rest { fill: var(--rest); } .m-dot.travel { fill: var(--travel); }
+.m-place:hover .m-lbl, .m-place:focus-visible .m-lbl { text-decoration: underline; }
+.m-place:focus-visible { outline: none; }
+.m-place:focus-visible .m-dot { stroke: var(--ink); }
+.m-zone { stroke-width: 1.2; stroke-dasharray: 2 4; }
+.m-zone.disney { fill: var(--disney-zone); stroke: var(--disney); }
+.m-zone.universal { fill: var(--universal-zone); stroke: var(--universal); }
+.m-zlbl { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; }
+.m-zlbl.disney { fill: var(--disney); } .m-zlbl.universal { fill: var(--universal); }
+.m-scale { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.m-north { fill: var(--ink); font-family: var(--display); font-weight: 800; font-size: 14px; }
+.m-arrow { fill: var(--ink); }
+
+/* Lower panels */
+.panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 28px; }
+.panel { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.panel h2 { font-size: 21px; }
+dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 16px; font-size: 14px; }
+dt { font-family: var(--mono); font-size: 12px; color: var(--muted); padding-top: 2px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+dd { margin: 0; }
+.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.check { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 8px; align-items: start; padding: 7px 0; cursor: pointer; font-size: 14px; }
+.check input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.check .box { width: 18px; height: 18px; border: 1.5px solid var(--muted); border-radius: 4px; margin-top: 2px; display: grid; place-items: center; }
+.check input:checked + .box { background: var(--rest); border-color: var(--rest); }
+.check input:checked + .box::after { content: ""; width: 9px; height: 5px; border: 2px solid var(--surface); border-top: 0; border-right: 0; transform: rotate(-45deg) translate(1px, -1px); }
+.check input:checked ~ .txt { color: var(--muted); text-decoration: line-through; }
+.check small { display: block; color: var(--muted); font-size: 12.5px; text-decoration: none; }
+.progress { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+footer { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; max-width: 70ch; }
+
+@media (max-width: 620px) {
+  .strip { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .day { grid-template-columns: 58px minmax(0, 1fr); gap: 12px; }
+  .date .num { font-size: 28px; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Dec 23, 2026 – Jan 1, 2027 · Orlando, FL · 3 travelers</div>
+    <h1>Orlando Winter Break <span>’26</span></h1>
+    <p class="lede">Ten days between NYU finals and spring semester: Christmas Eve at EPCOT, Christmas Day at Hogwarts, a day at Kennedy Space Center, and New Year’s Eve at Epic Universe.</p>
+    <div class="facts">
+      <span class="d"><b>4</b>Disney days</span>
+      <span class="u"><b>2</b>Universal days</span>
+      <span class="s"><b>1</b>Space Coast day</span>
+      <span class="r"><b>1</b>rest day</span>
+    </div>
+  </header>
+
+  <section aria-label="Trip at a glance">
+    <div class="strip" id="strip"></div>
+    <div class="legend">
+      <span><i style="background:var(--disney)"></i>Walt Disney World</span>
+      <span><i style="background:var(--universal)"></i>Universal Orlando</span>
+      <span><i style="background:var(--space)"></i>Kennedy Space Center</span>
+      <span><i style="background:var(--rest)"></i>Rest</span>
+      <span><i style="background:var(--travel)"></i>Travel</span>
+    </div>
+  </section>
+
+
+  <section class="maps" aria-labelledby="map-title">
+    <h2 id="map-title">Where everything is</h2>
+    <p>Everything except Kennedy Space Center is within about 25 minutes of the hotel area. Tap a place to jump to its day.</p>
+    <figure class="mapfig">
+      <figcaption>Central Florida</figcaption>
+      <div class="mapbox"><svg viewBox="0 0 760 447" role="img" aria-labelledby="mr-t mr-d" class="map-svg">
+<title id="mr-t">Central Florida</title><desc id="mr-d">Walt Disney World southwest of Orlando, Universal Orlando closer to downtown, the airport to the east, Kennedy Space Center about an hour east on the coast, and Blue Spring State Park about 45 minutes north.</desc>
+<rect width="760" height="447" class="m-land"/>
+<path d="M476.9,-33.9 L546.4,62.2 L601.0,147.0 L645.8,214.8 L680.5,271.3 L697.9,316.5 L705.4,339.1 L678.0,361.7 L668.1,407.0 L675.6,463.5 L680.5,486.1 L780,467 L780,-20 Z" class="m-water"/><path d="M476.9,-33.9 L546.4,62.2 L601.0,147.0 L645.8,214.8 L680.5,271.3 L697.9,316.5 L705.4,339.1 L678.0,361.7 L668.1,407.0 L675.6,463.5 L680.5,486.1" class="m-coast"/>
+<text x="720.3" y="158.3" class="m-sea" text-anchor="middle" transform="rotate(-58 720.3 158.3)">ATLANTIC OCEAN</text>
+<circle cx="283.7" cy="294.8" r="3.5" class="m-town"/><text x="292.7" y="287.8" class="m-townlbl">Downtown Orlando</text>
+<line x1="193.7" y1="378.7" x2="629.9" y2="303.4" class="m-route"/>
+<text x="411.8" y="329.0" class="m-time" text-anchor="middle">~1 hr drive</text>
+<line x1="243.4" y1="336.3" x2="303.1" y2="63.6" class="m-route"/>
+<text x="239.3" y="199.9" class="m-time" text-anchor="middle">~45 min</text>
+<a href="#map-parks" class="m-place"><circle cx="193.7" cy="378.7" r="7" class="m-dot disney"/>
+<text x="179.7" y="400.7" text-anchor="end" class="m-lbl">Walt Disney World</text>
+<text x="179.7" y="416.7" text-anchor="end" class="m-sub">Dec 24, 26, 27, 30</text>
+</a>
+<a href="#map-parks" class="m-place"><circle cx="243.4" cy="336.3" r="7" class="m-dot universal"/>
+<text x="229.4" y="326.3" text-anchor="end" class="m-lbl">Universal Orlando</text>
+</a>
+<text x="229.4" y="342.3" text-anchor="end" class="m-sub">Dec 25, 31</text>
+<a href="#dec23" class="m-place"><circle cx="318.9" cy="355.4" r="7" class="m-dot travel"/>
+<text x="332.9" y="375.4" text-anchor="start" class="m-lbl">Airport (MCO)</text>
+<text x="332.9" y="391.4" text-anchor="start" class="m-sub">Dec 23 · Jan 1</text>
+</a>
+<a href="#dec28" class="m-place"><circle cx="629.9" cy="303.4" r="7" class="m-dot space"/>
+<text x="615.9" y="289.4" text-anchor="end" class="m-lbl">Kennedy Space Center</text>
+</a>
+<text x="615.9" y="305.4" text-anchor="end" class="m-sub">Dec 28</text>
+<a href="#dec29" class="m-place"><circle cx="303.1" cy="63.6" r="7" class="m-dot rest"/>
+<text x="317.1" y="68.6" text-anchor="start" class="m-lbl">Blue Spring State Park</text>
+<text x="317.1" y="84.6" text-anchor="start" class="m-sub">Optional · Dec 29</text>
+</a>
+<path d="M654.0829006635626,421 V425 H736.0 V421" class="m-scale"/><text x="654.0829006635626" y="416" class="m-time">10 miles</text>
+<g class="m-n"><text x="642" y="30" text-anchor="middle" class="m-north">N</text><path d="M642,36 l-6,15 l6,-4 l6,4 z" class="m-arrow"/></g>
+</svg></div>
+    </figure>
+    <figure class="mapfig" id="map-parks">
+      <figcaption>Theme park area</figcaption>
+      <div class="mapbox"><svg viewBox="0 0 760 395" role="img" aria-labelledby="mp-t mp-d" class="map-svg">
+<title id="mp-t">Theme park area</title><desc id="mp-d">The four Disney parks sit together in the southwest corner, Universal and Epic Universe about 20 minutes northeast, and the airport about 25 minutes east of Disney.</desc>
+<rect width="760" height="395" class="m-land"/>
+<line x1="175.0" y1="297.2" x2="349.6" y2="50.9" class="m-route"/>
+<text x="296.3" y="178.1" class="m-time" text-anchor="middle">~20 min</text>
+<line x1="175.0" y1="297.2" x2="699.0" y2="157.6" class="m-route"/>
+<text x="437.0" y="217.4" class="m-time" text-anchor="middle">~25 min</text>
+<path d="M65.1,160.6 L141.1,160.6 L249.7,247.1 L271.4,308.9 L217.1,370.6 L43.4,370.6 L32.6,284.1 Z" class="m-zone disney"/>
+<text x="71.1" y="152.6" class="m-zlbl disney">WALT DISNEY WORLD</text>
+<path d="M325.7,24.7 L380.0,24.7 L423.4,135.9 L380.0,148.3 L325.7,86.5 Z" class="m-zone universal"/>
+<text x="390.2" y="34.2" class="m-zlbl universal">UNIVERSAL ORLANDO</text>
+<a href="#dec30" class="m-place"><circle cx="106.0" cy="191.0" r="7" class="m-dot disney"/>
+<text x="120.0" y="196.0" text-anchor="start" class="m-lbl">Magic Kingdom</text>
+<text x="120.0" y="212.0" text-anchor="start" class="m-sub">Dec 30</text>
+</a>
+<a href="#dec24" class="m-place"><circle cx="175.0" cy="297.2" r="7" class="m-dot disney"/>
+<text x="161.0" y="291.2" text-anchor="end" class="m-lbl">EPCOT</text>
+<text x="161.0" y="307.2" text-anchor="end" class="m-sub">Dec 24</text>
+</a>
+<a href="#dec27" class="m-place"><circle cx="155.9" cy="339.7" r="7" class="m-dot disney"/>
+<text x="169.9" y="349.7" text-anchor="start" class="m-lbl">Hollywood Studios</text>
+<text x="169.9" y="365.7" text-anchor="start" class="m-sub">Dec 27</text>
+</a>
+<a href="#dec26" class="m-place"><circle cx="86.6" cy="345.2" r="7" class="m-dot disney"/>
+<text x="86.6" y="369.2" text-anchor="middle" class="m-lbl">Animal Kingdom</text>
+<text x="86.6" y="385.2" text-anchor="middle" class="m-sub">Dec 26</text>
+</a>
+<a href="#dec29" class="m-place"><circle cx="240.4" cy="307.4" r="5" class="m-dot rest"/>
+<text x="254.4" y="312.4" text-anchor="start" class="m-lbl">Disney Springs</text>
+</a>
+<a href="#dec25" class="m-place"><circle cx="347.4" cy="54.4" r="7" class="m-dot universal"/>
+<text x="333.4" y="59.4" text-anchor="end" class="m-lbl">Universal Studios + Islands of Adventure</text>
+<text x="333.4" y="75.4" text-anchor="end" class="m-sub">Dec 25</text>
+</a>
+<a href="#dec31" class="m-place"><circle cx="401.7" cy="118.6" r="7" class="m-dot universal"/>
+<text x="415.7" y="123.6" text-anchor="start" class="m-lbl">Epic Universe</text>
+<text x="415.7" y="139.6" text-anchor="start" class="m-sub">Dec 31</text>
+</a>
+<a href="#dec23" class="m-place"><circle cx="699.0" cy="157.6" r="7" class="m-dot travel"/>
+<text x="699.0" y="187.6" text-anchor="middle" class="m-lbl">Airport (MCO)</text>
+</a>
+<path d="M664.3810502944277,369 V373 H736.0 V369" class="m-scale"/><text x="664.3810502944277" y="364" class="m-time">2 miles</text>
+<g class="m-n"><text x="732" y="30" text-anchor="middle" class="m-north">N</text><path d="M732,36 l-6,15 l6,-4 l6,4 z" class="m-arrow"/></g>
+</svg></div>
+    </figure>
+  </section>
+
+  <section aria-labelledby="days-title">
+    <div class="days-head">
+      <h2 id="days-title">Day by day</h2>
+      <div class="chips" role="group" aria-label="Filter days">
+        <button class="chip" id="f-all" data-f="all" aria-pressed="true">All</button>
+        <button class="chip" id="f-disney" data-f="disney" aria-pressed="false">Disney</button>
+        <button class="chip" id="f-universal" data-f="universal" aria-pressed="false">Universal</button>
+        <button class="chip" id="f-space" data-f="space" aria-pressed="false">Space Coast</button>
+        <button class="chip" id="f-off" data-f="off" aria-pressed="false">Rest & travel</button>
+      </div>
+    </div>
+    <ol class="days" id="days"></ol>
+  </section>
+
+  <div class="panels">
+    <section class="panel" aria-labelledby="dates-title">
+      <h2 id="dates-title">Dates that shape the plan</h2>
+      <dl>
+        <dt>Dec 17</dt><dd>UW–Madison finals end</dd>
+        <dt>Dec 16–22</dt><dd>NYU final exam period, so the trip starts Dec 23</dd>
+        <dt>Dec 25</dt><dd>Kennedy Space Center closed; Magic Kingdom often hits capacity</dd>
+        <dt>Dec 26–31</dt><dd>Busiest week of the year at Disney World</dd>
+        <dt>Jan 3</dt><dd>Last day of Universal’s holiday celebration</dd>
+        <dt>Jan 6</dt><dd>Last day of Disney’s holiday season</dd>
+        <dt>Jan 19</dt><dd>Spring classes start at both NYU and UW–Madison</dd>
+      </dl>
+    </section>
+
+    <section class="panel" aria-labelledby="todo-title">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <h2 id="todo-title">To book</h2>
+        <span class="progress" id="progress"></span>
+      </div>
+      <ul class="checks" id="checks"></ul>
+    </section>
+  </div>
+
+  <footer>Showtimes and hours marked “last year” come from the 2025 season; Disney and Universal post final 2026 New Year’s Eve details in December. Crowd bars are rough estimates for planning, not official forecasts. Maps are approximate and drive times assume normal traffic. Checklist ticks are saved only in your own browser.</footer>
+</div>
+
+<script>
+const DAYS = [
+  { id:"dec23", dow:"Wed", mon:"Dec", d:23, cat:"travel", tag:"Travel", park:"Arrive MCO",
+    title:"Fly in and meet in Orlando",
+    items:["Two flights land: one from New York, one from Madison","Pick up the rental car, check in, early night"],
+    note:"Dec 23 is one of the busiest flying days of the year. Book the New York flight first.", crowd:0 },
+  { id:"dec24", dow:"Thu", mon:"Dec", d:24, cat:"disney", tag:"Disney", park:"EPCOT", iconic:"Christmas Eve",
+    title:"Christmas Eve at EPCOT",
+    items:["Festival of the Holidays food booths around World Showcase","Candlelight Processional: choir, orchestra and a celebrity narrator (last year’s shows: 5:00, 6:45, 8:15 p.m.)","Soarin’ Across America and Test Track earlier in the day"],
+    note:"Dinner packages with guaranteed seats sell out early, so plan on the standby line and get there well before showtime.", crowd:4 },
+  { id:"dec25", dow:"Fri", mon:"Dec", d:25, cat:"universal", tag:"Universal", park:"Islands of Adventure + Universal Studios", iconic:"Christmas Day",
+    title:"Christmas at Hogwarts",
+    items:["Hogsmeade and Diagon Alley decked out for Christmas","Hogwarts Express between the two parks (needs a park-to-park ticket)","VelociCoaster, Hagrid’s, Gringotts, Grinchmas"],
+    note:"Universal instead of Disney today: Magic Kingdom often fills up within hours on Christmas Day.", crowd:5 },
+  { id:"dec26", dow:"Sat", mon:"Dec", d:26, cat:"disney", tag:"Disney", park:"Animal Kingdom",
+    title:"Pandora and Everest",
+    items:["Rope drop Avatar Flight of Passage","Expedition Everest, Kilimanjaro Safaris","Closes earliest of the four parks, so it’s a lighter day"],
+    crowd:4 },
+  { id:"dec27", dow:"Sun", mon:"Dec", d:27, cat:"disney", tag:"Disney", park:"Hollywood Studios",
+    title:"Star Wars and the Muppets",
+    items:["Rope drop Rise of the Resistance","Rock ’n’ Roller Coaster, now starring the Muppets","New Smugglers Run missions, Tower of Terror"],
+    crowd:5 },
+  { id:"dec28", dow:"Mon", mon:"Dec", d:28, cat:"space", tag:"Space Coast", park:"Kennedy Space Center · ~1 hr east",
+    title:"Kennedy Space Center",
+    items:["Saturn V moon rocket at the Apollo/Saturn V Center","Space Shuttle Atlantis and the Shuttle Launch Experience","Bus tour behind NASA’s gates (last bus leaves 2.5 hrs before close)"],
+    note:"Check the launch calendar 1–2 weeks out. If a launch lands on another day, swap this day with it.", crowd:3 },
+  { id:"dec29", dow:"Tue", mon:"Dec", d:29, cat:"rest", tag:"Rest", park:"Pool day",
+    title:"Recharge before the big two nights",
+    items:["Sleep in, pool, laundry","Optional: manatees at Blue Spring State Park (~45 min north, arrive early)","Evening at Disney Springs"],
+    crowd:0 },
+  { id:"dec30", dow:"Wed", mon:"Dec", d:30, cat:"disney", tag:"Disney", park:"Magic Kingdom", iconic:"NYE fireworks, a night early",
+    title:"Fantasy in the Sky, one night early",
+    items:["New Year’s fireworks without the Dec 31 crowd (last year: 7:30 and 11:50 p.m.)","Refurbished Big Thunder Mountain and Buzz Lightyear","Jingle Cruise, Space Mountain, Haunted Mansion"],
+    note:"Book Lightning Lanes for today the moment your window opens.", crowd:5 },
+  { id:"dec31", dow:"Thu", mon:"Dec", d:31, cat:"universal", tag:"Universal", park:"Epic Universe", iconic:"New Year’s Eve",
+    title:"New Year’s Eve at Epic Universe",
+    items:["Super Nintendo World, Ministry of Magic, Stardust Racers","How to Train Your Dragon and Dark Universe lands","Midnight countdown in Celestial Park (last year: DJ and a fountain show)"],
+    note:"Make sure your Universal ticket includes Epic Universe. You fly out tomorrow, so pack before heading to the park.", crowd:5 },
+  { id:"jan1", dow:"Fri", mon:"Jan", d:1, cat:"travel", tag:"Travel", park:"Depart MCO",
+    title:"Sleep in, then fly home",
+    items:["Late checkout after the midnight countdown","Drop the rental car at MCO","Fly back to New York and Madison"],
+    note:"After a 1 a.m. night, book afternoon flights rather than early-morning ones.", crowd:0 },
+];
+
+const CHECKS = [
+  ["flights","Flights: New York and Madison → Orlando","In Dec 23, out Jan 1 (afternoon)"],
+  ["lodging","Hotel or rental for 9 nights","Dec 23 – Jan 1, split three ways"],
+  ["disney","Disney 4-day tickets + park reservations","EPCOT, Animal Kingdom, Hollywood Studios, Magic Kingdom"],
+  ["universal","Universal 2-day park-to-park ticket","Must include Epic Universe"],
+  ["ll","Lightning Lanes for Dec 24 and Dec 30","The two busiest Disney days on the plan"],
+  ["ksc","Kennedy Space Center tickets","Check the launch calendar in early December"],
+  ["car","Rental car","Needed for KSC and Blue Spring"],
+  ["candle","Candlelight dining package","Usually sold out; watch for cancellations"],
+];
+
+const strip = document.getElementById("strip");
+const list = document.getElementById("days");
+const offCats = ["rest","travel"];
+
+DAYS.forEach(day => {
+  const b = document.createElement("button");
+  b.className = "cell " + day.cat;
+  b.id = "cell-" + day.id;
+  b.setAttribute("aria-label", `${day.dow} ${day.mon} ${day.d}: ${day.title}`);
+  b.innerHTML = `<span>${day.dow}</span><span class="n">${day.d}</span><span class="c">${day.tag}</span>`;
+  b.addEventListener("click", () => {
+    setFilter("all");
+    document.getElementById(day.id).scrollIntoView({ block: "start" });
+  });
+  strip.appendChild(b);
+
+  const li = document.createElement("li");
+  li.className = "day";
+  li.id = day.id;
+  li.dataset.cat = day.cat;
+  const bars = day.crowd ? `<span class="crowd">Crowds <span class="bars" aria-label="${day.crowd} of 5">${[1,2,3,4,5].map(i=>`<span class="${i<=day.crowd?"on":""}"></span>`).join("")}</span></span>` : "";
+  li.innerHTML = `
+    <div class="date"><span>${day.dow}</span><span class="num">${day.d}</span><span>${day.mon}</span></div>
+    <div class="body">
+      <div class="where"><span class="tag ${day.cat}">${day.tag}</span><span class="park">${day.park}</span>${day.iconic ? `<span class="iconic">★ ${day.iconic}</span>` : ""}</div>
+      <h3>${day.title}</h3>
+      <ul>${day.items.map(i => `<li>${i}</li>`).join("")}</ul>
+      ${day.note ? `<div class="note">${day.note}</div>` : ""}
+      ${bars ? `<div class="meta">${bars}</div>` : ""}
+    </div>`;
+  list.appendChild(li);
+});
+
+const empty = document.createElement("li");
+empty.className = "empty"; empty.hidden = true; empty.textContent = "No days match this filter.";
+list.appendChild(empty);
+
+function setFilter(f) {
+  document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", String(c.dataset.f === f)));
+  let shown = 0;
+  document.querySelectorAll(".day").forEach(li => {
+    const cat = li.dataset.cat;
+    const match = f === "all" || (f === "off" ? offCats.includes(cat) : cat === f);
+    li.hidden = !match; if (match) shown++;
+  });
+  empty.hidden = shown > 0;
+}
+document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => setFilter(c.dataset.f)));
+
+const KEY = "orlando-trip-checks";
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { saved = {}; }
+const checksEl = document.getElementById("checks");
+CHECKS.forEach(([id, label, sub]) => {
+  const li = document.createElement("li");
+  li.innerHTML = `<label class="check" for="chk-${id}"><input type="checkbox" id="chk-${id}" ${saved[id] ? "checked" : ""}><span class="box" aria-hidden="true"></span><span class="txt">${label}<small>${sub}</small></span></label>`;
+  li.querySelector("input").addEventListener("change", e => {
+    saved[id] = e.target.checked;
+    try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (err) {}
+    updateProgress();
+  });
+  checksEl.appendChild(li);
+});
+function updateProgress() {
+  const done = CHECKS.filter(([id]) => saved[id]).length;
+  document.getElementById("progress").textContent = `${done} of ${CHECKS.length} booked`;
+}
+updateProgress();
+</script>
+
+</body>
+</html>
