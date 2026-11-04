@@ -9,7 +9,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+SC:wght@400;500;700&display=swap">
 <style>
 /* Layout: one reading column — trip header, 11-day color strip, day-by-day list with filters, then dates + checklist side by side */
 :root {
@@ -27,8 +27,8 @@
   --gold: #b8860b;
   --gold-bg: #fbf3dc;
   --on-cat: #ffffff;
-  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-  --body: "Instrument Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --display: "Bricolage Grotesque", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "Instrument Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) {
@@ -117,6 +117,17 @@ h3 { font-size: 21px; font-weight: 600; line-height: 1.2; }
 .empty { color: var(--muted); padding: 18px 0; }
 
 
+
+.toprow { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lang {
+  appearance: none; cursor: pointer; font: 600 13px var(--body); color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 14px;
+}
+.lang:hover { border-color: var(--muted); }
+.lang:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+:lang(zh) h1 { letter-spacing: 0; }
+:lang(zh) .eyebrow, :lang(zh) .tag, :lang(zh) .date { letter-spacing: .02em; }
+
 /* Lower panels */
 .panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 28px; }
 .panel { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
@@ -148,39 +159,40 @@ footer { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--lin
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">Dec 23, 2026 – Jan 1, 2027 · Orlando, FL · 3 travelers</div>
-    <h1>Orlando Winter Break <span>’26</span></h1>
-    <p class="lede">Ten days between NYU finals and spring semester: Christmas Eve at EPCOT, Christmas Day at Hogwarts, a day at Kennedy Space Center, and New Year’s Eve at Epic Universe.</p>
+    <div class="toprow">
+      <div class="eyebrow" data-i18n="eyebrow"></div>
+      <button class="lang" id="lang-toggle" type="button"></button>
+    </div>
+    <h1 data-i18n-html="h1"></h1>
+    <p class="lede" data-i18n="lede"></p>
     <div class="facts">
-      <span class="d"><b>4</b>Disney days</span>
-      <span class="u"><b>2</b>Universal days</span>
-      <span class="s"><b>1</b>Space Coast day</span>
-      <span class="r"><b>1</b>rest day</span>
+      <span class="d" data-i18n-html="fDisney"></span>
+      <span class="u" data-i18n-html="fUniversal"></span>
+      <span class="s" data-i18n-html="fSpace"></span>
+      <span class="r" data-i18n-html="fRest"></span>
     </div>
   </header>
 
-  <section aria-label="Trip at a glance">
+  <section data-i18n-aria="glance">
     <div class="strip" id="strip"></div>
     <div class="legend">
-      <span><i style="background:var(--disney)"></i>Walt Disney World</span>
-      <span><i style="background:var(--universal)"></i>Universal Orlando</span>
-      <span><i style="background:var(--space)"></i>Kennedy Space Center</span>
-      <span><i style="background:var(--rest)"></i>Rest</span>
-      <span><i style="background:var(--travel)"></i>Travel</span>
+      <span><i style="background:var(--disney)"></i><span data-i18n="lgDisney"></span></span>
+      <span><i style="background:var(--universal)"></i><span data-i18n="lgUniversal"></span></span>
+      <span><i style="background:var(--space)"></i><span data-i18n="lgSpace"></span></span>
+      <span><i style="background:var(--rest)"></i><span data-i18n="lgRest"></span></span>
+      <span><i style="background:var(--travel)"></i><span data-i18n="lgTravel"></span></span>
     </div>
   </section>
 
-
-
   <section aria-labelledby="days-title">
     <div class="days-head">
-      <h2 id="days-title">Day by day</h2>
-      <div class="chips" role="group" aria-label="Filter days">
-        <button class="chip" id="f-all" data-f="all" aria-pressed="true">All</button>
-        <button class="chip" id="f-disney" data-f="disney" aria-pressed="false">Disney</button>
-        <button class="chip" id="f-universal" data-f="universal" aria-pressed="false">Universal</button>
-        <button class="chip" id="f-space" data-f="space" aria-pressed="false">Space Coast</button>
-        <button class="chip" id="f-off" data-f="off" aria-pressed="false">Rest & travel</button>
+      <h2 id="days-title" data-i18n="daysTitle"></h2>
+      <div class="chips" role="group" data-i18n-aria="filterAria">
+        <button class="chip" id="f-all" data-f="all" aria-pressed="true" data-i18n="cAll"></button>
+        <button class="chip" id="f-disney" data-f="disney" aria-pressed="false" data-i18n="cDisney"></button>
+        <button class="chip" id="f-universal" data-f="universal" aria-pressed="false" data-i18n="cUniversal"></button>
+        <button class="chip" id="f-space" data-f="space" aria-pressed="false" data-i18n="cSpace"></button>
+        <button class="chip" id="f-off" data-f="off" aria-pressed="false" data-i18n="cOff"></button>
       </div>
     </div>
     <ol class="days" id="days"></ol>
@@ -188,123 +200,235 @@ footer { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--lin
 
   <div class="panels">
     <section class="panel" aria-labelledby="dates-title">
-      <h2 id="dates-title">Dates that shape the plan</h2>
-      <dl>
-        <dt>Dec 17</dt><dd>UW–Madison finals end</dd>
-        <dt>Dec 16–22</dt><dd>NYU final exam period, so the trip starts Dec 23</dd>
-        <dt>Dec 25</dt><dd>Kennedy Space Center closed; Magic Kingdom often hits capacity</dd>
-        <dt>Dec 26–31</dt><dd>Busiest week of the year at Disney World</dd>
-        <dt>Jan 3</dt><dd>Last day of Universal’s holiday celebration</dd>
-        <dt>Jan 6</dt><dd>Last day of Disney’s holiday season</dd>
-        <dt>Jan 19</dt><dd>Spring classes start at both NYU and UW–Madison</dd>
-      </dl>
+      <h2 id="dates-title" data-i18n="datesTitle"></h2>
+      <dl id="dates"></dl>
     </section>
 
     <section class="panel" aria-labelledby="todo-title">
       <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap">
-        <h2 id="todo-title">To book</h2>
+        <h2 id="todo-title" data-i18n="todoTitle"></h2>
         <span class="progress" id="progress"></span>
       </div>
       <ul class="checks" id="checks"></ul>
     </section>
   </div>
 
-  <footer>Showtimes and hours marked “last year” come from the 2025 season; Disney and Universal post final 2026 New Year’s Eve details in December. Crowd bars are rough estimates for planning, not official forecasts. Checklist ticks are saved only in your own browser.</footer>
+  <footer data-i18n="footer"></footer>
 </div>
 
 <script>
+const UI = {
+  en: {
+    docTitle: "Orlando Winter Break 2026",
+    toggle: "中文", toggleAria: "切换到中文",
+    eyebrow: "Dec 23, 2026 – Jan 1, 2027 · Orlando, FL · 3 travelers",
+    h1: "Orlando Winter Break <span>’26</span>",
+    lede: "Ten days between NYU finals and spring semester: Christmas Eve at EPCOT, Christmas Day at Hogwarts, a day at Kennedy Space Center, and New Year’s Eve at Epic Universe.",
+    fDisney: "<b>4</b>Disney days", fUniversal: "<b>2</b>Universal days", fSpace: "<b>1</b>Space Coast day", fRest: "<b>1</b>rest day",
+    glance: "Trip at a glance",
+    lgDisney: "Walt Disney World", lgUniversal: "Universal Orlando", lgSpace: "Kennedy Space Center", lgRest: "Rest", lgTravel: "Travel",
+    daysTitle: "Day by day", filterAria: "Filter days",
+    cAll: "All", cDisney: "Disney", cUniversal: "Universal", cSpace: "Space Coast", cOff: "Rest & travel",
+    empty: "No days match this filter.",
+    crowds: "Crowds", crowdAria: n => `${n} of 5`,
+    datesTitle: "Dates that shape the plan",
+    dates: [
+      ["Dec 17","UW–Madison finals end"],
+      ["Dec 16–22","NYU final exam period, so the trip starts Dec 23"],
+      ["Dec 25","Kennedy Space Center closed; Magic Kingdom often hits capacity"],
+      ["Dec 26–31","Busiest week of the year at Disney World"],
+      ["Jan 3","Last day of Universal’s holiday celebration"],
+      ["Jan 6","Last day of Disney’s holiday season"],
+      ["Jan 19","Spring classes start at both NYU and UW–Madison"],
+    ],
+    todoTitle: "To book", progress: (d, t) => `${d} of ${t} booked`,
+    footer: "Showtimes and hours marked “last year” come from the 2025 season; Disney and Universal post final 2026 New Year’s Eve details in December. Crowd bars are rough estimates for planning, not official forecasts. Checklist ticks are saved only in your own browser.",
+  },
+  zh: {
+    docTitle: "奥兰多寒假之旅 2026",
+    toggle: "English", toggleAria: "Switch to English",
+    eyebrow: "2026年12月23日 – 2027年1月1日 · 佛罗里达州奥兰多 · 3人同行",
+    h1: "奥兰多寒假之旅 <span>’26</span>",
+    lede: "NYU期末考试和春季学期之间的十天：平安夜在EPCOT，圣诞节在霍格沃茨，一天去肯尼迪航天中心，跨年夜在史诗宇宙。",
+    fDisney: "<b>4</b>天迪士尼", fUniversal: "<b>2</b>天环球影城", fSpace: "<b>1</b>天太空海岸", fRest: "<b>1</b>天休息",
+    glance: "行程总览",
+    lgDisney: "华特迪士尼世界", lgUniversal: "奥兰多环球度假区", lgSpace: "肯尼迪航天中心", lgRest: "休息", lgTravel: "出行",
+    daysTitle: "每日行程", filterAria: "筛选日期",
+    cAll: "全部", cDisney: "迪士尼", cUniversal: "环球影城", cSpace: "太空海岸", cOff: "休息与出行",
+    empty: "没有符合筛选条件的日期。",
+    crowds: "人流", crowdAria: n => `5级中的${n}级`,
+    datesTitle: "影响计划的关键日期",
+    dates: [
+      ["12月17日","威斯康星大学麦迪逊分校期末考试结束"],
+      ["12月16–22日","NYU期末考试周，所以12月23日出发"],
+      ["12月25日","肯尼迪航天中心闭馆；魔法王国常常满员"],
+      ["12月26–31日","迪士尼世界全年最拥挤的一周"],
+      ["1月3日","环球影城节日活动最后一天"],
+      ["1月6日","迪士尼节日季最后一天"],
+      ["1月19日","NYU和威斯康星大学麦迪逊分校春季学期开课"],
+    ],
+    todoTitle: "待预订", progress: (d, t) => `已订 ${d} / ${t}`,
+    footer: "标注“去年”的演出和开放时间来自2025年；迪士尼和环球影城会在12月公布2026年跨年夜的最终安排。人流指数只是粗略估计，仅供参考。清单的勾选只保存在你自己的浏览器里。",
+  },
+};
+
 const DAYS = [
-  { id:"dec23", dow:"Wed", mon:"Dec", d:23, cat:"travel", tag:"Travel", park:"Arrive MCO",
-    title:"Fly in and meet in Orlando",
-    items:["Two flights land: one from New York, one from Madison","Pick up the rental car, check in, early night"],
-    note:"Dec 23 is one of the busiest flying days of the year. Book the New York flight first.", crowd:0 },
-  { id:"dec24", dow:"Thu", mon:"Dec", d:24, cat:"disney", tag:"Disney", park:"EPCOT", iconic:"Christmas Eve",
-    title:"Christmas Eve at EPCOT",
-    items:["Festival of the Holidays food booths around World Showcase","Candlelight Processional: choir, orchestra and a celebrity narrator (last year’s shows: 5:00, 6:45, 8:15 p.m.)","Soarin’ Across America and Test Track earlier in the day"],
-    note:"Dinner packages with guaranteed seats sell out early, so plan on the standby line and get there well before showtime.", crowd:4 },
-  { id:"dec25", dow:"Fri", mon:"Dec", d:25, cat:"universal", tag:"Universal", park:"Islands of Adventure + Universal Studios", iconic:"Christmas Day",
-    title:"Christmas at Hogwarts",
-    items:["Hogsmeade and Diagon Alley decked out for Christmas","Hogwarts Express between the two parks (needs a park-to-park ticket)","VelociCoaster, Hagrid’s, Gringotts, Grinchmas"],
-    note:"Universal instead of Disney today: Magic Kingdom often fills up within hours on Christmas Day.", crowd:5 },
-  { id:"dec26", dow:"Sat", mon:"Dec", d:26, cat:"disney", tag:"Disney", park:"Animal Kingdom",
-    title:"Pandora and Everest",
-    items:["Rope drop Avatar Flight of Passage","Expedition Everest, Kilimanjaro Safaris","Closes earliest of the four parks, so it’s a lighter day"],
-    crowd:4 },
-  { id:"dec27", dow:"Sun", mon:"Dec", d:27, cat:"disney", tag:"Disney", park:"Hollywood Studios",
-    title:"Star Wars and the Muppets",
-    items:["Rope drop Rise of the Resistance","Rock ’n’ Roller Coaster, now starring the Muppets","New Smugglers Run missions, Tower of Terror"],
-    crowd:5 },
-  { id:"dec28", dow:"Mon", mon:"Dec", d:28, cat:"space", tag:"Space Coast", park:"Kennedy Space Center · ~1 hr east",
-    title:"Kennedy Space Center",
-    items:["Saturn V moon rocket at the Apollo/Saturn V Center","Space Shuttle Atlantis and the Shuttle Launch Experience","Bus tour behind NASA’s gates (last bus leaves 2.5 hrs before close)"],
-    note:"Check the launch calendar 1–2 weeks out. If a launch lands on another day, swap this day with it.", crowd:3 },
-  { id:"dec29", dow:"Tue", mon:"Dec", d:29, cat:"rest", tag:"Rest", park:"Pool day",
-    title:"Recharge before the big two nights",
-    items:["Sleep in, pool, laundry","Optional: manatees at Blue Spring State Park (~45 min north, arrive early)","Evening at Disney Springs"],
-    crowd:0 },
-  { id:"dec30", dow:"Wed", mon:"Dec", d:30, cat:"disney", tag:"Disney", park:"Magic Kingdom", iconic:"NYE fireworks, a night early",
-    title:"Fantasy in the Sky, one night early",
-    items:["New Year’s fireworks without the Dec 31 crowd (last year: 7:30 and 11:50 p.m.)","Refurbished Big Thunder Mountain and Buzz Lightyear","Jingle Cruise, Space Mountain, Haunted Mansion"],
-    note:"Book Lightning Lanes for today the moment your window opens.", crowd:5 },
-  { id:"dec31", dow:"Thu", mon:"Dec", d:31, cat:"universal", tag:"Universal", park:"Epic Universe", iconic:"New Year’s Eve",
-    title:"New Year’s Eve at Epic Universe",
-    items:["Super Nintendo World, Ministry of Magic, Stardust Racers","How to Train Your Dragon and Dark Universe lands","Midnight countdown in Celestial Park (last year: DJ and a fountain show)"],
-    note:"Make sure your Universal ticket includes Epic Universe. You fly out tomorrow, so pack before heading to the park.", crowd:5 },
-  { id:"jan1", dow:"Fri", mon:"Jan", d:1, cat:"travel", tag:"Travel", park:"Depart MCO",
-    title:"Sleep in, then fly home",
-    items:["Late checkout after the midnight countdown","Drop the rental car at MCO","Fly back to New York and Madison"],
-    note:"After a 1 a.m. night, book afternoon flights rather than early-morning ones.", crowd:0 },
+  { id:"dec23", m:12, d:23, w:3, cat:"travel", crowd:0,
+    en:{ tag:"Travel", park:"Arrive MCO", title:"Fly in and meet in Orlando",
+      items:["Two flights land: one from New York, one from Madison","Pick up the rental car, check in, early night"],
+      note:"Dec 23 is one of the busiest flying days of the year. Book the New York flight first." },
+    zh:{ tag:"出行", park:"抵达奥兰多机场（MCO）", title:"飞抵奥兰多会合",
+      items:["两班航班降落：一班从纽约，一班从麦迪逊","取租车、入住，早点休息"],
+      note:"12月23日是全年最繁忙的出行日之一，先订纽约出发的航班。" } },
+  { id:"dec24", m:12, d:24, w:4, cat:"disney", crowd:4,
+    en:{ tag:"Disney", park:"EPCOT", iconic:"Christmas Eve", title:"Christmas Eve at EPCOT",
+      items:["Festival of the Holidays food booths around World Showcase","Candlelight Processional: choir, orchestra and a celebrity narrator (last year’s shows: 5:00, 6:45, 8:15 p.m.)","Soarin’ Across America and Test Track earlier in the day"],
+      note:"Dinner packages with guaranteed seats sell out early, so plan on the standby line and get there well before showtime." },
+    zh:{ tag:"迪士尼", park:"EPCOT", iconic:"平安夜", title:"平安夜在EPCOT",
+      items:["沿世界橱窗品尝节日美食摊位","烛光游行（Candlelight Processional）：合唱团、管弦乐队和明星旁白（去年场次：下午5:00、6:45、晚上8:15）","白天先玩飞越美国（Soarin’ Across America）和测试赛道（Test Track）"],
+      note:"保证座位的晚餐套餐很早就会售罄，所以计划排候补队，并提前很久到场。" } },
+  { id:"dec25", m:12, d:25, w:5, cat:"universal", crowd:5,
+    en:{ tag:"Universal", park:"Islands of Adventure + Universal Studios", iconic:"Christmas Day", title:"Christmas at Hogwarts",
+      items:["Hogsmeade and Diagon Alley decked out for Christmas","Hogwarts Express between the two parks (needs a park-to-park ticket)","VelociCoaster, Hagrid’s, Gringotts, Grinchmas"],
+      note:"Universal instead of Disney today: Magic Kingdom often fills up within hours on Christmas Day." },
+    zh:{ tag:"环球影城", park:"冒险岛 + 环球影城", iconic:"圣诞节", title:"在霍格沃茨过圣诞",
+      items:["霍格莫德村和对角巷的圣诞装饰","乘霍格沃茨特快往返两个园区（需要园区互通票）","迅猛龙过山车、海格的魔法生物摩托车、古灵阁、格林奇圣诞秀"],
+      note:"今天去环球而不去迪士尼：圣诞节当天魔法王国常常开园几小时就满员。" } },
+  { id:"dec26", m:12, d:26, w:6, cat:"disney", crowd:4,
+    en:{ tag:"Disney", park:"Animal Kingdom", title:"Pandora and Everest",
+      items:["Rope drop Avatar Flight of Passage","Expedition Everest, Kilimanjaro Safaris","Closes earliest of the four parks, so it’s a lighter day"] },
+    zh:{ tag:"迪士尼", park:"动物王国", title:"潘多拉与珠穆朗玛峰",
+      items:["开园第一时间去阿凡达飞行之旅","珠穆朗玛峰探险、乞力马扎罗狩猎之旅","四个园区里关门最早，是比较轻松的一天"] } },
+  { id:"dec27", m:12, d:27, w:0, cat:"disney", crowd:5,
+    en:{ tag:"Disney", park:"Hollywood Studios", title:"Star Wars and the Muppets",
+      items:["Rope drop Rise of the Resistance","Rock ’n’ Roller Coaster, now starring the Muppets","New Smugglers Run missions, Tower of Terror"] },
+    zh:{ tag:"迪士尼", park:"好莱坞影城", title:"星球大战与布偶",
+      items:["开园第一时间去抵抗军崛起（Rise of the Resistance）","摇滚过山车，现在由布偶主演","千年隼走私者大冒险新任务、恐怖塔"] } },
+  { id:"dec28", m:12, d:28, w:1, cat:"space", crowd:3,
+    en:{ tag:"Space Coast", park:"Kennedy Space Center · ~1 hr east", title:"Kennedy Space Center",
+      items:["Saturn V moon rocket at the Apollo/Saturn V Center","Space Shuttle Atlantis and the Shuttle Launch Experience","Bus tour behind NASA’s gates (last bus leaves 2.5 hrs before close)"],
+      note:"Check the launch calendar 1–2 weeks out. If a launch lands on another day, swap this day with it." },
+    zh:{ tag:"太空海岸", park:"肯尼迪航天中心 · 向东约1小时车程", title:"肯尼迪航天中心",
+      items:["阿波罗/土星五号中心的土星五号登月火箭","亚特兰蒂斯号航天飞机和航天飞机发射体验","进入NASA园区的巴士之旅（末班车在闭馆前2.5小时发车）"],
+      note:"提前1–2周查看火箭发射时间表。如果发射在别的日子，就把这一天调过去。" } },
+  { id:"dec29", m:12, d:29, w:2, cat:"rest", crowd:0,
+    en:{ tag:"Rest", park:"Pool day", title:"Recharge before the big two nights",
+      items:["Sleep in, pool, laundry","Optional: manatees at Blue Spring State Park (~45 min north, arrive early)","Evening at Disney Springs"] },
+    zh:{ tag:"休息", park:"泳池日", title:"两个大夜之前先充电",
+      items:["睡个懒觉、游泳、洗衣服","可选：去蓝泉州立公园看海牛（向北约45分钟，早点到）","晚上逛迪士尼泉水市集"] } },
+  { id:"dec30", m:12, d:30, w:3, cat:"disney", crowd:5,
+    en:{ tag:"Disney", park:"Magic Kingdom", iconic:"NYE fireworks, a night early", title:"Fantasy in the Sky, one night early",
+      items:["New Year’s fireworks without the Dec 31 crowd (last year: 7:30 and 11:50 p.m.)","Refurbished Big Thunder Mountain and Buzz Lightyear","Jingle Cruise, Space Mountain, Haunted Mansion"],
+      note:"Book Lightning Lanes for today the moment your window opens." },
+    zh:{ tag:"迪士尼", park:"魔法王国", iconic:"提前一晚的跨年烟花", title:"提前一晚看天空幻想烟花",
+      items:["避开12月31日的人潮看跨年烟花（去年：晚上7:30和11:50）","翻新后的巨雷山和巴斯光年","丛林圣诞游船、太空山、幽灵公馆"],
+      note:"预约窗口一开放就订今天的闪电通道（Lightning Lane）。" } },
+  { id:"dec31", m:12, d:31, w:4, cat:"universal", crowd:5,
+    en:{ tag:"Universal", park:"Epic Universe", iconic:"New Year’s Eve", title:"New Year’s Eve at Epic Universe",
+      items:["Super Nintendo World, Ministry of Magic, Stardust Racers","How to Train Your Dragon and Dark Universe lands","Midnight countdown in Celestial Park (last year: DJ and a fountain show)"],
+      note:"Make sure your Universal ticket includes Epic Universe. You fly out tomorrow, so pack before heading to the park." },
+    zh:{ tag:"环球影城", park:"史诗宇宙", iconic:"跨年夜", title:"在史诗宇宙跨年",
+      items:["超级任天堂世界、魔法部、星尘竞速过山车","驯龙高手和黑暗宇宙园区","天体公园的午夜倒数（去年：DJ和喷泉秀）"],
+      note:"确认环球门票包含史诗宇宙。明天就要飞回去，去园区前先把行李收拾好。" } },
+  { id:"jan1", m:1, d:1, w:5, cat:"travel", crowd:0,
+    en:{ tag:"Travel", park:"Depart MCO", title:"Sleep in, then fly home",
+      items:["Late checkout after the midnight countdown","Drop the rental car at MCO","Fly back to New York and Madison"],
+      note:"After a 1 a.m. night, book afternoon flights rather than early-morning ones." },
+    zh:{ tag:"出行", park:"从奥兰多机场（MCO）出发", title:"睡个懒觉，然后飞回家",
+      items:["午夜倒数后晚点退房","在机场还租车","飞回纽约和麦迪逊"],
+      note:"凌晨1点才睡，订下午的航班，别订一大早的。" } },
 ];
 
 const CHECKS = [
-  ["flights","Flights: New York and Madison → Orlando","In Dec 23, out Jan 1 (afternoon)"],
-  ["lodging","Hotel or rental for 9 nights","Dec 23 – Jan 1, split three ways"],
-  ["disney","Disney 4-day tickets + park reservations","EPCOT, Animal Kingdom, Hollywood Studios, Magic Kingdom"],
-  ["universal","Universal 2-day park-to-park ticket","Must include Epic Universe"],
-  ["ll","Lightning Lanes for Dec 24 and Dec 30","The two busiest Disney days on the plan"],
-  ["ksc","Kennedy Space Center tickets","Check the launch calendar in early December"],
-  ["car","Rental car","Needed for KSC and Blue Spring"],
-  ["candle","Candlelight dining package","Usually sold out; watch for cancellations"],
+  { id:"flights", en:["Flights: New York and Madison → Orlando","In Dec 23, out Jan 1 (afternoon)"], zh:["机票：纽约和麦迪逊 → 奥兰多","12月23日去，1月1日下午回"] },
+  { id:"lodging", en:["Hotel or rental for 9 nights","Dec 23 – Jan 1, split three ways"], zh:["酒店或民宿，共9晚","12月23日 – 1月1日，三人平摊"] },
+  { id:"disney", en:["Disney 4-day tickets + park reservations","EPCOT, Animal Kingdom, Hollywood Studios, Magic Kingdom"], zh:["迪士尼4日门票 + 园区预约","EPCOT、动物王国、好莱坞影城、魔法王国"] },
+  { id:"universal", en:["Universal 2-day park-to-park ticket","Must include Epic Universe"], zh:["环球影城2日园区互通票","必须包含史诗宇宙"] },
+  { id:"ll", en:["Lightning Lanes for Dec 24 and Dec 30","The two busiest Disney days on the plan"], zh:["12月24日和30日的闪电通道","计划中迪士尼最拥挤的两天"] },
+  { id:"ksc", en:["Kennedy Space Center tickets","Check the launch calendar in early December"], zh:["肯尼迪航天中心门票","12月初查看火箭发射时间表"] },
+  { id:"car", en:["Rental car","Needed for KSC and Blue Spring"], zh:["租车","去肯尼迪航天中心和蓝泉都需要"] },
+  { id:"candle", en:["Candlelight dining package","Usually sold out; watch for cancellations"], zh:["烛光游行晚餐套餐","通常已售罄；留意有人退订"] },
 ];
 
-const strip = document.getElementById("strip");
-const list = document.getElementById("days");
+const DOW = { en:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], zh:["周日","周一","周二","周三","周四","周五","周六"] };
+const MON = { en:{12:"Dec",1:"Jan"}, zh:{12:"12月",1:"1月"} };
 const offCats = ["rest","travel"];
+const LANG_KEY = "orlando-trip-lang";
+const CHECK_KEY = "orlando-trip-checks";
+let lang = "en";
+let filter = "all";
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem(CHECK_KEY) || "{}") || {}; } catch (e) { saved = {}; }
 
-DAYS.forEach(day => {
-  const b = document.createElement("button");
-  b.className = "cell " + day.cat;
-  b.id = "cell-" + day.id;
-  b.setAttribute("aria-label", `${day.dow} ${day.mon} ${day.d}: ${day.title}`);
-  b.innerHTML = `<span>${day.dow}</span><span class="n">${day.d}</span><span class="c">${day.tag}</span>`;
-  b.addEventListener("click", () => {
-    setFilter("all");
-    document.getElementById(day.id).scrollIntoView({ block: "start" });
+function detectLang() {
+  if (location.hash === "#zh") return "zh";
+  if (location.hash === "#en") return "en";
+  try { const s = localStorage.getItem(LANG_KEY); if (s === "zh" || s === "en") return s; } catch (e) {}
+  const langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
+  return langs.some(l => /^zh\b/i.test(l)) ? "zh" : "en";
+}
+
+function render() {
+  const t = UI[lang];
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+  document.title = t.docTitle;
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t[el.dataset.i18n]; });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t[el.dataset.i18nHtml]; });
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t[el.dataset.i18nAria]); });
+  const tog = document.getElementById("lang-toggle");
+  tog.textContent = t.toggle; tog.setAttribute("aria-label", t.toggleAria);
+
+  const strip = document.getElementById("strip");
+  const list = document.getElementById("days");
+  strip.innerHTML = ""; list.innerHTML = "";
+  DAYS.forEach(day => {
+    const c = day[lang], dow = DOW[lang][day.w], mon = MON[lang][day.m];
+    const b = document.createElement("button");
+    b.className = "cell " + day.cat; b.type = "button";
+    b.setAttribute("aria-label", `${dow} ${mon} ${day.d}: ${c.title}`);
+    b.innerHTML = `<span>${dow}</span><span class="n">${day.d}</span><span class="c">${c.tag}</span>`;
+    b.addEventListener("click", () => { setFilter("all"); document.getElementById(day.id).scrollIntoView({ block: "start" }); });
+    strip.appendChild(b);
+
+    const li = document.createElement("li");
+    li.className = "day"; li.id = day.id; li.dataset.cat = day.cat;
+    const bars = day.crowd ? `<div class="meta"><span class="crowd">${t.crowds} <span class="bars" role="img" aria-label="${t.crowdAria(day.crowd)}">${[1,2,3,4,5].map(i => `<span class="${i <= day.crowd ? "on" : ""}"></span>`).join("")}</span></span></div>` : "";
+    li.innerHTML = `
+      <div class="date"><span>${dow}</span><span class="num">${day.d}</span><span>${mon}</span></div>
+      <div class="body">
+        <div class="where"><span class="tag ${day.cat}">${c.tag}</span><span class="park">${c.park}</span>${c.iconic ? `<span class="iconic">★ ${c.iconic}</span>` : ""}</div>
+        <h3>${c.title}</h3>
+        <ul>${c.items.map(i => `<li>${i}</li>`).join("")}</ul>
+        ${c.note ? `<div class="note">${c.note}</div>` : ""}
+        ${bars}
+      </div>`;
+    list.appendChild(li);
   });
-  strip.appendChild(b);
+  const empty = document.createElement("li");
+  empty.className = "empty"; empty.id = "empty"; empty.textContent = t.empty;
+  list.appendChild(empty);
+  setFilter(filter);
 
-  const li = document.createElement("li");
-  li.className = "day";
-  li.id = day.id;
-  li.dataset.cat = day.cat;
-  const bars = day.crowd ? `<span class="crowd">Crowds <span class="bars" aria-label="${day.crowd} of 5">${[1,2,3,4,5].map(i=>`<span class="${i<=day.crowd?"on":""}"></span>`).join("")}</span></span>` : "";
-  li.innerHTML = `
-    <div class="date"><span>${day.dow}</span><span class="num">${day.d}</span><span>${day.mon}</span></div>
-    <div class="body">
-      <div class="where"><span class="tag ${day.cat}">${day.tag}</span><span class="park">${day.park}</span>${day.iconic ? `<span class="iconic">★ ${day.iconic}</span>` : ""}</div>
-      <h3>${day.title}</h3>
-      <ul>${day.items.map(i => `<li>${i}</li>`).join("")}</ul>
-      ${day.note ? `<div class="note">${day.note}</div>` : ""}
-      ${bars ? `<div class="meta">${bars}</div>` : ""}
-    </div>`;
-  list.appendChild(li);
-});
+  document.getElementById("dates").innerHTML = t.dates.map(([d, txt]) => `<dt>${d}</dt><dd>${txt}</dd>`).join("");
 
-const empty = document.createElement("li");
-empty.className = "empty"; empty.hidden = true; empty.textContent = "No days match this filter.";
-list.appendChild(empty);
+  const checksEl = document.getElementById("checks");
+  checksEl.innerHTML = "";
+  CHECKS.forEach(item => {
+    const [label, sub] = item[lang];
+    const li = document.createElement("li");
+    li.innerHTML = `<label class="check" for="chk-${item.id}"><input type="checkbox" id="chk-${item.id}" ${saved[item.id] ? "checked" : ""}><span class="box" aria-hidden="true"></span><span class="txt">${label}<small>${sub}</small></span></label>`;
+    li.querySelector("input").addEventListener("change", e => {
+      saved[item.id] = e.target.checked;
+      try { localStorage.setItem(CHECK_KEY, JSON.stringify(saved)); } catch (err) {}
+      updateProgress();
+    });
+    checksEl.appendChild(li);
+  });
+  updateProgress();
+}
 
 function setFilter(f) {
+  filter = f;
   document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", String(c.dataset.f === f)));
   let shown = 0;
   document.querySelectorAll(".day").forEach(li => {
@@ -312,29 +436,27 @@ function setFilter(f) {
     const match = f === "all" || (f === "off" ? offCats.includes(cat) : cat === f);
     li.hidden = !match; if (match) shown++;
   });
-  empty.hidden = shown > 0;
+  const empty = document.getElementById("empty");
+  if (empty) empty.hidden = shown > 0;
 }
-document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => setFilter(c.dataset.f)));
 
-const KEY = "orlando-trip-checks";
-let saved = {};
-try { saved = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { saved = {}; }
-const checksEl = document.getElementById("checks");
-CHECKS.forEach(([id, label, sub]) => {
-  const li = document.createElement("li");
-  li.innerHTML = `<label class="check" for="chk-${id}"><input type="checkbox" id="chk-${id}" ${saved[id] ? "checked" : ""}><span class="box" aria-hidden="true"></span><span class="txt">${label}<small>${sub}</small></span></label>`;
-  li.querySelector("input").addEventListener("change", e => {
-    saved[id] = e.target.checked;
-    try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (err) {}
-    updateProgress();
-  });
-  checksEl.appendChild(li);
-});
 function updateProgress() {
-  const done = CHECKS.filter(([id]) => saved[id]).length;
-  document.getElementById("progress").textContent = `${done} of ${CHECKS.length} booked`;
+  const done = CHECKS.filter(c => saved[c.id]).length;
+  document.getElementById("progress").textContent = UI[lang].progress(done, CHECKS.length);
 }
-updateProgress();
+
+document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => setFilter(c.dataset.f)));
+document.getElementById("lang-toggle").addEventListener("click", () => {
+  lang = lang === "en" ? "zh" : "en";
+  try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+  render();
+});
+window.addEventListener("hashchange", () => {
+  if (location.hash === "#zh" || location.hash === "#en") { lang = location.hash.slice(1); render(); }
+});
+
+lang = detectLang();
+render();
 </script>
 
 </body>
