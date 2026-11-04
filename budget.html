@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Orlando Trip Budget</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* Layout: same visual system as the itinerary — header, three summary figures with a cost-share bar, then controls beside a line-item table */
+:root {
+  color-scheme: light;
+  --bg: #f2f4f8;
+  --surface: #ffffff;
+  --ink: #15213a;
+  --muted: #5b6678;
+  --line: #dce1ea;
+  --accent: #e2622a;
+  --c-flight: #7d8798;
+  --c-stay: #2f8a58;
+  --c-tickets: #2c5bcc;
+  --c-ll: #7b3dc2;
+  --c-food: #e2622a;
+  --c-other: #b8860b;
+  --display: "Bricolage Grotesque", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "Instrument Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e131e; --surface: #161d2c; --ink: #e8ecf3; --muted: #9ba5b7; --line: #263048; --accent: #ff8a52;
+    --c-flight: #8e98aa; --c-stay: #6cc795; --c-tickets: #7fa3ff; --c-ll: #bb8ef2; --c-food: #ff8a52; --c-other: #f0c45a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e131e; --surface: #161d2c; --ink: #e8ecf3; --muted: #9ba5b7; --line: #263048; --accent: #ff8a52;
+  --c-flight: #8e98aa; --c-stay: #6cc795; --c-tickets: #7fa3ff; --c-ll: #bb8ef2; --c-food: #ff8a52; --c-other: #f0c45a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.55; }
+[hidden] { display: none !important; }
+.wrap {
+  max-width: 900px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 64px;
+  display: flex; flex-direction: column; gap: 36px;
+}
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+.pnav { display: flex; gap: 4px; border-bottom: 1px solid var(--line); }
+.pnav a { font: 600 14px var(--body); color: var(--muted); text-decoration: none; padding: 8px 12px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.pnav a:hover { color: var(--ink); }
+.pnav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+.pnav a:focus-visible, .lang:focus-visible, .seg button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+header { display: flex; flex-direction: column; gap: 12px; }
+.toprow { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lang { appearance: none; cursor: pointer; font: 600 13px var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 14px; }
+h1 { font-size: clamp(32px, 6.5vw, 52px); font-weight: 800; line-height: 1.04; letter-spacing: -.02em; }
+.lede { max-width: 62ch; color: var(--muted); margin: 0; }
+
+/* Summary */
+.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 12px 28px; }
+.fig { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.fig .lbl { font-size: 13px; color: var(--muted); }
+.fig .num { font-family: var(--display); font-size: clamp(30px, 5vw, 40px); font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.fig.total .num { color: var(--accent); }
+.fig .sub { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.share { display: flex; flex-direction: column; gap: 10px; }
+.bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; background: var(--line); gap: 2px; }
+.bar span { display: block; height: 100%; transition: flex-basis .25s ease; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.legend b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* Main grid */
+.grid { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 32px; align-items: start; }
+.controls { display: flex; flex-direction: column; gap: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+.controls h2, .items h2 { font-size: 20px; font-weight: 800; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field > label, .field > .flabel { font-size: 13px; font-weight: 600; }
+.field .hint { font-size: 12px; color: var(--muted); }
+.seg { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { appearance: none; border: 0; background: transparent; color: var(--ink); font: 500 13px var(--body); padding: 7px 8px; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+select, input[type="number"] {
+  width: 100%; font: 500 14px var(--body); color: var(--ink); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px;
+}
+.money { position: relative; }
+.money::before { content: "$"; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; pointer-events: none; }
+.money input { padding-left: 22px; font-variant-numeric: tabular-nums; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.reset { appearance: none; background: none; border: 0; padding: 0; color: var(--muted); font: 500 13px var(--body); text-decoration: underline; cursor: pointer; align-self: flex-start; }
+
+.items { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.tablewrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 0 8px 8px 0; border-bottom: 1px solid var(--line); }
+th.r, td.r { text-align: right; padding-right: 0; padding-left: 12px; }
+td { padding: 10px 8px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.r { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 600; }
+td .note { display: block; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+td .dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 8px; vertical-align: 1px; }
+tr.group td { padding-top: 16px; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); border-bottom: 0; padding-bottom: 4px; }
+tfoot td { border-bottom: 0; font-weight: 700; font-size: 15px; padding-top: 12px; }
+tfoot td.r { font-family: var(--display); font-size: 20px; }
+footer { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; max-width: 72ch; }
+
+@media (max-width: 720px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { .bar span { transition: none; } }
+:lang(zh) h1 { letter-spacing: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="pnav" data-i18n-aria="navAria">
+    <a id="nav-itin" href="index.html" data-i18n="navItin"></a>
+    <a id="nav-budget" href="budget.html" aria-current="page" data-i18n="navBudget"></a>
+  </nav>
+
+  <header>
+    <div class="toprow">
+      <div class="eyebrow" data-i18n="eyebrow"></div>
+      <button class="lang" id="lang-toggle" type="button"></button>
+    </div>
+    <h1 data-i18n="h1"></h1>
+    <p class="lede" data-i18n="lede"></p>
+  </header>
+
+  <section class="share" aria-labelledby="sum-title">
+    <h2 id="sum-title" hidden data-i18n="sumTitle"></h2>
+    <div class="summary">
+      <div class="fig"><span class="lbl" data-i18n="figMsn"></span><span class="num" id="n-msn"></span><span class="sub" id="s-msn"></span></div>
+      <div class="fig"><span class="lbl" data-i18n="figNyc"></span><span class="num" id="n-nyc"></span><span class="sub" id="s-nyc"></span></div>
+      <div class="fig total"><span class="lbl" data-i18n="figGroup"></span><span class="num" id="n-group"></span><span class="sub" data-i18n="figGroupSub"></span></div>
+    </div>
+    <div class="bar" id="bar" role="img"></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <div class="grid">
+    <section class="controls" aria-labelledby="ctl-title">
+      <h2 id="ctl-title" data-i18n="ctlTitle"></h2>
+
+      <div class="field">
+        <span class="flabel" id="src-label" data-i18n="srcLabel"></span>
+        <div class="seg" role="group" aria-labelledby="src-label">
+          <button type="button" id="src-ut" data-src="ut" data-i18n="srcUt"></button>
+          <button type="button" id="src-direct" data-src="direct" data-i18n="srcDirect"></button>
+        </div>
+        <span class="hint" data-i18n="srcHint"></span>
+      </div>
+
+      <div class="field">
+        <label for="ll" data-i18n="llLabel"></label>
+        <select id="ll"></select>
+      </div>
+
+      <div class="field">
+        <label for="lodging" data-i18n="lodgingLabel"></label>
+        <div class="money"><input type="number" id="lodging" min="0" step="10" inputmode="numeric"></div>
+        <span class="hint" data-i18n="lodgingHint"></span>
+      </div>
+
+      <div class="field">
+        <label for="food" data-i18n="foodLabel"></label>
+        <div class="money"><input type="number" id="food" min="0" step="5" inputmode="numeric"></div>
+      </div>
+
+      <div class="field">
+        <span class="flabel" data-i18n="flightLabel"></span>
+        <div class="pair">
+          <div class="field"><label for="f-msn" class="hint" data-i18n="fMsn"></label><div class="money"><input type="number" id="f-msn" min="0" step="10" inputmode="numeric"></div></div>
+          <div class="field"><label for="f-nyc" class="hint" data-i18n="fNyc"></label><div class="money"><input type="number" id="f-nyc" min="0" step="10" inputmode="numeric"></div></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="car" data-i18n="carLabel"></label>
+        <div class="money"><input type="number" id="car" min="0" step="10" inputmode="numeric"></div>
+      </div>
+
+      <div class="field">
+        <label for="misc" data-i18n="miscLabel"></label>
+        <div class="money"><input type="number" id="misc" min="0" step="10" inputmode="numeric"></div>
+      </div>
+
+      <button type="button" class="reset" id="reset" data-i18n="reset"></button>
+    </section>
+
+    <section class="items" aria-labelledby="items-title">
+      <h2 id="items-title" data-i18n="itemsTitle"></h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th data-i18n="thItem"></th><th class="r" data-i18n="thPer"></th></tr></thead>
+          <tbody id="rows"></tbody>
+          <tfoot><tr><td data-i18n="footTotal"></td><td class="r" id="t-range"></td></tr></tfoot>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <footer data-i18n="footer"></footer>
+</div>
+
+<script>
+const NIGHTS = 9, DAYS = 10, PEOPLE = 3, PARKING = 200;
+const DEFAULTS = { src: "ut", ll: "all4rise", lodging: 200, food: 70, fMsn: 486, fNyc: 600, car: 560, misc: 150 };
+const PRICES = {
+  disney:   { ut: 742, direct: 771 },
+  universal:{ ut: 443, direct: 479 },
+  ksc:      { ut: 82,  direct: 82 },
+};
+const LL = { none: 0, two: 87, all4: 166, all4rise: 193, all4head: 267 };
+const CATS = ["flight","stay","tickets","ll","food","other"];
+
+const UI = {
+  en: {
+    docTitle: "Orlando Trip Budget",
+    toggle: "中文", toggleAria: "切换到中文",
+    navAria: "Pages", navItin: "Itinerary", navBudget: "Budget",
+    eyebrow: "Dec 23, 2026 – Jan 1, 2027 · 9 nights · 3 travelers",
+    h1: "Trip budget",
+    lede: "Estimated cost per person. Shared costs (lodging, car, parking) are split three ways. Change the choices on the left and the totals update.",
+    sumTitle: "Summary",
+    figMsn: "Per person, flying from Madison", figNyc: "Per person, flying from New York", figGroup: "Whole group",
+    figGroupSub: "1 from Madison + 2 from New York",
+    perDay: v => `about ${v} per day`,
+    cat: { flight:"Flights & car", stay:"Lodging", tickets:"Park tickets", ll:"Lightning Lane", food:"Food", other:"Other" },
+    barAria: "Share of the average per-person cost by category",
+    ctlTitle: "Your choices",
+    srcLabel: "Buy tickets from", srcUt: "Undercover Tourist", srcDirect: "Official sites",
+    srcHint: "Undercover Tourist saves about $65 per person on these dates. Kennedy Space Center costs the same either way.",
+    llLabel: "Lightning Lane (Disney)",
+    llOpts: { none:"None (arrive early)", two:"Multi Pass on Dec 24 + Dec 30", all4:"Multi Pass all 4 Disney days", all4rise:"All 4 days + Rise of the Resistance", all4head:"All 4 days + all headliners" },
+    lodgingLabel: "Lodging, per night for the whole group", lodgingHint: "A house or condo for 3 is often $150–250 a night.",
+    foodLabel: "Food, per person per day",
+    flightLabel: "Round-trip flight", fMsn: "From Madison", fNyc: "From New York",
+    carLabel: "Rental car + gas, whole group",
+    miscLabel: "Souvenirs & other, per person",
+    reset: "Reset to suggested values",
+    itemsTitle: "Line by line",
+    thItem: "Item", thPer: "Per person",
+    groups: { travel:"Getting there & around", stay:"Staying", parks:"Parks", daily:"Day to day" },
+    rows: {
+      flight: ["Flight", "Madison / New York, Dec 23 – Jan 1"],
+      car: ["Rental car + gas", v => `${v} for the group, split 3 ways`],
+      parking: ["Park parking", "Estimate: Disney 4 days, Universal 2 days, KSC; split 3 ways"],
+      lodging: ["Lodging", (rate, total) => `${rate}/night × 9 nights = ${total}, split 3 ways`],
+      disney: ["Disney World 4-day ticket", "One park per day, any 4 days Dec 24–30"],
+      universal: ["Universal 2-day ticket", "Park-to-park day + Epic Universe day (Dec 29, Dec 31)"],
+      ksc: ["Kennedy Space Center", "1-day admission, Dec 28 · buy at kennedyspacecenter.com"],
+      ll: ["Lightning Lane", "Peak holiday prices with tax"],
+      food: ["Food", v => `${v} a day × 10 days`],
+      misc: ["Souvenirs & other", ""],
+    },
+    footTotal: "Total per person",
+    range: (a, b) => a === b ? a : `${a} – ${b}`,
+    footer: "Prices checked Nov 4, 2026 on Undercover Tourist, Disney, Universal, Kennedy Space Center and Google Flights; ticket prices include Florida sales tax. Flights and lodging change daily. Lightning Lane prices are last season’s peak rates and could rise. Your choices are saved only in your own browser.",
+  },
+  zh: {
+    docTitle: "奥兰多旅行预算",
+    toggle: "English", toggleAria: "Switch to English",
+    navAria: "页面", navItin: "行程", navBudget: "预算",
+    eyebrow: "2026年12月23日 – 2027年1月1日 · 9晚 · 3人",
+    h1: "旅行预算",
+    lede: "每人的预估花费。共同费用（住宿、租车、停车）三人平摊。修改左边的选项，总额会随之更新。",
+    sumTitle: "总览",
+    figMsn: "每人（从麦迪逊出发）", figNyc: "每人（从纽约出发）", figGroup: "三人合计",
+    figGroupSub: "1人从麦迪逊 + 2人从纽约",
+    perDay: v => `约每天 ${v}`,
+    cat: { flight:"机票和租车", stay:"住宿", tickets:"门票", ll:"闪电通道", food:"餐饮", other:"其他" },
+    barAria: "人均花费按类别的占比",
+    ctlTitle: "你的选择",
+    srcLabel: "门票购买渠道", srcUt: "Undercover Tourist", srcDirect: "官网",
+    srcHint: "这些日期在Undercover Tourist买，每人约省$65。肯尼迪航天中心两边价格一样。",
+    llLabel: "闪电通道（迪士尼）",
+    llOpts: { none:"不买（早点到园区）", two:"12月24日 + 30日买多次通行", all4:"4个迪士尼日都买多次通行", all4rise:"4天多次通行 + 抵抗军崛起", all4head:"4天多次通行 + 全部热门项目" },
+    lodgingLabel: "住宿，三人每晚合计", lodgingHint: "三人住的民宿或公寓通常每晚$150–250。",
+    foodLabel: "餐饮，每人每天",
+    flightLabel: "往返机票", fMsn: "从麦迪逊", fNyc: "从纽约",
+    carLabel: "租车 + 油费，三人合计",
+    miscLabel: "纪念品及其他，每人",
+    reset: "恢复建议值",
+    itemsTitle: "明细",
+    thItem: "项目", thPer: "每人",
+    groups: { travel:"交通", stay:"住宿", parks:"园区", daily:"日常" },
+    rows: {
+      flight: ["机票", "麦迪逊 / 纽约，12月23日 – 1月1日"],
+      car: ["租车 + 油费", v => `三人合计 ${v}，平摊`],
+      parking: ["园区停车", "估算：迪士尼4天、环球2天、肯尼迪航天中心；三人平摊"],
+      lodging: ["住宿", (rate, total) => `每晚 ${rate} × 9晚 = ${total}，三人平摊`],
+      disney: ["迪士尼世界4日票", "每天一个园区，12月24–30日任选4天"],
+      universal: ["环球影城2日票", "一天园区互通 + 一天史诗宇宙（12月29日、31日）"],
+      ksc: ["肯尼迪航天中心", "1日门票，12月28日 · 在官网购买"],
+      ll: ["闪电通道", "节日高峰价，含税"],
+      food: ["餐饮", v => `每天 ${v} × 10天`],
+      misc: ["纪念品及其他", ""],
+    },
+    footTotal: "每人合计",
+    range: (a, b) => a === b ? a : `${a} – ${b}`,
+    footer: "价格于2026年11月4日在Undercover Tourist、迪士尼、环球影城、肯尼迪航天中心官网和Google Flights查询；门票价格已含佛州销售税。机票和住宿价格每天都在变。闪电通道按上一季的高峰价估算，可能上涨。你的选择只保存在你自己的浏览器里。",
+  },
+};
+
+const LANG_KEY = "orlando-trip-lang", STATE_KEY = "orlando-trip-budget";
+let lang = "en";
+let state = { ...DEFAULTS };
+try { const s = JSON.parse(localStorage.getItem(STATE_KEY) || "null"); if (s) state = { ...DEFAULTS, ...s }; } catch (e) {}
+
+function detectLang() {
+  if (location.hash === "#zh" || location.hash === "#en") {
+    const l = location.hash.slice(1);
+    try { localStorage.setItem(LANG_KEY, l); } catch (e) {}
+    return l;
+  }
+  try { const s = localStorage.getItem(LANG_KEY); if (s === "zh" || s === "en") return s; } catch (e) {}
+  const langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
+  return langs.some(l => /^zh\b/i.test(l)) ? "zh" : "en";
+}
+
+const $ = id => document.getElementById(id);
+const money = v => "$" + Math.round(v).toLocaleString("en-US");
+const num = v => { const n = Number(v); return Number.isFinite(n) && n >= 0 ? n : 0; };
+const save = () => { try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch (e) {} };
+
+function compute() {
+  const shared = (num(state.lodging) * NIGHTS + num(state.car) + PARKING) / PEOPLE;
+  const common = {
+    car: num(state.car) / PEOPLE,
+    parking: PARKING / PEOPLE,
+    lodging: num(state.lodging) * NIGHTS / PEOPLE,
+    disney: PRICES.disney[state.src],
+    universal: PRICES.universal[state.src],
+    ksc: PRICES.ksc[state.src],
+    ll: LL[state.ll] ?? 0,
+    food: num(state.food) * DAYS,
+    misc: num(state.misc),
+  };
+  const commonSum = Object.values(common).reduce((a, b) => a + b, 0);
+  const msn = commonSum + num(state.fMsn), nyc = commonSum + num(state.fNyc);
+  const avgFlight = (num(state.fMsn) + 2 * num(state.fNyc)) / 3;
+  const cats = {
+    flight: avgFlight + common.car + common.parking,
+    stay: common.lodging,
+    tickets: common.disney + common.universal + common.ksc,
+    ll: common.ll,
+    food: common.food,
+    other: common.misc,
+  };
+  return { common, msn, nyc, group: msn + 2 * nyc, cats, shared };
+}
+
+function renderStatic() {
+  const t = UI[lang];
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+  document.title = t.docTitle;
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t[el.dataset.i18n]; });
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => el.setAttribute("aria-label", t[el.dataset.i18nAria]));
+  $("lang-toggle").textContent = t.toggle; $("lang-toggle").setAttribute("aria-label", t.toggleAria);
+  $("nav-itin").href = "index.html#" + lang; $("nav-budget").href = "budget.html#" + lang;
+  const sel = $("ll"); sel.innerHTML = "";
+  Object.keys(LL).forEach(k => {
+    const o = document.createElement("option");
+    o.value = k; o.textContent = `${t.llOpts[k]} · ${money(LL[k])}`;
+    sel.appendChild(o);
+  });
+}
+
+function renderControls() {
+  document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.src === state.src)));
+  $("ll").value = state.ll;
+  [["lodging","lodging"],["food","food"],["f-msn","fMsn"],["f-nyc","fNyc"],["car","car"],["misc","misc"]].forEach(([id, k]) => {
+    if (document.activeElement !== $(id)) $(id).value = state[k];
+  });
+}
+
+function renderNumbers() {
+  const t = UI[lang], r = compute(), c = r.common;
+  $("n-msn").textContent = money(r.msn); $("s-msn").textContent = t.perDay(money(r.msn / DAYS));
+  $("n-nyc").textContent = money(r.nyc); $("s-nyc").textContent = t.perDay(money(r.nyc / DAYS));
+  $("n-group").textContent = money(r.group);
+
+  const total = Object.values(r.cats).reduce((a, b) => a + b, 0) || 1;
+  $("bar").setAttribute("aria-label", t.barAria);
+  $("bar").innerHTML = CATS.filter(k => r.cats[k] > 0).map(k => `<span style="flex:${r.cats[k] / total} 1 0;background:var(--c-${k})" title="${t.cat[k]} ${money(r.cats[k])}"></span>`).join("");
+  $("legend").innerHTML = CATS.map(k => `<span><i style="background:var(--c-${k})"></i>${t.cat[k]} <b>${Math.round(r.cats[k] / total * 100)}%</b></span>`).join("");
+
+  const R = t.rows, row = (cat, key, val, note) =>
+    `<tr><td><span class="dot" style="background:var(--c-${cat})"></span>${R[key][0]}${note ? `<span class="note">${note}</span>` : ""}</td><td class="r">${val}</td></tr>`;
+  const g = name => `<tr class="group"><td colspan="2">${t.groups[name]}</td></tr>`;
+  $("rows").innerHTML = [
+    g("travel"),
+    row("flight", "flight", t.range(money(Math.min(num(state.fMsn), num(state.fNyc))), money(Math.max(num(state.fMsn), num(state.fNyc)))), R.flight[1]),
+    row("flight", "car", money(c.car), R.car[1](money(num(state.car)))),
+    row("flight", "parking", money(c.parking), R.parking[1]),
+    g("stay"),
+    row("stay", "lodging", money(c.lodging), R.lodging[1](money(num(state.lodging)), money(num(state.lodging) * NIGHTS))),
+    g("parks"),
+    row("tickets", "disney", money(c.disney), R.disney[1]),
+    row("tickets", "universal", money(c.universal), R.universal[1]),
+    row("tickets", "ksc", money(c.ksc), R.ksc[1]),
+    row("ll", "ll", money(c.ll), `${t.llOpts[state.ll]} · ${R.ll[1]}`),
+    g("daily"),
+    row("food", "food", money(c.food), R.food[1](money(num(state.food)))),
+    row("other", "misc", money(c.misc), R.misc[1]),
+  ].join("");
+  $("t-range").textContent = t.range(money(Math.min(r.msn, r.nyc)), money(Math.max(r.msn, r.nyc)));
+}
+
+function render() { renderStatic(); renderControls(); renderNumbers(); }
+
+document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => { state.src = b.dataset.src; save(); renderControls(); renderNumbers(); }));
+$("ll").addEventListener("change", e => { state.ll = e.target.value; save(); renderNumbers(); });
+[["lodging","lodging"],["food","food"],["f-msn","fMsn"],["f-nyc","fNyc"],["car","car"],["misc","misc"]].forEach(([id, k]) => {
+  $(id).addEventListener("input", e => { state[k] = e.target.value === "" ? 0 : Number(e.target.value); save(); renderNumbers(); });
+  $(id).addEventListener("blur", () => renderControls());
+});
+$("reset").addEventListener("click", () => { state = { ...DEFAULTS }; save(); renderControls(); renderNumbers(); });
+$("lang-toggle").addEventListener("click", () => {
+  lang = lang === "en" ? "zh" : "en";
+  try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+  render();
+});
+window.addEventListener("hashchange", () => { if (location.hash === "#zh" || location.hash === "#en") { lang = location.hash.slice(1); render(); } });
+
+lang = detectLang();
+render();
+</script>
+</body>
+</html>
