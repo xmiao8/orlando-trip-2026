@@ -131,6 +131,7 @@ h3 { font-size: 21px; font-weight: 600; line-height: 1.2; }
 
 .pnav { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: -16px; }
 .pnav a { font: 600 14px var(--body); color: var(--muted); text-decoration: none; padding: 8px 12px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.pnav a.tripswitch { margin-left: auto; font-weight: 500; font-size: 13px; }
 .pnav a:hover { color: var(--ink); }
 .pnav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
 .pnav a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
@@ -172,6 +173,7 @@ footer { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--lin
     <a id="nav-parks" href="parks.html" data-i18n="navParks"></a>
     <a id="nav-launch" href="launches.html" data-i18n="navLaunch"></a>
     <a id="nav-budget" href="budget.html" data-i18n="navBudget"></a>
+    <a class="tripswitch" id="nav-vegas" href="vegas/index.html" data-i18n="navVegas"></a>
   </nav>
 
   <header>
@@ -238,7 +240,7 @@ const UI = {
     docTitle: "Orlando Winter Break 2026",
     toggle: "中文", toggleAria: "切换到中文",
     guide: "Park guide →",
-    navAria: "Pages", navItin: "Itinerary", navParks: "Parks", navLaunch: "Launches", navBudget: "Budget",
+    navAria: "Pages", navItin: "Itinerary", navParks: "Parks", navLaunch: "Launches", navBudget: "Budget", navVegas: "Las Vegas plan →",
     eyebrow: "Dec 23, 2026 – Jan 1, 2027 · Orlando, FL · 3 travelers",
     h1: "Orlando Winter Break <span>’26</span>",
     lede: "Ten days between NYU finals and spring semester: Christmas Eve at EPCOT, a slow Christmas Day, Hogwarts in its holiday decorations, a day at Kennedy Space Center, and New Year’s Eve at Epic Universe.",
@@ -267,7 +269,7 @@ const UI = {
     docTitle: "奥兰多寒假之旅 2026",
     toggle: "English", toggleAria: "Switch to English",
     guide: "园区指南 →",
-    navAria: "页面", navItin: "行程", navParks: "园区", navLaunch: "火箭发射", navBudget: "预算",
+    navAria: "页面", navItin: "行程", navParks: "园区", navLaunch: "火箭发射", navBudget: "预算", navVegas: "拉斯维加斯方案 →",
     eyebrow: "2026年12月23日 – 2027年1月1日 · 佛罗里达州奥兰多 · 3人同行",
     h1: "奥兰多寒假之旅 <span>’26</span>",
     lede: "NYU期末考试和春季学期之间的十天：平安夜在EPCOT，圣诞节好好休息，去看节日装扮的霍格沃茨，一天去肯尼迪航天中心，跨年夜在史诗宇宙。",
@@ -408,6 +410,7 @@ function render() {
   document.getElementById("nav-itin").href = "index.html#" + lang;
   document.getElementById("nav-parks").href = "parks.html#" + lang;
   document.getElementById("nav-launch").href = "launches.html#" + lang;
+  document.getElementById("nav-vegas").href = "vegas/index.html#" + lang;
   document.getElementById("nav-budget").href = "budget.html#" + lang;
 
   const strip = document.getElementById("strip");

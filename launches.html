@@ -56,6 +56,7 @@ h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
 .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .pnav { display: flex; gap: 4px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
 .pnav a { font: 600 14px var(--body); color: var(--muted); text-decoration: none; padding: 8px 12px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.pnav a.tripswitch { margin-left: auto; font-weight: 500; font-size: 13px; }
 .pnav a:hover { color: var(--ink); }
 .pnav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
@@ -117,6 +118,7 @@ footer { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--lin
     <a id="nav-parks" href="parks.html" data-i18n="navParks"></a>
     <a id="nav-launch" href="launches.html" aria-current="page" data-i18n="navLaunch"></a>
     <a id="nav-budget" href="budget.html" data-i18n="navBudget"></a>
+    <a class="tripswitch" id="nav-vegas" href="vegas/index.html" data-i18n="navVegas"></a>
   </nav>
 
   <header>
@@ -194,7 +196,7 @@ const UI = {
   en: {
     docTitle: "Orlando Launch Watch",
     toggle: "中文", toggleAria: "切换到中文",
-    navAria: "Pages", navItin: "Itinerary", navParks: "Parks", navLaunch: "Launches", navBudget: "Budget",
+    navAria: "Pages", navItin: "Itinerary", navParks: "Parks", navLaunch: "Launches", navBudget: "Budget", navVegas: "Las Vegas plan →",
     eyebrow: "Cape Canaveral & Kennedy Space Center · ~1 hour from Orlando",
     h1: "Launch watch",
     lede: "Florida’s Space Coast launches a rocket every few days, mostly SpaceX. Exact dates are usually set only 1–3 weeks ahead, so this page checks the live launch schedule each time you open it and shows anything that lands on your trip.",
@@ -261,7 +263,7 @@ const UI = {
   zh: {
     docTitle: "奥兰多火箭发射观看指南",
     toggle: "English", toggleAria: "Switch to English",
-    navAria: "页面", navItin: "行程", navParks: "园区", navLaunch: "火箭发射", navBudget: "预算",
+    navAria: "页面", navItin: "行程", navParks: "园区", navLaunch: "火箭发射", navBudget: "预算", navVegas: "拉斯维加斯方案 →",
     eyebrow: "卡纳维拉尔角与肯尼迪航天中心 · 距奥兰多约1小时",
     h1: "火箭发射观看",
     lede: "佛罗里达太空海岸每隔几天就有一次火箭发射，大部分是SpaceX。确切日期通常只提前1–3周确定，所以每次打开这个页面，它都会查询实时发射时间表，并显示落在你们行程里的发射。",
@@ -422,7 +424,7 @@ function renderStatic() {
   document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t[el.dataset.i18nHtml]; });
   document.querySelectorAll("[data-i18n-aria]").forEach(el => el.setAttribute("aria-label", t[el.dataset.i18nAria]));
   $("lang-toggle").textContent = t.toggle; $("lang-toggle").setAttribute("aria-label", t.toggleAria);
-  [["nav-itin","index.html"],["nav-parks","parks.html"],["nav-launch","launches.html"],["nav-budget","budget.html"]].forEach(([id, f]) => { $(id).href = `${f}#${lang}`; });
+  [["nav-itin","index.html"],["nav-parks","parks.html"],["nav-launch","launches.html"],["nav-budget","budget.html"],["nav-vegas","vegas/index.html"]].forEach(([id, f]) => { $(id).href = `${f}#${lang}`; });
   $("plan-rows").innerHTML = t.rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join("");
   $("spots").innerHTML = t.spots.map(([n, k, d]) => `<div class="spot"><h3>${esc(n)}</h3><span class="k">${esc(k)}</span><p>${esc(d)}</p></div>`).join("");
   $("how").innerHTML = t.how.map(x => `<li>${esc(x)}</li>`).join("");
