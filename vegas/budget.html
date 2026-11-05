@@ -59,6 +59,7 @@ table.b tfoot td.r { font-family: var(--display); font-size: 20px; }
 <div class="wrap">
   <nav class="pnav" data-i18n-aria="navAria">
     <a data-nav="index.html" href="index.html" data-i18n="navItin"></a>
+    <a data-nav="flights.html" href="flights.html" data-i18n="navFlights"></a>
     <a data-nav="parks.html" href="parks.html" data-i18n="navParks"></a>
     <a data-nav="sky.html" href="sky.html" data-i18n="navSky"></a>
     <a data-nav="budget.html" href="budget.html" aria-current="page" data-i18n="navBudget"></a>
@@ -148,7 +149,7 @@ table.b tfoot td.r { font-family: var(--display); font-size: 20px; }
 
 <script>
 const PEOPLE = 3, REG_NIGHTS = 7, NYE_NIGHTS = 2, DAYS = 10, PARKING = 60, HOOVER = 15, DV_ROOM = 220, ZION_ROOM = 180, NONRES = 100;
-const DEFAULTS = { fMsn: 453, fNyc: 516, hReg: 150, hNye: 350, car: 600, entry: "pay", nonres: false, sphere: 120, food: 60, misc: 150, dv: false, zion: false };
+const DEFAULTS = { fMsn: 402, fNyc: 516, hReg: 150, hNye: 350, car: 600, entry: "pay", nonres: false, sphere: 120, food: 60, misc: 150, dv: false, zion: false };
 const ENTRY = { pay: 95, pass: 80 };
 const CATS = ["travel","stay","do","food","other"];
 const UI = {
@@ -163,7 +164,7 @@ const UI = {
     barAria: "Share of the average per-person cost by category",
     compare: v => `The Orlando plan came to about <b>$3,650–3,760</b> per person — this plan is about <b>${v} less</b> each.`,
     cheaper: "cheaper", ctlTitle: "Your choices",
-    flightLabel: "Round-trip flight to Las Vegas", fMsn: "From Madison", fNyc: "From New York",
+    flightLabel: "Round-trip flight to Las Vegas", fMsn: "From Madison (Chicago nonstop + bus)", fNyc: "From New York",
     hotelLabel: "Hotel per night, whole group", hReg: "Regular × 7", hNye: "New Year’s × 2",
     hotelHint: "One off-Strip room for 3 with free parking. Dec 30–31 cost far more than the rest of the week.",
     optDv: "Stay a night in Death Valley (+ about $220 for the room)", optZion: "Stay a night in Springdale for Zion (+ about $180)",
@@ -177,7 +178,7 @@ const UI = {
     itemsTitle: "Line by line", thItem: "Item", thPer: "Per person", footTotal: "Total per person",
     groups: { travel:"Getting there & around", stay:"Staying", do:"Parks & shows", daily:"Day to day" },
     rows: {
-      flight: ["Flight", "Madison / New York, Dec 23 – Jan 1"],
+      flight: ["Flight", "Madison via Chicago (United nonstop + $70 Van Galder bus) / New York, Dec 23 – Jan 1"],
       car: ["Rental car + gas", v => `${v} for the group, split 3 ways; ~900 miles of driving`],
       parking: ["Parking", "Strip garages and the Hoover Dam garage, split 3 ways"],
       hotel: ["Hotel", (r, n, tot) => `7 × ${r} + 2 × ${n} (New Year’s) = ${tot}, split 3 ways`],
@@ -204,7 +205,7 @@ const UI = {
     barAria: "人均花费按类别的占比",
     compare: v => `奥兰多方案每人约<b>$3,650–3,760</b>——这个方案每人约<b>少${v}</b>。`,
     cheaper: "更便宜", ctlTitle: "你的选择",
-    flightLabel: "往返拉斯维加斯机票", fMsn: "从麦迪逊", fNyc: "从纽约",
+    flightLabel: "往返拉斯维加斯机票", fMsn: "从麦迪逊（芝加哥直飞 + 大巴）", fNyc: "从纽约",
     hotelLabel: "酒店，三人每晚合计", hReg: "普通 × 7晚", hNye: "跨年 × 2晚",
     hotelHint: "大道外、免费停车、三人一间。12月30–31日比这周其他晚上贵很多。",
     optDv: "在死亡谷住一晚（房间约+$220）", optZion: "在斯普林代尔住一晚去锡安（约+$180）",
@@ -218,7 +219,7 @@ const UI = {
     itemsTitle: "明细", thItem: "项目", thPer: "每人", footTotal: "每人合计",
     groups: { travel:"交通", stay:"住宿", do:"公园和演出", daily:"日常" },
     rows: {
-      flight: ["机票", "麦迪逊 / 纽约，12月23日 – 1月1日"],
+      flight: ["机票", "麦迪逊经芝加哥（美联航直飞 + $70大巴）/ 纽约，12月23日 – 1月1日"],
       car: ["租车 + 油费", v => `三人合计 ${v}，平摊；约1,450公里车程`],
       parking: ["停车", "大道停车楼和胡佛水坝停车楼，三人平摊"],
       hotel: ["酒店", (r, n, tot) => `7 × ${r} + 2 × ${n}（跨年）= ${tot}，三人平摊`],

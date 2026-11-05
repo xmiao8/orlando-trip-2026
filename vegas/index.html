@@ -16,6 +16,7 @@
 <div class="wrap">
   <nav class="pnav" data-i18n-aria="navAria">
     <a data-nav="index.html" href="index.html" aria-current="page" data-i18n="navItin"></a>
+    <a data-nav="flights.html" href="flights.html" data-i18n="navFlights"></a>
     <a data-nav="parks.html" href="parks.html" data-i18n="navParks"></a>
     <a data-nav="sky.html" href="sky.html" data-i18n="navSky"></a>
     <a data-nav="budget.html" href="budget.html" data-i18n="navBudget"></a>
@@ -68,10 +69,10 @@ const CATS = ["vegas","mead","zion","dv","flex","travel"];
 const DAYS = [
   { id:"dec23", m:12, d:23, w:3, cat:"travel", drive:0, guide:"sky",
     en:{ tag:"Arrive", park:"Las Vegas · LAS", iconic:"Supermoon", title:"Land in Vegas, watch the supermoon rise",
-      items:["Flights land in the morning; pick up the rental car and check in","The full supermoon rises at 4:09 p.m., just before sunset (4:31). Find a spot with a clear view east, like a parking-garage roof","Evening on the Strip: the Sphere lit up, Bellagio fountains"],
+      items:["Flights land late morning (United from O’Hare gets in at 11:34 a.m.); pick up the rental car and check in","The full supermoon rises at 4:09 p.m., just before sunset (4:31). Find a spot with a clear view east, like a parking-garage roof","Evening on the Strip: the Sphere lit up, Bellagio fountains"],
       note:"The moon clears the mountains east of town around 4:25–4:40 p.m. — the classic huge orange moonrise." },
     zh:{ tag:"抵达", park:"拉斯维加斯 · LAS机场", iconic:"超级月亮", title:"飞抵拉斯维加斯，看超级月亮升起",
-      items:["上午落地，取租车、入住","满月超级月亮下午4:09升起，就在日落（4:31）前。找一个朝东视野开阔的地方，比如停车楼楼顶","晚上逛大道：亮灯的Sphere球幕、百乐宫喷泉"],
+      items:["上午晚些落地（美联航从奥黑尔11:34到），取租车、入住","满月超级月亮下午4:09升起，就在日落（4:31）前。找一个朝东视野开阔的地方，比如停车楼楼顶","晚上逛大道：亮灯的Sphere球幕、百乐宫喷泉"],
       note:"月亮大约在下午4:25–4:40越过城东的山——经典的巨大橙色月出。" } },
   { id:"dec24", m:12, d:24, w:4, cat:"mead", drive:1.5, guide:"mead",
     en:{ tag:"Lake Mead", park:"Hoover Dam + Lake Mead · ~45 min", iconic:"Christmas Eve moonrise", title:"Hoover Dam, Lake Mead and a Christmas Eve moonrise",
@@ -137,7 +138,7 @@ const DAYS = [
 ];
 
 const CHECKS = [
-  { id:"flights", en:["Flights to Las Vegas (LAS)","Madison ~$453 · New York ~$516 nonstop (Google Flights, Nov 5)"], zh:["飞拉斯维加斯（LAS）的机票","麦迪逊约$453 · 纽约直飞约$516（Google Flights，11月5日）"] },
+  { id:"flights", en:["Flights to Las Vegas (LAS)","Madison: Chicago nonstop ~$332 + bus, or MSN ~$453 · New York ~$516 nonstop. See the Flights page"], zh:["飞拉斯维加斯（LAS）的机票","麦迪逊：芝加哥直飞约$332 + 大巴，或MSN约$453 · 纽约直飞约$516。详见机票页"] },
   { id:"hotel", en:["Hotel off the Strip with free parking","9 nights; the New Year’s nights cost more"], zh:["大道外、免费停车的酒店","9晚；跨年那两晚更贵"] },
   { id:"car", en:["Rental car","Drivers under 25 usually pay a daily fee"], zh:["租车","25岁以下司机通常每天要加钱"] },
   { id:"sphere", en:["Sphere tickets: The Wizard of Oz","Christmas Day or another evening"], zh:["Sphere门票：《绿野仙踪》","圣诞节当天或其他晚上"] },

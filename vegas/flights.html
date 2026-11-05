@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Las Vegas Trip Flights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="site.css">
+<script src="site.js"></script>
+<style>
+.routes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.route { background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--c, var(--line)); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.route.best { border-color: var(--accent); border-top-color: var(--accent); }
+.route .rk { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.route h3 { font-size: 19px; }
+.route .price { font-family: var(--display); font-size: clamp(30px, 5vw, 38px); font-weight: 800; letter-spacing: -.02em; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.route.best .price { color: var(--accent); }
+.route .math { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.route ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+.pill { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; display: inline-block; }
+.pill.pick { color: var(--accent); } .pill.ok { color: var(--good); } .pill.warn { color: var(--warn); } .pill.no { color: var(--bad); } .pill.na { color: var(--muted); }
+table.t td.time { white-space: nowrap; font-weight: 600; }
+table.t td.time small { font-weight: 500; color: var(--muted); margin-left: 2px; }
+table.t td.pr { white-space: nowrap; font-weight: 700; text-align: right; }
+table.t th.r { text-align: right; padding-right: 0; }
+table.t td.pr { padding-right: 0; }
+table.t td .air { font-weight: 600; display: block; }
+table.t td .ap { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+table.t td .why { display: block; font-size: 12.5px; color: var(--muted); margin-top: 3px; max-width: 34ch; }
+table.t tr.dim td { opacity: .62; }
+.callout { display: flex; gap: 10px; align-items: baseline; font-size: 14px; background: color-mix(in srgb, var(--c-sky) 10%, transparent); border: 1px solid color-mix(in srgb, var(--c-sky) 35%, transparent); border-radius: 8px; padding: 10px 12px; max-width: 72ch; }
+.callout b { white-space: nowrap; }
+ol.tips { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; font-size: 14.5px; }
+table.t td.pr + td { padding-left: 14px; }
+@media (max-width: 600px) {
+  table.ft thead { display: none; }
+  table.ft, table.ft tbody { display: block; }
+  table.ft tr { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; align-items: baseline; column-gap: 10px; row-gap: 6px; padding: 10px 8px; border-bottom: 1px solid var(--line); }
+  table.ft tr.hl { background: color-mix(in srgb, var(--accent) 9%, transparent); border-radius: 6px; }
+  table.ft tr.hl td { background: none; }
+  table.ft td { padding: 0; border: 0; }
+  table.ft td.time + td.time::before { content: "→ "; color: var(--muted); font-weight: 500; }
+  table.ft td:last-child { grid-column: 1 / -1; padding-left: 0; }
+  table.ft td .why { max-width: none; display: inline; margin: 0 0 0 8px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="pnav" data-i18n-aria="navAria">
+    <a data-nav="index.html" href="index.html" data-i18n="navItin"></a>
+    <a data-nav="flights.html" href="flights.html" aria-current="page" data-i18n="navFlights"></a>
+    <a data-nav="parks.html" href="parks.html" data-i18n="navParks"></a>
+    <a data-nav="sky.html" href="sky.html" data-i18n="navSky"></a>
+    <a data-nav="budget.html" href="budget.html" data-i18n="navBudget"></a>
+    <a class="tripswitch" data-nav="../index.html" href="../index.html" data-i18n="navOrlando"></a>
+  </nav>
+
+  <header class="top">
+    <div class="toprow">
+      <div class="eyebrow" data-i18n="eyebrow"></div>
+      <button class="lang" id="lang-toggle" type="button"></button>
+    </div>
+    <h1 data-i18n="h1"></h1>
+    <p class="lede" data-i18n="lede"></p>
+  </header>
+
+  <section class="block" aria-labelledby="routes-title">
+    <div class="sechead"><h2 id="routes-title" data-i18n="routesTitle"></h2><span class="meta" data-i18n="routesMeta"></span></div>
+    <div class="routes" id="routes"></div>
+  </section>
+
+  <section class="block c-travel" aria-labelledby="out-title">
+    <div class="sechead"><h2 id="out-title" data-i18n="outTitle"></h2><span class="meta" data-i18n="outMeta"></span></div>
+    <p class="callout" data-i18n-html="moonCallout"></p>
+    <div class="tablewrap"><table class="t ft" id="out"></table></div>
+    <p class="note" data-i18n="outNote"></p>
+  </section>
+
+  <section class="block c-travel" aria-labelledby="back-title">
+    <div class="sechead"><h2 id="back-title" data-i18n="backTitle"></h2><span class="meta" data-i18n="backMeta"></span></div>
+    <div class="tablewrap"><table class="t ft" id="back"></table></div>
+    <p class="note" data-i18n="backNote"></p>
+  </section>
+
+  <div class="panels">
+    <section class="panel" aria-labelledby="msn-title">
+      <h2 id="msn-title" data-i18n="msnTitle"></h2>
+      <div class="box">
+        <div class="facts" id="msnfacts"></div>
+        <p data-i18n="msnText"></p>
+        <p class="note" data-i18n="msnWarn"></p>
+      </div>
+    </section>
+    <section class="panel" aria-labelledby="bus-title">
+      <h2 id="bus-title" data-i18n="busTitle"></h2>
+      <div class="box">
+        <ul id="bus"></ul>
+        <a class="official" href="https://www.coachusa.com/van-galder-bus-company" target="_blank" rel="noopener" data-i18n="busLink"></a>
+      </div>
+    </section>
+  </div>
+
+  <section class="block" aria-labelledby="tips-title">
+    <h2 id="tips-title" data-i18n="tipsTitle"></h2>
+    <ol class="tips" id="tips"></ol>
+  </section>
+
+  <section class="block" aria-labelledby="links-title">
+    <h2 id="links-title" data-i18n="linksTitle"></h2>
+    <div class="links">
+      <a href="https://www.google.com/travel/flights?q=Flights%20from%20Chicago%20to%20LAS%20on%202026-12-23%20through%202027-01-01" target="_blank" rel="noopener" data-i18n="lnkChi"></a>
+      <a href="https://www.google.com/travel/flights?q=Flights%20from%20MSN%20to%20LAS%20on%202026-12-23%20through%202027-01-01" target="_blank" rel="noopener" data-i18n="lnkMsn"></a>
+      <a href="https://www.google.com/travel/flights?q=One%20way%20flights%20from%20LAS%20to%20Chicago%20on%202027-01-01" target="_blank" rel="noopener" data-i18n="lnkBack"></a>
+      <a href="https://www.coachusa.com/van-galder-bus-company" target="_blank" rel="noopener" data-i18n="lnkBus"></a>
+    </div>
+  </section>
+
+  <footer class="foot" data-i18n="footer"></footer>
+</div>
+
+<script>
+const BUS = 70;
+// Times are local: departures from Chicago in Central time, arrivals in Las Vegas in Pacific time (and the reverse coming home).
+// st: pick / ok / warn / no ; why: key into UI.why
+const OUT = [
+  { al:"wn", from:"MDW", dep:[5,50],  arr:[7,50],  p:353, st:"ok",   why:"early" },
+  { al:"f9", from:"ORD", dep:[7,35],  arr:[10,2],  p:273, st:"warn", why:"basic" },
+  { al:"ua", from:"ORD", dep:[9,15],  arr:[11,34], p:332, st:"pick", why:"pickOut" },
+  { al:"ua", from:"ORD", dep:[12,50], arr:[15,4],  p:337, st:"ok",   why:"tight" },
+  { al:"aa", from:"ORD", dep:[18,59], arr:[21,15], p:308, st:"warn", why:"afterMoon" },
+  { al:"ua", from:"ORD", dep:[20,20], arr:[22,38], p:307, st:"warn", why:"afterMoon" },
+  { al:"aa", from:"ORD", dep:[21,10], arr:[23,21], p:308, st:"warn", why:"afterMoon" },
+  { al:"ua", from:"ORD", dep:[21,47], arr:[23,59], p:307, st:"warn", why:"afterMoon" },
+];
+const BACK = [
+  { al:"wn", to:"MDW", dep:[0,20],  arr:[5,40],  p:177, st:"no",   why:"midnight" },
+  { al:"aa", to:"ORD", dep:[0,25],  arr:[5,59],  p:177, st:"no",   why:"midnight" },
+  { al:"ua", to:"ORD", dep:[7,0],   arr:[12,50], p:169, st:"warn", why:"noSleep" },
+  { al:"aa", to:"ORD", dep:[8,18],  arr:[14,1],  p:219, st:"warn", why:"earlyBack" },
+  { al:"ua", to:"ORD", dep:[10,35], arr:[16,25], p:319, st:"ok",   why:"" },
+  { al:"ua", to:"ORD", dep:[12,45], arr:[18,35], p:319, st:"ok",   why:"safeBus" },
+  { al:"ua", to:"ORD", dep:[14,30], arr:[20,20], p:263, st:"pick", why:"pickBack" },
+  { al:"ua", to:"ORD", dep:[16,10], arr:[22,0],  p:299, st:"warn", why:"lateBus" },
+  { al:"aa", to:"ORD", dep:[18,0],  arr:[23,35], p:249, st:"warn", why:"lateBus" },
+  { al:"aa", to:"ORD", dep:[23,28], arr:[5,0], next:true, p:219, st:"warn", why:"redeye" },
+];
+const MSN = [453, 481, 499];
+
+const UI = {
+  en: {
+    docTitle: "Las Vegas Trip Flights",
+    eyebrow: "Dec 23, 2026 – Jan 1, 2027 · from Madison",
+    h1: "Flights",
+    lede: "You can fly nonstop from Chicago and take the Van Galder bus to the airport, or fly from Madison with one connection. Prices are per person in economy, from Google Flights on Nov 5, 2026. Nothing is booked.",
+    routesTitle: "Two ways to get there", routesMeta: "round trip, per person",
+    airline: { ua:"United", aa:"American", wn:"Southwest", f9:"Frontier" },
+    rChi: { name:"Chicago nonstop + bus", tag:"Cheapest", math: (a, b) => `flight ${a} + bus $${BUS}`,
+      pts:["Nonstop, about 4 hours to Las Vegas","Lots of flight times from O’Hare and Midway","Adds about 2.5 hours on the bus each way"] },
+    rMsn: { name:"Madison (MSN)", tag:"Easiest", math: () => "1 stop, no bus",
+      pts:["Leave from home, no bus ride","One connection each way, so a longer day","Fewer flights to choose from"] },
+    outTitle: "Going: Wed, Dec 23 · Chicago → Las Vegas", outMeta: "nonstop · round-trip price",
+    moonCallout: "<b>Moonrise 4:09 p.m.</b> The full supermoon comes up over the mountains east of Las Vegas just before sunset. Land by early afternoon to pick up the car and get to a viewpoint.",
+    outNote: "Prices are Google’s round-trip fares for these outbound flights paired with the cheapest return. Picking an afternoon return on Jan 1 (below) can cost more, so compare that against two one-way tickets.",
+    backTitle: "Coming home: Fri, Jan 1 · Las Vegas → Chicago", backMeta: "nonstop · one-way price",
+    backNote: "Las Vegas is 2 hours behind Chicago, so a 2:30 p.m. departure lands at 8:20 p.m. Chicago time after a 3 hr 50 min flight.",
+    th: { flight:"Flight", dep:"Departs", arr:"Arrives", price:"Price", note:"" },
+    st: { pick:"Our pick", ok:"Works", warn:"Trade-off", no:"Not doable" },
+    why: {
+      early:"Very early start from Madison: the bus would leave in the middle of the night",
+      earlyBack:"Doable, but an early alarm after New Year’s Eve",
+      basic:"Cheapest, but a basic fare: carry-on bag and seat choice cost extra",
+      pickOut:"Lands late morning with time to get the car, check in and catch the moonrise",
+      tight:"Lands about an hour before moonrise; tight with the rental car pickup",
+      afterMoon:"Lands after moonrise. The full moon will be high in the sky, but you miss it rising",
+      midnight:"Leaves 20 minutes after the New Year’s fireworks, so not possible",
+      noSleep:"Cheapest you could actually make, but it means going straight from the party to the airport",
+      safeBus:"Lands early evening, plenty of time for a bus to Madison",
+      pickBack:"Sleep in, check out at noon, and still get back to Chicago the same evening. Check the last bus to Madison",
+      lateBus:"Lands late, so check that a bus to Madison still runs that night",
+      redeye:"Overnight flight: one more evening in Vegas, but no hotel room after checkout",
+    },
+    msnTitle: "Flying from Madison",
+    msnFacts: ["from", "1 stop"],
+    msnText: "Round trips from Madison for Dec 23 – Jan 1 started at $453, then $481 and $499. Every option has a connection (United or American, through their hubs).",
+    msnWarn: "Google showed no one-way flights from Las Vegas to Madison on Jan 1 (Dec 31 started at $185). On a Madison round trip, check what the return leg actually is before you buy.",
+    busTitle: "Van Galder bus",
+    bus: [
+      "About $70 round trip between Madison and O’Hare or Midway, roughly 2.5 hours each way",
+      "Runs on the same schedule every day of the year, holidays included",
+      "Book ahead for holiday travel days",
+      "Aim to reach the airport 2 hours before your flight; holiday security lines are long",
+      "Southwest flies from Midway (MDW), not O’Hare, so book the bus to the right airport",
+    ],
+    busLink: "Van Galder schedule & tickets ↗",
+    tipsTitle: "Before you book",
+    tips: [
+      "Google’s price insights suggested booking by around Dec 11. Holiday fares tend to rise as the dates get close, so booking in November is safer.",
+      "Turn on a Google Flights price alert for the Chicago search to see if the fare drops.",
+      "Book the flight before the bus, then pick a bus that gets you to the airport 2 hours early.",
+      "Most US airlines let you cancel free within 24 hours of booking (when you book a week or more ahead), so you can lock in a fare and still change your mind.",
+      "Frontier and other basic fares charge for carry-ons, so compare the full price with bags.",
+    ],
+    linksTitle: "Search it yourself",
+    lnkChi: "Chicago → Las Vegas, Dec 23 – Jan 1 ↗", lnkMsn: "Madison → Las Vegas, Dec 23 – Jan 1 ↗", lnkBack: "Las Vegas → Chicago, Jan 1 one-way ↗", lnkBus: "Van Galder bus ↗",
+    footer: "Flight prices from Google Flights on Nov 5, 2026, and they change daily. The bus price is an approximate round-trip fare. Times are local: Chicago is Central time, Las Vegas is Pacific time (2 hours behind).",
+    time: (h, m) => `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h < 12 ? "a.m." : "p.m."}`,
+    next: "+1 day",
+  },
+  zh: {
+    docTitle: "拉斯维加斯旅行机票",
+    eyebrow: "2026年12月23日 – 2027年1月1日 · 从麦迪逊出发",
+    h1: "机票",
+    lede: "可以从芝加哥直飞，坐Van Galder大巴去机场；也可以从麦迪逊出发转一次机。价格为每人经济舱，2026年11月5日在Google Flights查询。还没有订任何票。",
+    routesTitle: "两种走法", routesMeta: "往返，每人",
+    airline: { ua:"美联航", aa:"美国航空", wn:"西南航空", f9:"边疆航空" },
+    rChi: { name:"芝加哥直飞 + 大巴", tag:"最便宜", math: (a, b) => `机票 ${a} + 大巴 $${BUS}`,
+      pts:["直飞，到拉斯维加斯约4小时","奥黑尔和中途机场的航班时间很多","每程多坐约2.5小时大巴"] },
+    rMsn: { name:"麦迪逊（MSN）", tag:"最省事", math: () => "转机1次，不用坐大巴",
+      pts:["从家门口出发，不用坐大巴","每程转机一次，路上时间更长","可选航班较少"] },
+    outTitle: "去程：12月23日（周三）· 芝加哥 → 拉斯维加斯", outMeta: "直飞 · 往返价格",
+    moonCallout: "<b>月出 16:09</b> 满月超级月亮在日落前从拉斯维加斯东边的山后升起。最好下午早些时候落地，留时间取车、去观景点。",
+    outNote: "价格是Google给出的往返票价：这些去程航班配上最便宜的回程。如果回程选1月1日下午的航班（见下），可能会更贵，可以和分开买两张单程票比较一下。",
+    backTitle: "回程：1月1日（周五）· 拉斯维加斯 → 芝加哥", backMeta: "直飞 · 单程价格",
+    backNote: "拉斯维加斯比芝加哥晚2小时，所以14:30起飞、飞3小时50分钟，芝加哥时间20:20落地。",
+    th: { flight:"航班", dep:"起飞", arr:"到达", price:"价格", note:"" },
+    st: { pick:"推荐", ok:"可以", warn:"有取舍", no:"不可行" },
+    why: {
+      early:"从麦迪逊出发太早：大巴半夜就要走",
+      earlyBack:"赶得上，但跨年后要早起",
+      basic:"最便宜，但是基础票：随身行李和选座要另外付钱",
+      pickOut:"上午晚些落地，有时间取车、入住，再去看月出",
+      tight:"落地后约一小时就月出，加上取车有点赶",
+      afterMoon:"月出后才落地。满月会高挂天上，但看不到它升起",
+      midnight:"跨年烟花后20分钟就起飞，不可能赶上",
+      noSleep:"真正赶得上的最便宜航班，但意味着跨年后直接去机场",
+      safeBus:"傍晚落地，有足够时间坐大巴回麦迪逊",
+      pickBack:"睡个懒觉、中午退房，当晚还能回到芝加哥。查一下回麦迪逊的末班大巴",
+      lateBus:"落地较晚，查一下当晚还有没有回麦迪逊的大巴",
+      redeye:"红眼航班：在拉斯维加斯多待一个晚上，但退房后没有酒店房间",
+    },
+    msnTitle: "从麦迪逊出发",
+    msnFacts: ["起", "转机1次"],
+    msnText: "12月23日 – 1月1日从麦迪逊往返，最低$453，其次$481和$499。全部需要转机（美联航或美国航空，经它们的枢纽机场）。",
+    msnWarn: "Google上1月1日没有拉斯维加斯飞麦迪逊的单程航班（12月31日最低$185）。买麦迪逊往返票前，先看清回程具体是哪一班。",
+    busTitle: "Van Galder大巴",
+    bus: [
+      "麦迪逊到奥黑尔或中途机场往返约$70，单程约2.5小时",
+      "全年每天同一时刻表，节假日也照常运行",
+      "节日出行日记得提前订票",
+      "争取起飞前2小时到机场；节日期间安检排队很长",
+      "西南航空从中途机场（MDW）起飞，不是奥黑尔，大巴要订到对的机场",
+    ],
+    busLink: "Van Galder时刻表和购票 ↗",
+    tipsTitle: "订票前",
+    tips: [
+      "Google的价格分析建议在12月11日左右前订票。节日机票越临近越容易涨，所以11月订更稳妥。",
+      "在Google Flights给芝加哥的搜索打开价格提醒，降价时会通知你。",
+      "先订机票再订大巴，选一班能提前2小时到机场的大巴。",
+      "大多数美国航空公司在订票后24小时内可以免费取消（提前一周以上订票时），可以先锁定价格，还能反悔。",
+      "边疆航空等基础票的随身行李要收费，比较价格时把行李费算进去。",
+    ],
+    linksTitle: "自己查一查",
+    lnkChi: "芝加哥 → 拉斯维加斯，12月23日 – 1月1日 ↗", lnkMsn: "麦迪逊 → 拉斯维加斯，12月23日 – 1月1日 ↗", lnkBack: "拉斯维加斯 → 芝加哥，1月1日单程 ↗", lnkBus: "Van Galder大巴 ↗",
+    footer: "机票价格于2026年11月5日在Google Flights查询，每天都会变。大巴价格为大致往返票价。时间均为当地时间：芝加哥为中部时间，拉斯维加斯为太平洋时间（晚2小时）。",
+    time: (h, m) => `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`,
+    next: "次日",
+  },
+};
+
+const $ = id => document.getElementById(id);
+const esc = Site.esc;
+const money = v => "$" + Math.round(v).toLocaleString("en-US");
+
+function table(t, rows, port) {
+  const head = `<thead><tr><th>${t.th.flight}</th><th>${t.th.dep}</th><th>${t.th.arr}</th><th class="r">${t.th.price}</th><th>${t.th.note}</th></tr></thead>`;
+  const body = rows.map(r => {
+    const route = port === "out" ? `${r.from} → LAS` : `LAS → ${r.to}`;
+    const cls = r.st === "pick" ? "hl" : r.st === "no" ? "dim" : "";
+    return `<tr class="${cls}">
+      <td><span class="air">${esc(t.airline[r.al])}</span><span class="ap">${route}</span></td>
+      <td class="time">${t.time(...r.dep)}</td>
+      <td class="time">${t.time(...r.arr)}${r.next ? `<small>${esc(t.next)}</small>` : ""}</td>
+      <td class="pr">${money(r.p)}</td>
+      <td><span class="pill ${r.st}">${esc(t.st[r.st])}</span>${r.why ? `<span class="why">${esc(t.why[r.why])}</span>` : ""}</td>
+    </tr>`;
+  }).join("");
+  return head + `<tbody>${body}</tbody>`;
+}
+
+function render(t) {
+  const lo = Math.min(...OUT.filter(r => r.why !== "basic").map(r => r.p)), hi = OUT.find(r => r.st === "pick").p;
+  const route = (r, cls, priceTxt, math) => `<article class="route ${cls}">
+      <div class="rk"><h3>${esc(r.name)}</h3><span class="pill ${cls === "best" ? "pick" : "na"}">${esc(r.tag)}</span></div>
+      <div class="price">${priceTxt}</div>
+      <div class="math">${esc(math)}</div>
+      <ul>${r.pts.map(p => `<li>${esc(p)}</li>`).join("")}</ul>
+    </article>`;
+  $("routes").innerHTML =
+    route(t.rChi, "best c-travel", `${money(lo + BUS)}–${money(hi + BUS)}`, t.rChi.math(`${money(lo)}–${money(hi)}`)) +
+    route(t.rMsn, "c-flex", `${money(MSN[0])}–${money(MSN[MSN.length - 1])}`, t.rMsn.math());
+  $("out").innerHTML = table(t, OUT, "out");
+  $("back").innerHTML = table(t, BACK, "back");
+  $("msnfacts").innerHTML = `<span><b>${money(MSN[0])}</b>${esc(t.msnFacts[0])}</span><span>${esc(t.msnFacts[1])}</span>`;
+  $("bus").innerHTML = t.bus.map(b => `<li>${esc(b)}</li>`).join("");
+  $("tips").innerHTML = t.tips.map(b => `<li>${esc(b)}</li>`).join("");
+}
+
+Site.init(UI, render);
+</script>
+</body>
+</html>
