@@ -118,7 +118,7 @@ footer { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--lin
     <a id="nav-parks" href="parks.html" data-i18n="navParks"></a>
     <a id="nav-launch" href="launches.html" aria-current="page" data-i18n="navLaunch"></a>
     <a id="nav-budget" href="budget.html" data-i18n="navBudget"></a>
-    <a class="tripswitch" id="nav-vegas" href="vegas/index.html" data-i18n="navVegas"></a>
+    <a class="tripswitch" id="nav-vegas" href="https://xmiao8.github.io/vegas-trip-2026/" data-i18n="navVegas"></a>
   </nav>
 
   <header>
@@ -424,7 +424,7 @@ function renderStatic() {
   document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t[el.dataset.i18nHtml]; });
   document.querySelectorAll("[data-i18n-aria]").forEach(el => el.setAttribute("aria-label", t[el.dataset.i18nAria]));
   $("lang-toggle").textContent = t.toggle; $("lang-toggle").setAttribute("aria-label", t.toggleAria);
-  [["nav-itin","index.html"],["nav-parks","parks.html"],["nav-launch","launches.html"],["nav-budget","budget.html"],["nav-vegas","vegas/index.html"]].forEach(([id, f]) => { $(id).href = `${f}#${lang}`; });
+  [["nav-itin","index.html"],["nav-parks","parks.html"],["nav-launch","launches.html"],["nav-budget","budget.html"],["nav-vegas","https://xmiao8.github.io/vegas-trip-2026/index.html"]].forEach(([id, f]) => { $(id).href = `${f}#${lang}`; });
   $("plan-rows").innerHTML = t.rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join("");
   $("spots").innerHTML = t.spots.map(([n, k, d]) => `<div class="spot"><h3>${esc(n)}</h3><span class="k">${esc(k)}</span><p>${esc(d)}</p></div>`).join("");
   $("how").innerHTML = t.how.map(x => `<li>${esc(x)}</li>`).join("");

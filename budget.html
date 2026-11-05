@@ -130,7 +130,7 @@ footer { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--lin
     <a id="nav-parks" href="parks.html" data-i18n="navParks"></a>
     <a id="nav-launch" href="launches.html" data-i18n="navLaunch"></a>
     <a id="nav-budget" href="budget.html" aria-current="page" data-i18n="navBudget"></a>
-    <a class="tripswitch" id="nav-vegas" href="vegas/index.html" data-i18n="navVegas"></a>
+    <a class="tripswitch" id="nav-vegas" href="https://xmiao8.github.io/vegas-trip-2026/" data-i18n="navVegas"></a>
   </nav>
 
   <header>
@@ -373,7 +373,7 @@ function renderStatic() {
   document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t[el.dataset.i18n]; });
   document.querySelectorAll("[data-i18n-aria]").forEach(el => el.setAttribute("aria-label", t[el.dataset.i18nAria]));
   $("lang-toggle").textContent = t.toggle; $("lang-toggle").setAttribute("aria-label", t.toggleAria);
-  $("nav-itin").href = "index.html#" + lang; $("nav-parks").href = "parks.html#" + lang; $("nav-launch").href = "launches.html#" + lang; $("nav-vegas").href = "vegas/index.html#" + lang; $("nav-budget").href = "budget.html#" + lang;
+  $("nav-itin").href = "index.html#" + lang; $("nav-parks").href = "parks.html#" + lang; $("nav-launch").href = "launches.html#" + lang; $("nav-vegas").href = "https://xmiao8.github.io/vegas-trip-2026/index.html#" + lang; $("nav-budget").href = "budget.html#" + lang;
   const sel = $("ll"); sel.innerHTML = "";
   Object.keys(LL).forEach(k => {
     const o = document.createElement("option");
