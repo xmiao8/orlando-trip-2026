@@ -149,7 +149,7 @@ table.b tfoot td.r { font-family: var(--display); font-size: 20px; }
 
 <script>
 const PEOPLE = 3, REG_NIGHTS = 7, NYE_NIGHTS = 2, DAYS = 10, PARKING = 60, HOOVER = 15, DV_ROOM = 220, ZION_ROOM = 180, NONRES = 100;
-const DEFAULTS = { fMsn: 402, fNyc: 516, hReg: 150, hNye: 350, car: 600, entry: "pay", nonres: false, sphere: 120, food: 60, misc: 150, dv: false, zion: false };
+const DEFAULTS = { fMsn: 496, fNyc: 516, hReg: 150, hNye: 350, car: 600, entry: "pay", nonres: false, sphere: 120, food: 60, misc: 150, dv: false, zion: false };
 const ENTRY = { pay: 95, pass: 80 };
 const CATS = ["travel","stay","do","food","other"];
 const UI = {
@@ -178,7 +178,7 @@ const UI = {
     itemsTitle: "Line by line", thItem: "Item", thPer: "Per person", footTotal: "Total per person",
     groups: { travel:"Getting there & around", stay:"Staying", do:"Parks & shows", daily:"Day to day" },
     rows: {
-      flight: ["Flight", "Madison via Chicago (United nonstop + $70 Van Galder bus) / New York, Dec 23 – Jan 1"],
+      flight: ["Flight", "Madison via Chicago (United nonstop round trip $426 + $70 Van Galder bus) / New York, Dec 23 – Jan 1"],
       car: ["Rental car + gas", v => `${v} for the group, split 3 ways; ~900 miles of driving`],
       parking: ["Parking", "Strip garages and the Hoover Dam garage, split 3 ways"],
       hotel: ["Hotel", (r, n, tot) => `7 × ${r} + 2 × ${n} (New Year’s) = ${tot}, split 3 ways`],
@@ -219,7 +219,7 @@ const UI = {
     itemsTitle: "明细", thItem: "项目", thPer: "每人", footTotal: "每人合计",
     groups: { travel:"交通", stay:"住宿", do:"公园和演出", daily:"日常" },
     rows: {
-      flight: ["机票", "麦迪逊经芝加哥（美联航直飞 + $70大巴）/ 纽约，12月23日 – 1月1日"],
+      flight: ["机票", "麦迪逊经芝加哥（美联航直飞往返$426 + $70大巴）/ 纽约，12月23日 – 1月1日"],
       car: ["租车 + 油费", v => `三人合计 ${v}，平摊；约1,450公里车程`],
       parking: ["停车", "大道停车楼和胡佛水坝停车楼，三人平摊"],
       hotel: ["酒店", (r, n, tot) => `7 × ${r} + 2 × ${n}（跨年）= ${tot}，三人平摊`],
