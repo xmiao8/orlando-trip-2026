@@ -78,7 +78,6 @@ table.b tfoot td.r { font-family: var(--display); font-size: 20px; }
   <section class="block" aria-label="Summary">
     <div class="summary">
       <div class="fig"><span class="lbl" data-i18n="figMsn"></span><span class="num" id="n-msn"></span><span class="sub" id="s-msn"></span></div>
-      <div class="fig"><span class="lbl" data-i18n="figNyc"></span><span class="num" id="n-nyc"></span><span class="sub" id="s-nyc"></span></div>
       <div class="fig total"><span class="lbl" data-i18n="figGroup"></span><span class="num" id="n-group"></span><span class="sub" data-i18n="figGroupSub"></span></div>
     </div>
     <div class="bar" id="bar" role="img"></div>
@@ -91,10 +90,8 @@ table.b tfoot td.r { font-family: var(--display); font-size: 20px; }
       <h2 id="ctl-title" data-i18n="ctlTitle"></h2>
       <div class="field">
         <span class="flabel" data-i18n="flightLabel"></span>
-        <div class="pair">
-          <div class="field"><label for="f-msn" class="hint" data-i18n="fMsn"></label><div class="money"><input type="number" id="f-msn" min="0" step="10" inputmode="numeric"></div></div>
-          <div class="field"><label for="f-nyc" class="hint" data-i18n="fNyc"></label><div class="money"><input type="number" id="f-nyc" min="0" step="10" inputmode="numeric"></div></div>
-        </div>
+        <div class="money"><input type="number" id="f-msn" min="0" step="10" inputmode="numeric" data-i18n-aria="flightLabel"></div>
+        <span class="hint" data-i18n="fMsn"></span>
       </div>
       <div class="field">
         <span class="flabel" data-i18n="hotelLabel"></span>
@@ -148,43 +145,43 @@ table.b tfoot td.r { font-family: var(--display); font-size: 20px; }
 </div>
 
 <script>
-const PEOPLE = 3, REG_NIGHTS = 7, NYE_NIGHTS = 2, DAYS = 10, PARKING = 60, HOOVER = 15, DV_ROOM = 220, ZION_ROOM = 180, NONRES = 100;
-const DEFAULTS = { fMsn: 496, fNyc: 516, hReg: 150, hNye: 350, car: 600, entry: "pay", nonres: false, sphere: 120, food: 60, misc: 150, dv: false, zion: false };
-const ENTRY = { pay: 95, pass: 80 };
+const PEOPLE = 4, REG_NIGHTS = 7, NYE_NIGHTS = 2, DAYS = 10, PARKING = 60, HOOVER = 15, DV_ROOM = 220, ZION_ROOM = 180, NONRES = 100;
+const DEFAULTS = { fMsn: 496, hReg: 150, hNye: 350, car: 600, entry: "have", nonres: false, sphere: 120, food: 60, misc: 150, dv: false, zion: false };
+const ENTRY = { have: 0, pay: 95, pass: 80 };
 const CATS = ["travel","stay","do","food","other"];
 const UI = {
   en: {
     docTitle: "Las Vegas Trip Budget",
-    eyebrow: "Dec 23, 2026 – Jan 1, 2027 · 9 nights · 3 travelers",
+    eyebrow: "Dec 23, 2026 – Jan 1, 2027 · 9 nights · 4 travelers from Madison",
     h1: "Trip budget",
-    lede: "Estimated cost per person. Shared costs (hotel, car, parking, park entry) are split three ways. Change the choices and the totals update.",
-    figMsn: "Per person, flying from Madison", figNyc: "Per person, flying from New York", figGroup: "Whole group", figGroupSub: "1 from Madison + 2 from New York",
+    lede: "Estimated cost per person. Shared costs (hotel, car, parking, park entry) are split four ways. Change the choices and the totals update.",
+    figMsn: "Per person", figGroup: "Whole group", figGroupSub: "4 travelers",
     perDay: v => `about ${v} per day`,
     cat: { travel:"Flights & car", stay:"Hotel", do:"Parks & Sphere", food:"Food", other:"Other" },
     barAria: "Share of the average per-person cost by category",
-    compare: v => `The Orlando plan came to about <b>$3,650–3,760</b> per person — this plan is about <b>${v} less</b> each.`,
+    compare: v => `The Orlando plan came to about <b>$3,650–3,760</b> per person (worked out for 3 people) — this plan is about <b>${v} less</b> each.`,
     cheaper: "cheaper", ctlTitle: "Your choices",
-    flightLabel: "Round-trip flight to Las Vegas", fMsn: "From Madison (Chicago nonstop + bus)", fNyc: "From New York",
+    flightLabel: "Round-trip flight to Las Vegas", fMsn: "From Madison: United nonstop from O’Hare ($426) + Van Galder bus ($70)",
     hotelLabel: "Hotel per night, whole group", hReg: "Regular × 7", hNye: "New Year’s × 2",
-    hotelHint: "One off-Strip room for 3 with free parking. Dec 30–31 cost far more than the rest of the week.",
+    hotelHint: "One off-Strip room with two queen beds for 4, with free parking. Dec 30–31 cost far more than the rest of the week.",
     optDv: "Stay a night in Death Valley (+ about $220 for the room)", optZion: "Stay a night in Springdale for Zion (+ about $180)",
-    carLabel: "Rental car + gas, whole group",
+    carLabel: "Rental car + gas, whole group (mid-size SUV for 4 + luggage)",
     entryLabel: "National park entry",
-    entryOpts: { pay:"Pay at each park: $95 per car", pass:"America the Beautiful pass: $80 per car" },
-    optNonres: "I’m not a US resident (+$100 at Zion)",
+    entryOpts: { have:"We have an America the Beautiful pass: $0", pay:"Pay at each park: $95 per car", pass:"Buy an America the Beautiful pass: $80" },
+    optNonres: "I’m not a US resident (Zion may still charge +$100)",
     sphereLabel: "Sphere ticket (The Wizard of Oz)",
     foodLabel: "Food, per person per day", miscLabel: "Souvenirs, stickers & other, per person",
     reset: "Reset to suggested values",
     itemsTitle: "Line by line", thItem: "Item", thPer: "Per person", footTotal: "Total per person",
     groups: { travel:"Getting there & around", stay:"Staying", do:"Parks & shows", daily:"Day to day" },
     rows: {
-      flight: ["Flight", "Madison via Chicago (United nonstop round trip $426 + $70 Van Galder bus) / New York, Dec 23 – Jan 1"],
-      car: ["Rental car + gas", v => `${v} for the group, split 3 ways; ~900 miles of driving`],
-      parking: ["Parking", "Strip garages and the Hoover Dam garage, split 3 ways"],
-      hotel: ["Hotel", (r, n, tot) => `7 × ${r} + 2 × ${n} (New Year’s) = ${tot}, split 3 ways`],
-      dv: ["Death Valley night", "Refundable room, split 3 ways"],
-      zion: ["Springdale night", "Near Zion, split 3 ways"],
-      entry: ["Park entry", "Death Valley, Zion and Lake Mead, split 3 ways"],
+      flight: ["Flight + bus", "United nonstop O’Hare ⇄ Las Vegas, Dec 23 – Jan 1, plus the Van Galder bus from Madison"],
+      car: ["Rental car + gas", v => `${v} for the group, split 4 ways; ~900 miles of driving`],
+      parking: ["Parking", "Strip garages and the Hoover Dam garage, split 4 ways"],
+      hotel: ["Hotel", (r, n, tot) => `7 × ${r} + 2 × ${n} (New Year’s) = ${tot}, split 4 ways`],
+      dv: ["Death Valley night", "Refundable room, split 4 ways"],
+      zion: ["Springdale night", "Near Zion, split 4 ways"],
+      entry: ["Park entry", "Death Valley, Zion and Lake Mead, split 4 ways"],
       nonres: ["Zion non-resident fee", "Per person"],
       sphere: ["Sphere: The Wizard of Oz", "Holiday pricing"],
       hoover: ["Hoover Dam tour", "Optional, about $15"],
@@ -196,36 +193,36 @@ const UI = {
   },
   zh: {
     docTitle: "拉斯维加斯旅行预算",
-    eyebrow: "2026年12月23日 – 2027年1月1日 · 9晚 · 3人",
+    eyebrow: "2026年12月23日 – 2027年1月1日 · 9晚 · 4人从麦迪逊出发",
     h1: "旅行预算",
-    lede: "每人预估花费。共同费用（酒店、租车、停车、公园门票）三人平摊。修改选项，总额会随之更新。",
-    figMsn: "每人（从麦迪逊出发）", figNyc: "每人（从纽约出发）", figGroup: "三人合计", figGroupSub: "1人从麦迪逊 + 2人从纽约",
+    lede: "每人预估花费。共同费用（酒店、租车、停车、公园门票）四人平摊。修改选项，总额会随之更新。",
+    figMsn: "每人", figGroup: "四人合计", figGroupSub: "4人",
     perDay: v => `约每天 ${v}`,
     cat: { travel:"机票和租车", stay:"酒店", do:"公园和Sphere", food:"餐饮", other:"其他" },
     barAria: "人均花费按类别的占比",
-    compare: v => `奥兰多方案每人约<b>$3,650–3,760</b>——这个方案每人约<b>少${v}</b>。`,
+    compare: v => `奥兰多方案每人约<b>$3,650–3,760</b>（按3人计算）——这个方案每人约<b>少${v}</b>。`,
     cheaper: "更便宜", ctlTitle: "你的选择",
-    flightLabel: "往返拉斯维加斯机票", fMsn: "从麦迪逊（芝加哥直飞 + 大巴）", fNyc: "从纽约",
-    hotelLabel: "酒店，三人每晚合计", hReg: "普通 × 7晚", hNye: "跨年 × 2晚",
-    hotelHint: "大道外、免费停车、三人一间。12月30–31日比这周其他晚上贵很多。",
+    flightLabel: "往返拉斯维加斯机票", fMsn: "从麦迪逊：奥黑尔美联航直飞（$426）+ Van Galder大巴（$70）",
+    hotelLabel: "酒店，四人每晚合计", hReg: "普通 × 7晚", hNye: "跨年 × 2晚",
+    hotelHint: "大道外、免费停车、两张大床四人一间。12月30–31日比这周其他晚上贵很多。",
     optDv: "在死亡谷住一晚（房间约+$220）", optZion: "在斯普林代尔住一晚去锡安（约+$180）",
-    carLabel: "租车 + 油费，三人合计",
+    carLabel: "租车 + 油费，四人合计（中型SUV，装得下4人和行李）",
     entryLabel: "国家公园门票",
-    entryOpts: { pay:"每个公园单独付：每车共$95", pass:"美丽美国年票：每车$80" },
-    optNonres: "我不是美国居民（锡安+$100）",
+    entryOpts: { have:"已有美丽美国年票：$0", pay:"每个公园单独付：每车共$95", pass:"买一张美丽美国年票：$80" },
+    optNonres: "我不是美国居民（锡安可能仍收+$100）",
     sphereLabel: "Sphere门票（《绿野仙踪》）",
     foodLabel: "餐饮，每人每天", miscLabel: "纪念品、贴纸及其他，每人",
     reset: "恢复建议值",
     itemsTitle: "明细", thItem: "项目", thPer: "每人", footTotal: "每人合计",
     groups: { travel:"交通", stay:"住宿", do:"公园和演出", daily:"日常" },
     rows: {
-      flight: ["机票", "麦迪逊经芝加哥（美联航直飞往返$426 + $70大巴）/ 纽约，12月23日 – 1月1日"],
-      car: ["租车 + 油费", v => `三人合计 ${v}，平摊；约1,450公里车程`],
-      parking: ["停车", "大道停车楼和胡佛水坝停车楼，三人平摊"],
-      hotel: ["酒店", (r, n, tot) => `7 × ${r} + 2 × ${n}（跨年）= ${tot}，三人平摊`],
-      dv: ["死亡谷住一晚", "可退款房间，三人平摊"],
-      zion: ["斯普林代尔住一晚", "锡安附近，三人平摊"],
-      entry: ["公园门票", "死亡谷、锡安和米德湖，三人平摊"],
+      flight: ["机票 + 大巴", "美联航奥黑尔 ⇄ 拉斯维加斯直飞，12月23日 – 1月1日，加麦迪逊出发的Van Galder大巴"],
+      car: ["租车 + 油费", v => `四人合计 ${v}，平摊；约1,450公里车程`],
+      parking: ["停车", "大道停车楼和胡佛水坝停车楼，四人平摊"],
+      hotel: ["酒店", (r, n, tot) => `7 × ${r} + 2 × ${n}（跨年）= ${tot}，四人平摊`],
+      dv: ["死亡谷住一晚", "可退款房间，四人平摊"],
+      zion: ["斯普林代尔住一晚", "锡安附近，四人平摊"],
+      entry: ["公园门票", "死亡谷、锡安和米德湖，四人平摊"],
       nonres: ["锡安非居民费用", "每人"],
       sphere: ["Sphere：《绿野仙踪》", "节日价格"],
       hoover: ["胡佛水坝导览", "可选，约$15"],
@@ -237,14 +234,14 @@ const UI = {
   },
 };
 
-const KEY = "vegas-trip-budget";
+const KEY = "vegas-trip-budget-v2"; // v2: group of 4 from Madison, pass already owned
 let state = { ...DEFAULTS };
 try { const s = JSON.parse(Site.store.get(KEY) || "null"); if (s) state = { ...DEFAULTS, ...s }; } catch (e) {}
 const $ = id => document.getElementById(id);
 const money = v => "$" + Math.round(v).toLocaleString("en-US");
 const num = v => { const n = Number(v); return Number.isFinite(n) && n >= 0 ? n : 0; };
 const save = () => Site.store.set(KEY, JSON.stringify(state));
-const INPUTS = [["f-msn","fMsn"],["f-nyc","fNyc"],["h-reg","hReg"],["h-nye","hNye"],["car","car"],["sphere","sphere"],["food","food"],["misc","misc"]];
+const INPUTS = [["f-msn","fMsn"],["h-reg","hReg"],["h-nye","hNye"],["car","car"],["sphere","sphere"],["food","food"],["misc","misc"]];
 let T = null;
 
 function compute() {
@@ -256,31 +253,29 @@ function compute() {
     sphere: num(state.sphere), hoover: HOOVER, food: num(state.food) * DAYS, misc: num(state.misc),
   };
   const sum = Object.values(c).reduce((a, b) => a + b, 0);
-  const msn = sum + num(state.fMsn), nyc = sum + num(state.fNyc);
-  const avgFlight = (num(state.fMsn) + 2 * num(state.fNyc)) / 3;
+  const msn = sum + num(state.fMsn);
+  const avgFlight = num(state.fMsn);
   const cats = { travel: avgFlight + c.car + c.parking, stay: c.hotel + c.dv + c.zion, do: c.entry + c.nonres + c.sphere + c.hoover, food: c.food, other: c.misc };
-  return { c, msn, nyc, group: msn + 2 * nyc, cats, hotelTotal };
+  return { c, msn, group: Math.round(msn) * PEOPLE, cats, hotelTotal };
 }
 
 function renderNumbers() {
   const t = T, r = compute(), c = r.c;
   $("n-msn").textContent = money(r.msn); $("s-msn").textContent = t.perDay(money(r.msn / DAYS));
-  $("n-nyc").textContent = money(r.nyc); $("s-nyc").textContent = t.perDay(money(r.nyc / DAYS));
   $("n-group").textContent = money(r.group);
   const total = Object.values(r.cats).reduce((a, b) => a + b, 0) || 1;
   $("bar").setAttribute("aria-label", t.barAria);
   $("bar").innerHTML = CATS.filter(k => r.cats[k] > 0).map(k => `<span style="flex:${r.cats[k] / total} 1 0;background:var(--k-${k})" title="${t.cat[k]} ${money(r.cats[k])}"></span>`).join("");
   $("blegend").innerHTML = CATS.map(k => `<span><i style="background:var(--k-${k})"></i>${t.cat[k]} <b>${Math.round(r.cats[k] / total * 100)}%</b></span>`).join("");
-  const lo = 3650 - Math.max(r.msn, r.nyc), hi = 3760 - Math.min(r.msn, r.nyc);
+  const lo = 3650 - r.msn, hi = 3760 - r.msn;
   $("compare").innerHTML = lo > 0 ? t.compare(`${money(lo)}–${money(hi)}`) : "";
 
   const R = t.rows;
   const row = (cat, key, val, note) => `<tr><td><span class="dot" style="background:var(--k-${cat})"></span>${R[key][0]}${note ? `<span class="n">${note}</span>` : ""}</td><td class="r">${val}</td></tr>`;
   const g = n => `<tr class="g"><td colspan="2">${t.groups[n]}</td></tr>`;
-  const fl = [num(state.fMsn), num(state.fNyc)];
   $("rows").innerHTML = [
     g("travel"),
-    row("travel","flight", t.range(money(Math.min(...fl)), money(Math.max(...fl))), R.flight[1]),
+    row("travel","flight", money(num(state.fMsn)), R.flight[1]),
     row("travel","car", money(c.car), R.car[1](money(num(state.car)))),
     row("travel","parking", money(c.parking), R.parking[1]),
     g("stay"),
@@ -296,7 +291,7 @@ function renderNumbers() {
     row("food","food", money(c.food), R.food[1](money(num(state.food)))),
     row("other","misc", money(c.misc), R.misc[1]),
   ].join("");
-  $("t-range").textContent = t.range(money(Math.min(r.msn, r.nyc)), money(Math.max(r.msn, r.nyc)));
+  $("t-range").textContent = money(r.msn);
 }
 
 function renderControls() {
